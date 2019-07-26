@@ -10,6 +10,17 @@
 
 #include "interfaces.hpp"
 
+void Interfaces::initilize(int &argc, char **argv){
+
+    cout << "initilizing interfaces" << endl;
+
+    if (node.hasParam("my_param")){
+        cout << "found parameter" << endl;
+    }else{
+        cout << "could not find parameter" << endl;
+    }
+}
+
 /*
     Runner for the c2 thread
     contains the c2 loop

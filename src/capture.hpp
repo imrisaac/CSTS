@@ -51,11 +51,6 @@ public:
     /// Returns the latest available frame that has been converted to grayscale
     cv::Mat getLatestFrameGray(){return newFrameGray;};
    
-#if JETSON
-    // Returns the latest available frame that has been converted to grayscale, ans moved into GPU memory
-    
-#endif
-    
     
 private:
     

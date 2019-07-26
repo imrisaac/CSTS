@@ -9,8 +9,8 @@
 #ifndef main_h
 #define main_h
 
-#define MAC
-//#define JETSON 
+//#define MAC
+#define JETSON 
 
 // std libs
 #include <pthread.h>        // mutexes

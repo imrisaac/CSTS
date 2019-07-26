@@ -83,7 +83,10 @@ int main(int argc, char **argv)
             printf("%s ", argv[optind++]);
         printf("\n");
     }
-    
+
+    // Initilize ros
+    ros::init(argc, argv, "Vision_Core");
+
     Interfaces interfaces;
     Capture capture;
     SceneTrack sceneTrack;
@@ -91,6 +94,7 @@ int main(int argc, char **argv)
     Writer writer;
     
     capture.initilize();
+    interfaces.initilize(argc, argv);
     
     // interfaces thread
     std::thread interfacesThread([&](){
@@ -116,7 +120,7 @@ int main(int argc, char **argv)
     std::thread writerThread([&](){
        // writer.run();
     });
-    
+
     std::this_thread::sleep_for(std::chrono::seconds(30));
     
     std::cout << "requesting thread stop" << std::endl;

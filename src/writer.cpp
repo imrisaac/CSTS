@@ -12,6 +12,15 @@
     initilize the writer 
  */
 void Writer::initilize(){
+
+    cout << "initilizing udp writer" << endl;
+
+    string sink = "appsrc ! videoconvert ! omxh264enc control-rate=2 bitrate=" + to_string(4000000) + 
+                      " ! mpegtsmux ! udpsink host=255.255.255.255 port=7660";
+    
+    cout << "Writer sink: " + sink + "\n";
+
+    udpWriter.open(sink, 0, (double)30, cv::Size(1280,720), true);
     
 }
 

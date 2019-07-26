@@ -12,6 +12,8 @@
 #include <stdio.h>
 #include "thread.hpp"
 
+using namespace std;
+
 /*
     Writer class
     inherits from Threader class
@@ -29,6 +31,10 @@ public:
     void fileWrite();
     
     void overlayTelemetry();
+
+private:
+
+    cv::VideoWriter udpWriter;
     
 };
 

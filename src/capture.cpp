@@ -19,16 +19,6 @@ using namespace std;
 void Capture::initilize(){
     
     cout << "Initilizing capture " << endl;
-    
-#if MAC
-    
-    // Just use the webcam
-    if ( !cap.open(0) ){
-        cout << "mac capture failed to initilize" << endl;
-    }
-    cout << "mac capture intilized" << endl;
-    
-#elif JETSON
   
     // open gstreamer pipeline
     if ( !cap.open(getCameraPipeline(DevKitTx2, 1920, 1080, 30), cv::CAP_GSTREAMER) ){
@@ -38,17 +28,13 @@ void Capture::initilize(){
     
     cout << "gstreamer capture initilized" << endl;
     
-#else
-    
-// need to auto detect system type and throw compiler error here
-    
-#endif
     
 }
 
 /**
     Runner for the capture thread
-    contains the capture loop that
+    contains the capture loop that ingests frames from the camera pipeline
+    the capture object will block allowing correct timing with framerate
  
  */
 void Capture::run(){
@@ -60,20 +46,38 @@ void Capture::run(){
         
         pthread_mutex_lock(&capture_mutex);
         
+        // will block until new frame is available
         cap >> newFrame;
         
         pthread_mutex_unlock(&capture_mutex);
-        
-        if (newFrame.empty())
-        {
-            cout << "End of the video file!" << endl;
+
+        if (newFrame.data != NULL){
+
+
+        }else if (newFrame.empty()){
+
+            cout << "End of video file" << endl;
             break;
+
+        }else{
+
+            cout << "Frame capture error" << endl;    
+
         }
         
     }
     
-    cout << "capture loop stopped" << std::endl;
-    
+    cout << "releasing capture pipeline" << std::endl;
+
+    cap.release();
+
+    cout << "capture capture pipeline released" << std::endl;
+
+    // this is the only writer, destroy mutex
+    pthread_mutex_destroy(&capture_mutex);
+
+    cout << "capture mutex destroyed exiting" << std::endl;
+
 }
 
 /**

@@ -16,6 +16,10 @@
 #include <chrono>
 #include <future>
 
+#include "opencv2/core/core.hpp"
+#include "opencv2/opencv.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
+
 /**
  * Class that encapsulates promise and future object and
  * provides API to set exit signal for the thread

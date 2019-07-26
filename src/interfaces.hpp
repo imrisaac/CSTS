@@ -11,10 +11,15 @@
 #ifndef interfaces_hpp
 #define interfaces_hpp
 
+// std libs
 #include <stdio.h>
 #include <stdio.h>
 #include "thread.hpp"
 
+// ros
+#include "ros/ros.h"
+
+using namespace std;
 
 /*
  Capture thread
@@ -25,8 +30,13 @@
 class Interfaces: public Threader
 {
 public:
-    // Function to be executed by thread function
+
+    void initilize(int &argc, char **argv);
+
     void run();
+
+    ros::NodeHandle node;
+
 };
 
 
