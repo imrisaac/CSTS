@@ -145,7 +145,7 @@ int main(int argc, char **argv){
     while ( true ) {
         this_thread::sleep_for(std::chrono::milliseconds(20));
         if (s_interrupted) {
-            std::cout << "W: interrupt received, killing…" << std::endl;
+            std::cout << "interrupt received, killing…" << std::endl;
             break;
         }
 
