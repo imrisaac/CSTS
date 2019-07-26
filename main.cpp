@@ -1,0 +1,151 @@
+//
+//  main.cpp
+//  thread_safe
+//
+//  Created by Isaac Reed on 7/23/19.
+//  Copyright © 2019 Isaac Reed. All rights reserved.
+//
+#include "main.hpp"
+
+int main(int argc, char **argv)
+{
+    int c;
+    int digit_optind = 0;
+    
+    while (1) {
+        int this_option_optind = optind ? optind : 1;
+        int option_index = 0;
+        static struct option long_options[] = {
+            {"ip",     required_argument,       0,  0 },
+            {"port",   required_argument,       0,  0 },
+            {"bitrate",  required_argument,     0,  0 },
+            {"help",         no_argument,       0,  0 },
+            {"test",         required_argument, 0, 'c'},
+            {"pattern",            no_argument, 0,  0 },
+            {0,         0,                 0,  0 }
+        };
+        
+        // valid cmd line options
+        c = getopt_long(argc, argv, "i:p:b:",
+                        long_options, &option_index);
+        if (c == -1)
+            break;
+        
+        switch (c) {
+            case 0:
+                if ( option_index == 0 && optarg != NULL){
+                    printf("ip: %s\n", optarg);
+                }
+                else if( option_index == 1 && optarg != NULL){
+                    printf("port: %s\n", optarg);
+                }
+                else if ( option_index == 2 && optarg != NULL){
+                    printf("bitrate: %s\n", optarg);
+                }
+                break;
+                
+            case '0':
+            case '1':
+            case '2':
+                if (digit_optind != 0 && digit_optind != this_option_optind)
+                    printf("digits occur in two different argv-elements.\n");
+                digit_optind = this_option_optind;
+                printf("option %c\n", c);
+                break;
+                
+            case 'i':
+                printf("option a\n");
+                break;
+                
+            case 'p':
+                printf("option b\n");
+                break;
+                
+            case 'c':
+                printf("option c with value '%s'\n", optarg);
+                break;
+                
+            case 'd':
+                printf("option d with value '%s'\n", optarg);
+                break;
+                
+            case '?':
+                break;
+                
+            default:
+                printf("?? getopt returned character code 0%o ??\n", c);
+        }
+    }
+    
+    if (optind < argc) {
+        printf("non-option ARGV-elements: ");
+        while (optind < argc)
+            printf("%s ", argv[optind++]);
+        printf("\n");
+    }
+    
+    Interfaces interfaces;
+    Capture capture;
+    SceneTrack sceneTrack;
+    Stabilizer stabilizer;
+    Writer writer;
+    
+    capture.initilize();
+    
+    // interfaces thread
+    std::thread interfacesThread([&](){
+       // interfaces.run();
+    });
+   
+    // capture thread
+    std::thread captureThread([&](){
+        capture.run();
+    });
+    
+    // sceneTrack thread
+    std::thread sceneTrackThread([&](){
+       // sceneTrack.run();
+    });
+    
+    // stabilizer thread
+    std::thread stabilizerThread([&](){
+       // stabilizer.run();
+    });
+    
+    // writer thread
+    std::thread writerThread([&](){
+       // writer.run();
+    });
+    
+    std::this_thread::sleep_for(std::chrono::seconds(30));
+    
+    std::cout << "requesting thread stop" << std::endl;
+    
+    // Request threads to stop
+    sceneTrack.stop();
+    stabilizer.stop();
+    capture.stop();
+    interfaces.stop();
+    writer.stop();
+    
+    // exit object tracking thread
+    // exit scene tracking thread
+    // exit stabilization thread
+    // exit c2 thread
+    // exit capture thread
+    // exit main
+    
+    // Waiting for thread to join, wait for the thread to exit?
+    // if a thread fails to stop we will get stuck waiting for that particular thread to join
+    captureThread.join();
+    sceneTrackThread.join();
+    interfacesThread.join();
+    stabilizerThread.join();
+    
+    // we close the writer last so we can use it for remote debug output as long as possible
+    writerThread.join();
+    
+    std::cout << "threads joined ready to exit" << std::endl;
+    std::cout << "exiting main" << std::endl;
+    return 0;
+}
