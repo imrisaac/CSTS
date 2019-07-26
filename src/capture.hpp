@@ -62,7 +62,6 @@ private:
     
     cv::Mat newFrameGray;
     
-
 };
 
 

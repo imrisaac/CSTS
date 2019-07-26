@@ -7,10 +7,29 @@
 //
 #include "main.hpp"
 
-int main(int argc, char **argv)
-{
+static int s_interrupted = 0;
+
+static void s_signal_handler (int signal_value){
+    s_interrupted = 1;
+}
+
+static void s_catch_signals (void){
+    struct sigaction action;
+    action.sa_handler = s_signal_handler;
+    action.sa_flags = 0;
+    sigemptyset (&action.sa_mask);
+    sigaction (SIGINT, &action, NULL);
+    sigaction (SIGTSTP, &action, NULL);
+    sigaction (SIGTERM, &action, NULL);
+    sigaction (SIGKILL, &action, NULL);
+}
+
+int main(int argc, char **argv){
     int c;
     int digit_optind = 0;
+
+    // Register exit handler
+    s_catch_signals();
     
     while (1) {
         int this_option_optind = optind ? optind : 1;
@@ -121,7 +140,17 @@ int main(int argc, char **argv)
        // writer.run();
     });
 
-    std::this_thread::sleep_for(std::chrono::seconds(30));
+    cout << "starting main loop" << endl;
+
+    while ( true ) {
+        this_thread::sleep_for(std::chrono::milliseconds(20));
+        if (s_interrupted) {
+            std::cout << "W: interrupt received, killing…" << std::endl;
+            break;
+        }
+
+    }
+
     
     std::cout << "requesting thread stop" << std::endl;
     

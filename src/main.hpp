@@ -19,6 +19,10 @@
 #include <stdlib.h>         // cmd line option parsing
 #include <string>           // cmd line option parsing
 
+#include <signal.h>         // for exit handeling
+#include <stdio.h>
+#include <unistd.h>
+
 // special sauce
 #include "interfaces.hpp"
 #include "capture.hpp"
@@ -32,5 +36,8 @@
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/tracking.hpp"
+
+
+volatile sig_atomic_t flag = 0;
 
 #endif /* main_h */
