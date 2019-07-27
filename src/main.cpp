@@ -127,12 +127,12 @@ int main(int argc, char **argv){
     std::thread interfacesThread([&](){
        // interfaces.run();
     });
-   
+
     // capture thread
     std::thread captureThread([&](){
         capture.run();
     });
-    
+
     // sceneTrack thread
     std::thread sceneTrackThread([&](){
        // sceneTrack.run();

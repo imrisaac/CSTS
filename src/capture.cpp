@@ -32,6 +32,7 @@ void Capture::initilize(){
     
 #if MAC
 
+    // No gstreamer pipelines are working for MAC right now
     if ( !cap.open(0) ){
         cout << "capture failed to initilize" << endl;
     }
