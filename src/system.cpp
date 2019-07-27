@@ -8,6 +8,11 @@
 
 #include "system.hpp"
 
+/**
+    restartNVArgus
+
+    sedts shell cmd to restart nvargus daemon
+ */
 bool System::restartNVArgus(){
 
     string key = "";
@@ -21,7 +26,7 @@ bool System::restartNVArgus(){
 }
 
 
-/*
+/**
     exec
 
     executes a command in the system shell
