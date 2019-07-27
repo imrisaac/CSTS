@@ -12,17 +12,31 @@
 #include <stdio.h>
 #include "thread.hpp"
 
-/*
- SceneTrack thread
+// opencv
+#include <opencv2/tracking.hpp>
+
+using namespace std;
+using namespace cv;
+
+/**
+ ObjectTrack thread
  inherits from Threadder class
  
- responsible for running scene tracking on new frames from the capture thread
+ responsible object tracking if you could not tell by the name
  */
 class ObjectTrack : public Threader
 {
 public:
+
+    void initilize();
+
     // Function to be executed by thread function
     void run();
+private:
+
+    Ptr<Tracker> createTrackerByName(string trackerType);
+
+    vector<string> trackerTypes = {"BOOSTING", "MIL", "KCF", "TLD", "MEDIANFLOW", "GOTURN", "MOSSE", "CSRT"};
 };
 
 #endif /* sceneTrack_hpp */

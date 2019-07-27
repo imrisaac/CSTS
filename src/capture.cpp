@@ -19,7 +19,7 @@ using namespace std;
 void Capture::initilize(){
     
     cout << "Initilizing capture " << endl;
-  
+
 #ifdef JETSON
     // open gstreamer pipeline
     if ( !cap.open(getCameraPipeline(DevKitTx2, 1920, 1080, 30), cv::CAP_GSTREAMER) ){
@@ -47,7 +47,6 @@ void Capture::initilize(){
     Runner for the capture thread
     contains the capture loop that ingests frames from the camera pipeline
     the capture object will block allowing correct timing with framerate
- 
  */
 void Capture::run(){
     
