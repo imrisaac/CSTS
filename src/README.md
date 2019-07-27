@@ -6,7 +6,7 @@ At 30fps we have 33.333ms  between frames to run stabilization before frames wil
 
 The stabilization framerate is unrestricted and will run as fast as the input framerate
 
-1000 / 29.9999 = 3.333ms
+1000 / 29.9999 = 33.33ms
 
 As latency is one of the primary concerns buffering frams and parallelizing the stabilization tasks is not an option
 This method would improve framerate but again signifiganlty increase latency
