@@ -12,6 +12,7 @@ option(UBUNTU_VM_BUiLD "Build for Ubuntu VM" OFF)
 if(MAC_BUILD)
 
   add_compile_definitions(MAC)
+  add_compile_definitions(HAVE_DISPLAY)
 
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 

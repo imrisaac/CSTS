@@ -7,6 +7,8 @@
 //
 #include "main.hpp"
 
+using namespace cv;
+
 static int s_interrupted = 0;
 
 static void s_signal_handler (int signal_value){
@@ -108,6 +110,10 @@ int main(int argc, char **argv){
     ros::init(argc, argv, "Vision_Core");
 #endif
 
+#ifdef HAVE_DISPLAY
+    namedWindow("Vision Core", WINDOW_AUTOSIZE);
+#endif
+
     Interfaces interfaces;
     Capture capture;
     SceneTrack sceneTrack;
@@ -145,7 +151,15 @@ int main(int argc, char **argv){
     cout << "starting main loop" << endl;
 
     while ( true ) {
-        this_thread::sleep_for(std::chrono::milliseconds(20));
+        Mat image = capture.getLatestFrameColor();
+
+        if (image.data != NULL){
+            imshow("Vision Core", capture.getLatestFrameColor());
+        }
+
+        // waitkey for 33ms resulting approximatly 30fps display, TODO: paramaterize all fps related values
+        waitKey(33);
+
         if (s_interrupted) {
             std::cout << "interrupt received, killing…" << std::endl;
             break;

@@ -82,12 +82,12 @@ void Capture::run(){
 
     cap.release();
 
-    cout << "capture capture pipeline released" << std::endl;
+    cout << "capture pipeline released" << std::endl;
 
     // this is the only writer, destroy mutex
     pthread_mutex_destroy(&capture_mutex);
 
-    cout << "capture mutex destroyed exiting" << std::endl;
+    cout << "capture mutex destroyed, capture exiting" << std::endl;
 
 }
 
