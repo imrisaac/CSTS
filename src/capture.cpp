@@ -20,6 +20,7 @@ void Capture::initilize(){
     
     cout << "Initilizing capture " << endl;
   
+#ifdef JETSON
     // open gstreamer pipeline
     if ( !cap.open(getCameraPipeline(DevKitTx2, 1920, 1080, 30), cv::CAP_GSTREAMER) ){
         
@@ -27,7 +28,17 @@ void Capture::initilize(){
     }
     
     cout << "gstreamer capture initilized" << endl;
+#endif
     
+#if MAC
+
+    if ( !cap.open(0) ){
+        cout << "capture failed to initilize" << endl;
+    }
+
+    cout << "capture initilized" << endl;
+
+#endif
     
 }
 

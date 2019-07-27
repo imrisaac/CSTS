@@ -103,8 +103,10 @@ int main(int argc, char **argv){
         printf("\n");
     }
 
+#ifdef WITH_ROS
     // Initilize ros
     ros::init(argc, argv, "Vision_Core");
+#endif
 
     Interfaces interfaces;
     Capture capture;

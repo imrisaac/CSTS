@@ -16,8 +16,10 @@
 #include <stdio.h>
 #include "thread.hpp"
 
+#ifdef WITH_ROS
 // ros
 #include "ros/ros.h"
+#endif
 
 using namespace std;
 
@@ -35,7 +37,9 @@ public:
 
     void run();
 
+#ifdef WITH_ROS
     ros::NodeHandle node;
+#endif
 
 };
 

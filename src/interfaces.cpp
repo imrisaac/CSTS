@@ -14,11 +14,13 @@ void Interfaces::initilize(int &argc, char **argv){
 
     cout << "initilizing interfaces" << endl;
 
+#ifdef WITH_ROS
     if (node.hasParam("my_param")){
         cout << "found parameter" << endl;
     }else{
         cout << "could not find parameter" << endl;
     }
+#endif
 }
 
 /*
