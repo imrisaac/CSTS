@@ -89,15 +89,6 @@ void Capture::run(){
 
 }
 
-/*
-
- */
-cv::Mat Capture::generatePip(cv::Mat bigImage, cv::Mat littleImage, int x, int y){
-
-    littleImage.copyTo(bigImage(cv::Rect(x, y, littleImage.cols, littleImage.rows)));
-
-    return bigImage;
-}
 
 /**
     gstCameraPipeline

@@ -29,6 +29,7 @@
 #include "sceneTrack.hpp"
 #include "stabilizer.hpp"
 #include "writer.hpp"
+#include "system.hpp"
 
 // opencv
 #include "opencv2/core/core.hpp"

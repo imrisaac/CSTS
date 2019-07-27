@@ -53,14 +53,12 @@ public:
     
     /// Returns the latest available frame that has been converted to grayscale
     cv::Mat getLatestFrameGray(){return newFrameGray;};
+
    
-    
 private:
     
     std::string getCameraPipeline(CamIndex index, int width, int height, int fps);
 
-    cv::Mat generatePip(cv::Mat bigImage, cv::Mat littleImage, int x, int y);
-    
     cv::VideoCapture cap;
     
     cv::Mat newFrame;

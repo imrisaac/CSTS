@@ -37,6 +37,7 @@ if(MAC_BUILD)
                   src/thread.cpp
                   src/writer.cpp
                   src/objectTrack.cpp
+                  src/system.cpp
                   )
 
   target_link_libraries(vision_core4 ${OpenCV_LIBS} ${CMAKE_THREAD_LIBS_INIT})
@@ -73,6 +74,7 @@ if(JETSON_BUILD)
                   src/thread.cpp
                   src/writer.cpp
                   src/objectTrack.cpp
+                  src/system.cpp
                   )
 
   target_link_libraries(vision_core4 ${OpenCV_LIBS} ${CMAKE_THREAD_LIBS_INIT} ${catkin_LIBRARIES})
