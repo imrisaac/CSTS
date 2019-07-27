@@ -10,8 +10,6 @@
 
 #include "capture.hpp"
 
-
-using namespace std;
 /**
     Initilizer for the capture loop
     created capture object and tries to grab a frame from it
@@ -89,6 +87,16 @@ void Capture::run(){
 
     cout << "capture mutex destroyed, capture exiting" << std::endl;
 
+}
+
+/*
+
+ */
+cv::Mat Capture::generatePip(cv::Mat bigImage, cv::Mat littleImage, int x, int y){
+
+    littleImage.copyTo(bigImage(cv::Rect(x, y, littleImage.cols, littleImage.rows)));
+
+    return bigImage;
 }
 
 /**

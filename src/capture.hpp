@@ -21,6 +21,9 @@
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/tracking.hpp"
 
+using namespace std;
+using namespace cv;
+
 enum CamIndex {
         DevKitTx2   = 0,
         DevKitTx1   = 1,
@@ -55,6 +58,8 @@ public:
 private:
     
     std::string getCameraPipeline(CamIndex index, int width, int height, int fps);
+
+    cv::Mat generatePip(cv::Mat bigImage, cv::Mat littleImage, int x, int y);
     
     cv::VideoCapture cap;
     
