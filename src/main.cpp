@@ -34,8 +34,10 @@ int main(int argc, char **argv){
     s_catch_signals();
     
     while (1) {
+
         int this_option_optind = optind ? optind : 1;
         int option_index = 0;
+        
         static struct option long_options[] = {
             {"ip",     required_argument,       0,  0 },
             {"port",   required_argument,       0,  0 },
