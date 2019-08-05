@@ -9,8 +9,10 @@
 #ifndef main_h
 #define main_h
 
+
+// deprecated do not use, use in CMakeLists.txt instead
 //#define MAC
-#define JETSON 
+//#define JETSON 
 
 // std libs
 #include <pthread.h>        // mutexes

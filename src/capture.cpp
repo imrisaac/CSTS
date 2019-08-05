@@ -60,8 +60,14 @@ void Capture::run(){
         
         pthread_mutex_unlock(&capture_mutex);
 
+        /* 
+            here we will do as much free image processing as possible, this must
+            be done faster than the stabilization. 
+            Final warp is applied to the preProcessedFrame
+        */
         if (newFrame.data != NULL){
 
+            newFrame >> preProcessedFrame;
 
         }else if (newFrame.empty()){
 

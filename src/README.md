@@ -8,6 +8,8 @@ The stabilization framerate is unrestricted and will run as fast as the input fr
 
 1000 / 29.9999 = 33.33ms
 
+Tracking framerate needs to be restricted to up to the input framerate otherwise it will run faster wasting cp/gpu.
+
 As latency is one of the primary concerns buffering frams and parallelizing the stabilization tasks is not an option
 This method would improve framerate but again signifiganlty increase latency
 
@@ -22,4 +24,24 @@ another method is to apply the same warp to 2 fsequential frames
     printf("Hello World");
     }
 
-# vision_core_4
+## Tricks Done to Reduce Computational load
+In the name of processing speed corner detection in not performed on the entire frame because corners detected near the edge of the frame are most likely to not exist in the next frame.
+
+## Stabilization Params
+
+### smoothing_window_size
+
+### fast_threshold
+
+### cnum_pyramid_levels
+
+### opt_flow_win_size
+
+### opt_flow_epsilon;opt_flow_num_iterations
+
+### opt_flow_use_initial_estimate
+
+### homography_ransac_threshold
+
+### homography_method
+

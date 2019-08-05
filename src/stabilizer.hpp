@@ -11,7 +11,27 @@
 
 #include <stdio.h>
 #include "thread.hpp"
+#include "common.h"
 
+using namespace std;
+using namespace cv;
+
+// Stabilizer params are common for all builds
+struct StabilizerParams
+{
+    int smoothing_window_size; //if N is a number of frames in the queue, then smoothing_window_size is equal to N-1
+    float fast_threshold;
+    int num_pyramid_levels;
+    int opt_flow_win_size;
+    float opt_flow_epsilon;
+    int opt_flow_num_iterations;
+    int opt_flow_use_initial_estimate;
+    float homography_ransac_threshold;
+    int homography_method;
+    StabilizerParams();
+};
+
+#ifdef MAC
 /**
     Stabilizer thread
     inherits from Threader class
@@ -25,7 +45,21 @@ public:
     
     /// runner contaning the capture loop
     void run();
-};
 
+private:
+
+    void drawArrows(Mat& frame, const vector<Point2f>& prevPts, const vector<Point2f>& nextPts, const vector<uchar>& status, cv::Scalar line_color);
+
+    StabilizerParams params_;
+
+};
+#endif // mac
+
+#ifdef JETSON
+
+// Initilize ros
+#pragma message("Yo what the fuck jetson is not defined")
+
+#endif
 
 #endif /* stabilizer_hpp */

@@ -11,6 +11,8 @@ option(UBUNTU_VM_BUiLD "Build for Ubuntu VM" OFF)
 # ================ MAC Build ===================
 if(MAC_BUILD)
 
+  message("Running MAC build")
+
   add_compile_definitions(MAC)
   add_compile_definitions(HAVE_DISPLAY)
 
@@ -46,6 +48,8 @@ endif()
 
 # ================ Jetson Build ===================
 if(JETSON_BUILD)
+
+  message("Running jetson")
 
   add_compile_definitions(WITH_ROS)
   add_compile_definitions(JETSON)

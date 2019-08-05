@@ -64,6 +64,8 @@ private:
     cv::Mat newFrame;
     
     cv::Mat newFrameGray;
+
+    cv::Mat preProcessedFrame;
     
 };
 
