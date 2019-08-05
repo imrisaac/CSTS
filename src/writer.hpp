@@ -10,9 +10,18 @@
 #define writer_hpp
 
 #include <stdio.h>
+
 #include "thread.hpp"
 
 using namespace std;
+
+// Stabilizer params are common for all builds
+struct WriterParams
+{
+    string encoder;      // raw encoder string passed directly to gstreamer pipeline, omxh264enc, omxh265enc
+    int udp_bitrate;     // bitrate for the UDP h.264, h.265 stream gstreamer pipeline
+    WriterParams();
+};
 
 /*
     Writer class
@@ -21,9 +30,8 @@ using namespace std;
 class Writer: public Threader
 {
 public:
-    
-    void initilize();
-    
+    void init(const cv::Mat &start_frame);
+
     void run();
     
     void gstreamerWrite();
@@ -35,6 +43,8 @@ public:
 private:
 
     cv::VideoWriter udpWriter;
+
+    WriterParams params_;
     
 };
 

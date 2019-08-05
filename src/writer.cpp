@@ -8,10 +8,18 @@
 
 #include "writer.hpp"
 
+// default parameters
+WriterParams::WriterParams()
+{
+    encoder = "omxh264enc";
+    udp_bitrate = 8;
+}
+
 /**
     initilize the writer 
  */
-void Writer::initilize(){
+void Writer::init(const cv::Mat &start_frame)
+{
 
     cout << "initilizing udp writer" << endl;
 
