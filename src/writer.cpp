@@ -28,6 +28,7 @@ void Writer::init(const cv::Mat &start_frame)
     
     cout << "Writer sink: " + sink + "\n";
 
+    // TODO: initilize writer resolution using start_frame
     udpWriter.open(sink, 0, (double)30, cv::Size(1280,720), true);
     
 }

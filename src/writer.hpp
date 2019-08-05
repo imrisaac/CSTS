@@ -44,6 +44,8 @@ private:
 
     cv::VideoWriter udpWriter;
 
+    cv::VideoWriter fileWriter;
+
     WriterParams params_;
     
 };
