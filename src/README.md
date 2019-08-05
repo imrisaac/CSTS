@@ -25,6 +25,7 @@ another method is to apply the same warp to 2 fsequential frames
     }
 
 ## Tricks Done to Reduce Computational load
+
 In the name of processing speed corner detection in not performed on the entire frame because corners detected near the edge of the frame are most likely to not exist in the next frame.
 
 ## Stabilization Params
@@ -45,3 +46,18 @@ In the name of processing speed corner detection in not performed on the entire 
 
 ### homography_method
 
+## Random to dos that donet enven have aplace in the code yet
+
+TODO: allow vision core to fall back to straging cstreamer pipeline without opencv in the middle for minimal latency
+
+This now gives us another operation mode:
+
+1. Full, Capture, Stabilization, color corrections, tracking, writing
+
+2. Stab only, Capture, Stabilization, color corrections, writing.
+
+3. Color only, Capture, color corrections, writing.
+
+4. Writer only, Capture, writer.
+
+5. Pass through, Video feed is kep in gstreamer no processing performed, straight to udp gstreamer pipeline.

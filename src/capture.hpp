@@ -20,16 +20,33 @@
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/tracking.hpp"
+#include "opencv2/xphoto.hpp"               // for white balance
 
 using namespace std;
 using namespace cv;
 
-enum CamIndex {
-        DevKitTx2   = 0,
-        DevKitTx1   = 1,
-        DevKitNano  = 2,
-        AR1820      = 3,
-        Boson       = 4,
+enum CamIndex
+{
+    DevKitTx2 = 0,
+    DevKitTx1 = 1,
+    DevKitNano = 2,
+    AR1820 = 3,
+    Boson = 4,
+};
+
+enum WbAlgo
+{
+    Simple,
+    GrayWorld,
+    Learning,
+};
+
+
+struct CaptureParams
+{
+    WbAlgo wbAlgo;
+    CamIndex camIndex;
+    CaptureParams();
 };
 
 /**
@@ -66,7 +83,10 @@ private:
     cv::Mat newFrameGray;
 
     cv::Mat preProcessedFrame;
-    
+
+    cv::Ptr<cv::xphoto::WhiteBalancer> wb;
+
+    CaptureParams params_;
 };
 
 

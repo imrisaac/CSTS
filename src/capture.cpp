@@ -10,6 +10,12 @@
 
 #include "capture.hpp"
 
+// default parameters
+CaptureParams::CaptureParams()
+{
+    wbAlgo = Simple;
+}
+
 /**
     Initilizer for the capture loop
     created capture object and tries to grab a frame from it
@@ -38,7 +44,31 @@ void Capture::initilize(){
     cout << "capture initilized" << endl;
 
 #endif
-    
+
+    switch( params_.wbAlgo){
+
+        case Simple:
+
+            wb = xphoto::createSimpleWB();
+            break;
+
+        case GrayWorld:
+
+            wb = xphoto::createGrayworldWB();
+            break;
+
+        case Learning:
+
+            //TODO: add dataset for deep learning white balance, this is insane deep learnign white balance wtf
+            //wb = xphoto::createLearningBasedWB(modelFilename);
+            break;
+
+        default:
+
+            wb = xphoto::createSimpleWB();
+            break;
+    }
+
 }
 
 /**
@@ -69,6 +99,9 @@ void Capture::run(){
 
             // this is expensive to do
             newFrame.copyTo(preProcessedFrame);
+
+            // white balance
+            wb->balanceWhite(preProcessedFrame, preProcessedFrame);
 
         }else if (newFrame.empty()){
 
