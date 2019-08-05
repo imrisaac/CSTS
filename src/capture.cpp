@@ -67,7 +67,8 @@ void Capture::run(){
         */
         if (newFrame.data != NULL){
 
-            newFrame >> preProcessedFrame;
+            // this is expensive to do
+            newFrame.copyTo(preProcessedFrame);
 
         }else if (newFrame.empty()){
 

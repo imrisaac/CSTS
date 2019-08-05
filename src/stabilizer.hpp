@@ -28,6 +28,7 @@ struct StabilizerParams
     int opt_flow_use_initial_estimate;
     float homography_ransac_threshold;
     int homography_method;
+    float search_box_scale_factor; // what size to make the search box, 0.95 = 95% the size of input frame
     StabilizerParams();
 };
 
@@ -41,8 +42,8 @@ class Stabilizer: public Threader
 public:
     
     /// Initilize the stabilizer algo with necessary startup frames and parameters
-    void initilize();
-    
+    void init(const cv::Mat &start_frame);
+
     /// runner contaning the capture loop
     void run();
 
@@ -52,6 +53,7 @@ private:
 
     StabilizerParams params_;
 
+    cv::Rect search_box;
 };
 #endif // mac
 
