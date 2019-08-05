@@ -51,6 +51,10 @@ private:
 
     void drawArrows(Mat& frame, const vector<Point2f>& prevPts, const vector<Point2f>& nextPts, const vector<uchar>& status, cv::Scalar line_color);
 
+    cv::Mat applyPerspectiveTransformation(cv::Matx33f transformation);
+
+    cv::Matx33f findHomogrpahyMatrix(const cv::Mat &current_frame);
+
     StabilizerParams params_;
 
     cv::Rect search_box;
