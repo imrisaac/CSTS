@@ -150,7 +150,7 @@ int main(int argc, char **argv){
     
     // writer thread
     std::thread writerThread([&](){
-        writer.run();
+      //  writer.run();
     });
 
     cout << "starting main loop" << endl;
@@ -160,6 +160,12 @@ int main(int argc, char **argv){
 
         if (image.data != NULL){
             imshow("Vision Core", capture.getLatestFramePreProcessed());
+
+            const int key = cv::waitKey(5) & 0xff;
+            
+            if (key == 27 /*Esc*/){
+                break;
+            }
         }
 
         // waitkey for 33ms resulting approximatly 30fps display, TODO: paramaterize all fps related values
@@ -172,7 +178,6 @@ int main(int argc, char **argv){
 
     }
 
-    
     std::cout << "requesting thread stop" << std::endl;
     
     // Request threads to stop
@@ -189,7 +194,7 @@ int main(int argc, char **argv){
     // exit capture thread
     // exit main
     
-    // Waiting for thread to join, wait for the thread to exit?
+    // Waiting for thread to join, sync threads for exit
     // if a thread fails to stop we will get stuck waiting for that particular thread to join
     captureThread.join();
     sceneTrackThread.join();
@@ -199,7 +204,7 @@ int main(int argc, char **argv){
     // we close the writer last so we can use it for remote debug output as long as possible
     writerThread.join();
     
-    std::cout << "threads joined ready to exit" << std::endl;
+    std::cout << "threads joined, ready to exit" << std::endl;
     std::cout << "exiting main" << std::endl;
     return 0;
 }

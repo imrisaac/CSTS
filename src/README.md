@@ -8,6 +8,9 @@ The stabilization framerate is unrestricted and will run as fast as the input fr
 
 1000 / 29.9999 = 33.33ms
 
+The whole program is throttled by the input framerate. if there are no new frames some loops will stop/pause but they do not have timers themselves.
+Consequently when ever a thread is given a frame is it must
+
 Tracking framerate needs to be restricted to up to the input framerate otherwise it will run faster wasting cp/gpu.
 
 As latency is one of the primary concerns buffering frams and parallelizing the stabilization tasks is not an option

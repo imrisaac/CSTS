@@ -49,6 +49,7 @@ struct CaptureParams
 {
     WbAlgo wbAlgo;
     CamIndex camIndex;
+    int gstFlip;
     CaptureParams();
 };
 

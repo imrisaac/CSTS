@@ -33,7 +33,7 @@ if(MAC_BUILD)
   add_executable(vision_core4
                   src/main.cpp  
                   src/capture.cpp 
-                  src/interfaces.cpp 
+                  src/interfaces/interfaces.cpp 
                   src/sceneTrack.cpp
                   src/stabilizer.cpp
                   src/thread.cpp
@@ -73,7 +73,7 @@ if(JETSON_BUILD)
   add_executable(vision_core4
                   src/main.cpp  
                   src/capture.cpp 
-                  src/interfaces.cpp 
+                  src/interfaces/interfaces.cpp 
                   src/sceneTrack.cpp
                   src/stabilizer.cpp
                   src/thread.cpp

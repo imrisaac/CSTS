@@ -14,7 +14,7 @@
 // std libs
 #include <stdio.h>
 #include <stdio.h>
-#include "thread.hpp"
+#include "../thread.hpp"        //ugg really need to setup cmake properly
 
 #ifdef WITH_ROS
 // ros

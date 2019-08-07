@@ -14,6 +14,7 @@
 CaptureParams::CaptureParams()
 {
     wbAlgo = Simple;
+    gstFlip = 0;
 }
 
 /**
@@ -161,9 +162,9 @@ std::string Capture::getCameraPipeline(CamIndex camera, int width, int height, i
             break;
             
         case AR1820:
-            pipeline = "nvarguscamerasrc ! video/x-raw(memory:NVMM), width=(int)" + std::to_string(width) + ", height=(int)" +
+            pipeline = "nvarguscamerasrc exposurecompensation=0 wbmode=0 maxperf=true ee-mode=1 eestrength=-1 sensor-id=0 ! video/x-raw(memory:NVMM), width=(int)" + std::to_string(width) + ", height=(int)" +
                     std::to_string(height) + ", format=(string)NV12, framerate=(fraction)" + std::to_string(fps) +
-                    "/1 ! nvvidconv flip-method=3 ! video/x-raw, format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)BGR ! appsink";
+                    "/1 ! nvvidconv flip-method="+ std::to_string(params_.gstFlip) +" ! video/x-raw, format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)BGR ! appsink";
             break;
             
         case Boson:

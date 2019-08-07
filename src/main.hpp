@@ -26,7 +26,7 @@
 #include <unistd.h>
 
 // special sauce
-#include "interfaces.hpp"
+#include "interfaces/interfaces.hpp"
 #include "capture.hpp"
 #include "sceneTrack.hpp"
 #include "stabilizer.hpp"

@@ -10,17 +10,31 @@
 #define writer_hpp
 
 #include <stdio.h>
+#include <vector>
+#include <queue>
 
 #include "thread.hpp"
 
 using namespace std;
+
+enum Sinker
+{
+    gstMacUDP,
+    gstJetsonUDP,
+    file0,
+    file1,
+};
 
 // Stabilizer params are common for all builds
 struct WriterParams
 {
     string encoder;      // raw encoder string passed directly to gstreamer pipeline, omxh264enc, omxh265enc
     int udp_bitrate;     // bitrate for the UDP h.264, h.265 stream gstreamer pipeline
-    WriterParams();
+    string udp_ip;
+    string udp_port; 
+    int udp_width;
+    int udp_height;
+    WriterParams();   
 };
 
 /*
@@ -34,7 +48,7 @@ public:
 
     void run();
     
-    void gstreamerWrite();
+    void write(cv::Mat new_frame);
     
     void fileWrite();
     
@@ -42,12 +56,15 @@ public:
 
 private:
 
+    bool openSink(Sinker sink, cv::Mat start_frame);
+
     cv::VideoWriter udpWriter;
 
     cv::VideoWriter fileWriter;
 
     WriterParams params_;
-    
+
+    std::queue<cv::Mat> frames;
 };
 
 #endif /* writer_hpp */

@@ -12,7 +12,11 @@
 WriterParams::WriterParams()
 {
     encoder = "omxh264enc";
-    udp_bitrate = 8;
+    udp_bitrate = 1024;
+    udp_ip = "255.255.255.255";
+    udp_port = "49410";
+    udp_width = 1920;
+    udp_height = 720;
 }
 
 /**
@@ -21,15 +25,9 @@ WriterParams::WriterParams()
 void Writer::init(const cv::Mat &start_frame)
 {
 
-    cout << "initilizing udp writer" << endl;
-
-    string sink = "appsrc ! videoconvert ! omxh264enc control-rate=2 bitrate=" + to_string(4000000) + 
-                      " ! mpegtsmux ! udpsink host=255.255.255.255 port=7660";
+    cout << "initilizing writer" << endl;    
     
-    cout << "Writer sink: " + sink + "\n";
-
-    // TODO: initilize writer resolution using start_frame size
-    udpWriter.open(sink, 0, (double)30, cv::Size(1280,720), true);
+    openSink(gstJetsonUDP, start_frame);
     
 }
 
@@ -46,17 +44,28 @@ void Writer::run(){
     // Check if thread is requested to stop ?
     while ( false == stopRequested() ){
         
-        udpWriter << 
+        if(false == frames.empty()){
+            udpWriter << frames.front();
+
+            // done with this frame for good
+            frames.pop();
+        }
+
+        // dont go crazy TODO
+        usleep(10);
         
     }
+
+    std::cout << "releasing udp writer" << std::endl;
+    udpWriter.release();
     std::cout << "writer loop stopped" << std::endl;
 }
 
 /**
     Write frames to the gstreamer pipeline
  */
-void Writer::gstreamerWrite(){
-    
+void Writer::write(cv::Mat new_frame){
+    frames.push(new_frame);
 }
 
 /**
@@ -71,4 +80,59 @@ void Writer::fileWrite(){
  */
 void Writer::overlayTelemetry(){
     
+}
+
+/**
+    writer
+    returns writer pipeline
+ */
+bool Writer::openSink(Sinker sink, cv::Mat start_frame)
+{
+    string gstSink;
+
+    // ostringstream _width;
+    // ostringstream _height;
+    // ostringstream _fps;
+
+    // _width << width;
+    // _height << height;
+    // _fps << fps;
+
+    switch (sink){
+    case gstMacUDP:
+
+        // assemble gstreamer pipeline
+        gstSink = "appsrc ! videoconvert ! omxh264enc bitrate=" + to_string(params_.udp_bitrate * 1024) + " iframeinterval=8 ! mpegtsmux alignment=7 ! udpsink host=255.255.255.255 port=7660";
+
+        cout << "GST writer sink: " + gstSink + "\n";
+
+        // TODO: initilize writer resolution using start_frame size
+        udpWriter.open(gstSink, 0, (double)30, cv::Size(1280, 720), true);
+
+        break;
+    
+    case gstJetsonUDP:
+
+        // assemble gstreamer pipeline
+        gstSink = "appsrc ! videoconvert ! " + params_.encoder + " bitrate=" + to_string(params_.udp_bitrate * 1024) + " iframeinterval=8 EnableStingentBitrate=true profile=8 ! mpegtsmux alignment=7 ! udpsink host=255.255.255.255 port=49410";
+
+        cout << "GST writer sink: " + gstSink + "\n";
+
+        // TODO: initilize writer resolution using start_frame size
+        udpWriter.open(gstSink, 0, (double)30, cv::Size(1280, 720), true);
+
+        break;
+
+    case file0:
+        break;
+
+    case file1:
+        break;
+
+    default:
+
+        break;
+    }
+
+    return true;
 }
