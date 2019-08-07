@@ -51,7 +51,7 @@ void Writer::run(){
             frames.pop();
         }
 
-        // dont go crazy TODO
+        // dont go crazy TODO: something other than this
         usleep(10);
         
     }

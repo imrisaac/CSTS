@@ -92,6 +92,10 @@ private:
 
     cv::Ptr<cv::xphoto::WhiteBalancer> wb;
 
+    cv::Point fpsTextOrigin;
+
+    cv::Point upTimeTextOrigin;
+
     CaptureParams params_;
 };
 

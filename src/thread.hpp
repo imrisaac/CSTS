@@ -15,6 +15,7 @@
 #include <assert.h>
 #include <chrono>
 #include <future>
+#include <unistd.h>     // for usleep
 
 #include "opencv2/core/core.hpp"
 #include "opencv2/opencv.hpp"
