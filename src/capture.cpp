@@ -26,7 +26,7 @@ void Capture::initilize(){
 
 #ifdef JETSON
     // open gstreamer pipeline
-    if ( !cap.open(getCameraPipeline(DevKitTx2, 1920, 1080, 30), cv::CAP_GSTREAMER) ){
+    if ( !cap.open(getCameraPipeline(AR1820, 1280, 720, 30), cv::CAP_GSTREAMER) ){
         
         cout << "gstreamer capture failed to initilized" << endl;
     }
@@ -83,12 +83,12 @@ void Capture::run(){
     // Check if thread is requested to stop ?
     while ( false == stopRequested() ){
         
-        pthread_mutex_lock(&capture_mutex);
+        //pthread_mutex_lock(&capture_mutex);
         
         // will block until new frame is available
         cap >> newFrame;
         
-        pthread_mutex_unlock(&capture_mutex);
+       // pthread_mutex_unlock(&capture_mutex);
 
         /* 
             here we will do as much free image processing as possible, this must
@@ -98,7 +98,7 @@ void Capture::run(){
         if (newFrame.data != NULL){
 
             // this is expensive to do
-            newFrame.copyTo(preProcessedFrame);
+            preProcessedFrame = newFrame.clone();
 
             // white balance
             wb->balanceWhite(preProcessedFrame, preProcessedFrame);
@@ -161,9 +161,13 @@ std::string Capture::getCameraPipeline(CamIndex camera, int width, int height, i
             break;
             
         case AR1820:
+            pipeline = "nvarguscamerasrc ! video/x-raw(memory:NVMM), width=(int)" + std::to_string(width) + ", height=(int)" +
+                    std::to_string(height) + ", format=(string)NV12, framerate=(fraction)" + std::to_string(fps) +
+                    "/1 ! nvvidconv flip-method=3 ! video/x-raw, format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)BGR ! appsink";
             break;
             
         case Boson:
+           // pipeline = "gst-launch-1.0 v4l2src device=/dev/video0 ! "video/x-raw, format=(string)UYVY, width=(int)640, height=(int)512, frmaterate=(fraction)60/1" ! nvvidconv flip-method=0 ! "video/x-raw(memory:NVMM), width=(int)640, height=(int)512, format=(string)I420, framerate=(fraction)60/1" ! appsink";
             break;
             
         default:

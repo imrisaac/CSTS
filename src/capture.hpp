@@ -22,6 +22,9 @@
 #include "opencv2/tracking.hpp"
 #include "opencv2/xphoto.hpp"               // for white balance
 
+// special sauce
+#include "common.h"
+
 using namespace std;
 using namespace cv;
 
@@ -70,6 +73,8 @@ public:
     
     /// Returns the latest available frame that has been converted to grayscale
     cv::Mat getLatestFrameGray(){return newFrameGray;};
+
+    cv::Mat getLatestFramePreProcessed(){return preProcessedFrame;};
 
    
 private:

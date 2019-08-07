@@ -62,9 +62,32 @@ private:
 #endif // mac
 
 #ifdef JETSON
+/**
+    Stabilizer thread
+    inherits from Threader class
+ */
+class Stabilizer: public Threader
+{
+public:
+    
+    /// Initilize the stabilizer algo with necessary startup frames and parameters
+    void init(const cv::Mat &start_frame);
 
-// Initilize ros
-#pragma message("Yo what the fuck jetson is not defined")
+    /// runner contaning the capture loop
+    void run();
+
+private:
+
+    void drawArrows(Mat& frame, const vector<Point2f>& prevPts, const vector<Point2f>& nextPts, const vector<uchar>& status, cv::Scalar line_color);
+
+    cv::Mat applyPerspectiveTransformation(cv::Matx33f transformation);
+
+    cv::Matx33f findHomogrpahyMatrix(const cv::Mat &current_frame);
+
+    StabilizerParams params_;
+
+    cv::Rect search_box;
+};
 
 #endif
 

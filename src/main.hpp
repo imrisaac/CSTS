@@ -32,6 +32,7 @@
 #include "stabilizer.hpp"
 #include "writer.hpp"
 #include "system.hpp"
+#include "common.h"
 
 // opencv
 #include "opencv2/core/core.hpp"

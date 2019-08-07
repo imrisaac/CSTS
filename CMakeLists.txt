@@ -4,9 +4,9 @@ project(vision_core4)
 
 set(default_build_type "Release")
 
-option(MAC_BUILD "Build for OSX" ON)
+option(MAC_BUILD "Build for OSX" OFF)
 option(JETSON_BUILD "Build for the Nvidia Jetson TX1, TX2, or Nano" OFF)
-option(UBUNTU_VM_BUiLD "Build for Ubuntu VM" OFF)
+option(UBUNTU_VM_BUiLD "Build for Ubuntu VM" ON)
 
 # ================ MAC Build ===================
 if(MAC_BUILD)
@@ -51,9 +51,10 @@ if(JETSON_BUILD)
 
   message("configuring for Jetson")
 
-  add_compile_definitions(WITH_ROS)
-  add_compile_definitions(JETSON)
-  add_compile_definitions(WITH_CUDA)
+ # cmake 3.12 required for add_compile_definitions
+ # add_compile_definitions(WITH_ROS)
+ # add_compile_definitions(JETSON)
+ # add_compile_definitions(WITH_CUDA)
 
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
@@ -127,7 +128,7 @@ endif()
 # ================ Windows Build ===================
 if(MAC_BUILD)
 
-  message("configuring for Windows")
+  message("configuring for fucking Windows")
 
   # Hahahaha why would i ever do this
 

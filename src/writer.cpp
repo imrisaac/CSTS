@@ -28,7 +28,7 @@ void Writer::init(const cv::Mat &start_frame)
     
     cout << "Writer sink: " + sink + "\n";
 
-    // TODO: initilize writer resolution using start_frame
+    // TODO: initilize writer resolution using start_frame size
     udpWriter.open(sink, 0, (double)30, cv::Size(1280,720), true);
     
 }
@@ -46,8 +46,7 @@ void Writer::run(){
     // Check if thread is requested to stop ?
     while ( false == stopRequested() ){
         
-        std::cout << "writer working" << std::endl;
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        udpWriter << 
         
     }
     std::cout << "writer loop stopped" << std::endl;
