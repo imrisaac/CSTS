@@ -30,6 +30,14 @@ enum Sinker
     file1,
 };
 
+enum StreamType
+{
+    EO,
+    IR,
+    DUAL,
+
+};
+
 // Stabilizer params are common for all builds
 struct WriterParams
 {
@@ -37,8 +45,8 @@ struct WriterParams
     int udp_bitrate;     // bitrate for the UDP h.264, h.265 stream gstreamer pipeline
     string udp_ip;
     string udp_port; 
-    int udp_width;
-    int udp_height;
+    int stream_width;
+    int stream_width;
     WriterParams();   
 };
 
@@ -60,6 +68,8 @@ public:
     void run();
     
     void write(cv::Mat new_frame);
+
+    void writeDual(cv::Mat left, cv::Mat right);
     
     void fileWrite();
     
@@ -86,6 +96,11 @@ private:
     cv::Point upTimeTextOrigin;
 
     pthread_mutex_t inject_mutex;
+
+    // Create blank Altavian Blue image
+    cv::Mat dual;
+
+    StreamType streamType;
 };
 
 #endif /* writer_hpp */

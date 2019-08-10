@@ -15,8 +15,8 @@ WriterParams::WriterParams()
     udp_bitrate = 1024;
     udp_ip = "255.255.255.255";
     udp_port = "49410";
-    udp_width = 1920;
-    udp_height = 720;
+    stream_width = 1280;
+    stream_height = 720;
 
 }
 
@@ -35,7 +35,12 @@ void Writer::init(const cv::Mat &start_frame)
     cout << "initilizing writer" << endl;    
     
     openSink(gstJetsonUDP, start_frame);
-    
+
+    // create a canvas to add IR and EO images side by side, boson is 640 x 512, EO is temporarily 720 x 1920 
+    dual.create(cv::Size(stream_width, stream_height), CV_8UC3);
+
+    streamType = DUAL:
+
 }
 
 /**
@@ -61,6 +66,16 @@ void Writer::run(){
 
            // udpWriter << outFrame;
 
+           // switch case for deciding
+           switch(streamType){
+               case EO:
+                    break;
+               case IR:
+                    break;
+               case DUAL:
+                    break
+           } 
+
             // done with this frame for good
            // frames.pop();
         }
@@ -83,6 +98,13 @@ void Writer::write(cv::Mat new_frame){
     pthread_mutex_lock(&inject_mutex);
     frames.push(new_frame);
     pthread_mutex_unlock(&inject_mutex);
+}
+
+/**
+
+ */
+void Writer::writeDual(cv::Mat left, cv::Mat right){
+
 }
 
 /**
