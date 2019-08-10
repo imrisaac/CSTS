@@ -46,7 +46,7 @@ struct WriterParams
     string udp_ip;
     string udp_port; 
     int stream_width;
-    int stream_width;
+    int stream_height;
     WriterParams();   
 };
 

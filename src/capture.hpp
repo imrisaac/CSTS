@@ -98,6 +98,7 @@ private:
     CaptureParams params_;
 
     pthread_mutex_t capture_mutex;
+     
 };
 
 

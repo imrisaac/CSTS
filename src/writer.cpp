@@ -37,9 +37,9 @@ void Writer::init(const cv::Mat &start_frame)
     openSink(gstJetsonUDP, start_frame);
 
     // create a canvas to add IR and EO images side by side, boson is 640 x 512, EO is temporarily 720 x 1920 
-    dual.create(cv::Size(stream_width, stream_height), CV_8UC3);
+    dual.create(cv::Size(params_.stream_width, params_.stream_height), CV_8UC3);
 
-    streamType = DUAL:
+    streamType = DUAL;
 
 }
 
@@ -70,10 +70,15 @@ void Writer::run(){
            switch(streamType){
                case EO:
                     break;
+
                case IR:
                     break;
+
                case DUAL:
-                    break
+                    break;
+
+                default:
+                    break;
            } 
 
             // done with this frame for good
@@ -100,11 +105,14 @@ void Writer::write(cv::Mat new_frame){
     pthread_mutex_unlock(&inject_mutex);
 }
 
-/**
-
+/*
+    Write two frames side by side for streaming
  */
 void Writer::writeDual(cv::Mat left, cv::Mat right){
 
+    // 1280 x 720
+    left.copyTo(dual(cv::Rect( 0, 0, (params_.stream_width / 2), params_.stream_height/2)) );
+    right.copyTo(dual(cv::Rect( (params_.stream_width / 2), 0, params_.stream_width, params_.stream_height)) );
 }
 
 /**
