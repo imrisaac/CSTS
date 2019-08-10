@@ -33,6 +33,9 @@ struct Capture2Params
 {
     WbAlgo wbAlgo;
     CamIndex camIndex;
+    int captureWidth;
+    int captureHeight;
+    int captureFPS;
     int gstFlip;
     Capture2Params();
 };

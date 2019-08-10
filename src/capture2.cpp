@@ -13,7 +13,11 @@
 // default parameters
 Capture2Params::Capture2Params()
 {
+    camIndex = Boson;
     wbAlgo = Simple;
+    captureWidth = 640;
+    captureHeight = 512;
+    captureFPS = 60;
     gstFlip = 0;
 }
 
@@ -28,7 +32,7 @@ void Capture2::initilize()
 
 #ifdef JETSON
     // open gstreamer pipeline
-    if (!cap.open(getCameraPipeline(AR1820, 1280, 720, 30), cv::CAP_GSTREAMER))
+    if (!cap.open(getCameraPipeline(params_.camIndex, 0, 0, 0), cv::CAP_GSTREAMER))
     {
 
         cout << "gstreamer capture failed to initilized" << endl;
@@ -152,36 +156,39 @@ std::string Capture2::getCameraPipeline(CamIndex camera, int width, int height, 
     _height << height;
     _fps << fps;
 
+    //TODO: handle calling two of the same pipelines
     switch (camera)
     {
     case DevKitTx1:
-        pipeline = "nvcamerasrc ! video/x-raw(memory:NVMM), width=(int)" + _width.str() + ", height=(int)" +
-                   _height.str() + ", format=(string)I420, framerate=(fraction)" + _fps.str() +
+        pipeline = "nvcamerasrc ! video/x-raw(memory:NVMM), width=(int)" + std::to_string(params_.captureWidth) + ", height=(int)" +
+                   std::to_string(params_.captureHeight) + ", format=(string)I420, framerate=(fraction)" + std::to_string(params_.captureFPS) +
                    "/1 ! nvvidconv flip-method=0 ! video/x-raw, format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)BGR ! appsink";
         break;
 
     case DevKitTx2:
     case DevKitNano:
-        pipeline = "nvarguscamerasrc ! video/x-raw(memory:NVMM), width=(int)" + std::to_string(width) + ", height=(int)" +
-                   std::to_string(height) + ", format=(string)NV12, framerate=(fraction)" + std::to_string(fps) +
+        pipeline = "nvarguscamerasrc ! video/x-raw(memory:NVMM), width=(int)" + std::to_string(params_.captureWidth) + ", height=(int)" +
+                   std::to_string(params_.captureHeight) + ", format=(string)NV12, framerate=(fraction)" + std::to_string(params_.captureFPS) +
                    "/1 ! nvvidconv flip-method=0 ! video/x-raw, format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)BGR ! appsink";
         break;
 
     case AR1820:
-        pipeline = "nvarguscamerasrc exposurecompensation=0 wbmode=0 maxperf=true ee-mode=1 eestrength=-1 sensor-id=0 ! video/x-raw(memory:NVMM), width=(int)" + std::to_string(width) + ", height=(int)" +
-                   std::to_string(height) + ", format=(string)NV12, framerate=(fraction)" + std::to_string(fps) +
+        pipeline = "nvarguscamerasrc exposurecompensation=0 wbmode=0 maxperf=true ee-mode=1 eestrength=-1 sensor-id=0 ! video/x-raw(memory:NVMM), width=(int)" + std::to_string(params_.captureWidth) + ", height=(int)" +
+                   std::to_string(params_.captureHeight) + ", format=(string)NV12, framerate=(fraction)" + std::to_string(params_.captureFPS) +
                    "/1 ! nvvidconv flip-method=" + std::to_string(params_.gstFlip) + " ! video/x-raw, format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)BGR ! appsink";
         break;
 
     case Boson:
-        // pipeline = "gst-launch-1.0 v4l2src device=/dev/video0 ! "video/x-raw, format=(string)UYVY, width=(int)640, height=(int)512, frmaterate=(fraction)60/1" ! nvvidconv flip-method=0 ! "video/x-raw(memory:NVMM), width=(int)640, height=(int)512, format=(string)I420, framerate=(fraction)60/1" ! appsink";
+        pipeline = "v4l2src device =/dev/video0 ! 'video/x-raw, format=(string)UYVY, width=(int)" + std::to_string(params_.captureWidth) + ", height=" + 
+                    std::to_string(params_.captureHeight) + ", framerate=(fraction)" + std::to_string(params_.captureFPS) +
+                   "/1' ! nvvidconv flip - method = 4 ! ! video/x-raw, format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)BGR ! appsink";
         break;
 
     default:
 
         // default to the tx2 dev kit pipeline
-        pipeline = "nvarguscamerasrc ! video/x-raw(memory:NVMM), width=(int)" + std::to_string(width) + ", height=(int)" +
-                   std::to_string(height) + ", format=(string)NV12, framerate=(fraction)" + std::to_string(fps) +
+        pipeline = "nvarguscamerasrc ! video/x-raw(memory:NVMM), width=(int)" + std::to_string(params_.captureWidth) + ", height=(int)" +
+                   std::to_string(params_.captureHeight) + ", format=(string)NV12, framerate=(fraction)" + std::to_string(params_.captureFPS) +
                    "/1 ! nvvidconv flip-method=0 ! video/x-raw, format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)BGR ! appsink";
         break;
     }
