@@ -9,10 +9,15 @@
 #ifndef writer_hpp
 #define writer_hpp
 
+// std
 #include <stdio.h>
 #include <vector>
 #include <queue>
 
+// opencv
+#include "opencv2/xphoto.hpp" // for white balance
+
+// in repo
 #include "thread.hpp"
 
 using namespace std;
@@ -37,6 +42,12 @@ struct WriterParams
     WriterParams();   
 };
 
+struct Telemetry
+{
+    int currentFps;
+    Telemetry();
+};
+
 /*
     Writer class
     inherits from Threader class
@@ -52,7 +63,7 @@ public:
     
     void fileWrite();
     
-    void overlayTelemetry();
+    void updateTelemetry(int fps);
 
 private:
 
@@ -64,7 +75,17 @@ private:
 
     WriterParams params_;
 
+    Telemetry telemetry_;
+
+    cv::Mat outFrame;
+
     std::queue<cv::Mat> frames;
+
+    cv::Point fpsTextOrigin;
+
+    cv::Point upTimeTextOrigin;
+
+    pthread_mutex_t inject_mutex;
 };
 
 #endif /* writer_hpp */

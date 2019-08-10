@@ -150,19 +150,22 @@ int main(int argc, char **argv){
     
     // writer thread
     std::thread writerThread([&](){
-      //  writer.run();
+        writer.run();
     });
 
     cout << "starting main loop" << endl;
 
     while ( true ) {
-        Mat image = capture.getLatestFrameColor();
+
+        Mat image = capture.getLatestFramePreProcessed();
+
+        writer.write(image);
 
         if (image.data != NULL){
             imshow("Vision Core", capture.getLatestFramePreProcessed());
 
             const int key = cv::waitKey(5) & 0xff;
-            
+
             if (key == 27 /*Esc*/){
                 break;
             }

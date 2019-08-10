@@ -17,6 +17,13 @@ WriterParams::WriterParams()
     udp_port = "49410";
     udp_width = 1920;
     udp_height = 720;
+
+}
+
+// telemetry data initilizers
+Telemetry::Telemetry()
+{
+    int currentFps = 0;
 }
 
 /**
@@ -40,15 +47,22 @@ void Writer::init(const cv::Mat &start_frame)
  */
 void Writer::run(){
     std::cout << "writer start" << std::endl;
-    
+
+    cv::namedWindow("Vision Core", cv::WINDOW_AUTOSIZE);
+
     // Check if thread is requested to stop ?
     while ( false == stopRequested() ){
         
         if(false == frames.empty()){
-            udpWriter << frames.front();
+
+           // outFrame = frames.front();
+
+           // cv::putText(outFrame, std::to_string(telemetry_.currentFps), fpsTextOrigin, cv::FONT_HERSHEY_SIMPLEX, 2, cv::Scalar::all(255), 3, 8);
+
+           // udpWriter << outFrame;
 
             // done with this frame for good
-            frames.pop();
+           // frames.pop();
         }
 
         // dont go crazy TODO: something other than this
@@ -65,7 +79,10 @@ void Writer::run(){
     Write frames to the gstreamer pipeline
  */
 void Writer::write(cv::Mat new_frame){
+
+    pthread_mutex_lock(&inject_mutex);
     frames.push(new_frame);
+    pthread_mutex_unlock(&inject_mutex);
 }
 
 /**
@@ -78,7 +95,7 @@ void Writer::fileWrite(){
 /**
     Overlay telemetry onto frame
  */
-void Writer::overlayTelemetry(){
+void Writer::updateTelemetry(int fps){
     
 }
 

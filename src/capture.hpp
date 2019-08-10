@@ -84,19 +84,20 @@ private:
 
     cv::VideoCapture cap;
     
+    // newest color frame 
     cv::Mat newFrame;
     
+    // newest color frame converted to
     cv::Mat newFrameGray;
 
+    // frame on which corrections are made in parallel
     cv::Mat preProcessedFrame;
 
     cv::Ptr<cv::xphoto::WhiteBalancer> wb;
 
-    cv::Point fpsTextOrigin;
-
-    cv::Point upTimeTextOrigin;
-
     CaptureParams params_;
+
+    pthread_mutex_t capture_mutex;
 };
 
 
