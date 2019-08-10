@@ -67,7 +67,7 @@ public:
     cv::Mat getLatestFramePreProcessed() { return preProcessedFrame; };
 
 private:
-    std::string getCameraPipeline(CamIndex index, int width, int height, int fps);
+    std::string getCameraPipeline(CamIndex index);
 
     void blender(cv::Mat src1, cv::Mat src2, cv::Mat dst);
 

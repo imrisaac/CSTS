@@ -35,7 +35,7 @@ void Capture2::initilize()
 
 #ifdef JETSON
     // open gstreamer pipeline
-    if (!cap.open(getCameraPipeline(params_.camIndex, 0, 0, 0), cv::CAP_GSTREAMER))
+    if (!cap.open(getCameraPipeline(params_.camIndex), cv::CAP_GSTREAMER))
     {
 
         cout << "gstreamer capture failed to initilized" << endl;
@@ -155,18 +155,10 @@ void Capture2::run()
     gstCameraPipeline
     returns gstreamer pipeline string
  */
-std::string Capture2::getCameraPipeline(CamIndex camera, int width, int height, int fps)
+std::string Capture2::getCameraPipeline(CamIndex camera)
 {
 
     string pipeline;
-
-    ostringstream _width;
-    ostringstream _height;
-    ostringstream _fps;
-
-    _width << width;
-    _height << height;
-    _fps << fps;
 
     //TODO: handle calling two of the same pipelines
     switch (camera)

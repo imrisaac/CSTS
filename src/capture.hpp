@@ -70,7 +70,7 @@ public:
    
 private:
     
-    std::string getCameraPipeline(CamIndex index, int width, int height, int fps);
+    std::string getCameraPipeline(CamIndex index);
 
     cv::VideoCapture cap;
     
