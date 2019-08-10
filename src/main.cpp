@@ -160,7 +160,7 @@ int main(int argc, char **argv){
 
         Mat image = capture.getLatestFrameColor();
 
-        writer.write(image);
+        //writer.write(image);
 
         if (image.data != NULL){
             imshow("Vision Core", image);

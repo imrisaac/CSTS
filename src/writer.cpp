@@ -53,7 +53,7 @@ void Writer::init(const cv::Mat &start_frame)
 void Writer::run(){
     std::cout << "writer start" << std::endl;
 
-    cv::namedWindow("Vision Core", cv::WINDOW_AUTOSIZE);
+   // cv::namedWindow("Vision Core", cv::WINDOW_AUTOSIZE);
 
     // Check if thread is requested to stop ?
     while ( false == stopRequested() ){
