@@ -29,6 +29,14 @@
 using namespace std;
 using namespace cv;
 
+struct Capture2Params
+{
+    WbAlgo wbAlgo;
+    CamIndex camIndex;
+    int gstFlip;
+    Capture2Params();
+};
+
 /**
  Capture thread
  inherits from Threader class
@@ -69,7 +77,7 @@ private:
     cv::Ptr<cv::xphoto::WhiteBalancer> wb;
 
     // parameters for reading only, for now
-    CaptureParams params_;
+    Capture2Params params_;
 
     pthread_mutex_t capture_mutex;
 };

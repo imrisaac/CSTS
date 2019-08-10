@@ -29,6 +29,14 @@
 using namespace std;
 using namespace cv;
 
+struct CaptureParams
+{
+    WbAlgo wbAlgo;
+    CamIndex camIndex;
+    int gstFlip;
+    CaptureParams();
+};
+
 /**
  Capture thread
  inherits from Threader class

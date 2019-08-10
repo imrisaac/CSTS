@@ -11,7 +11,7 @@
 #include "capture2.hpp"
 
 // default parameters
-Capture2Params::CaptureParams()
+Capture2Params::Capture2Params()
 {
     wbAlgo = Simple;
     gstFlip = 0;

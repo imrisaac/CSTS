@@ -118,6 +118,7 @@ int main(int argc, char **argv){
 
     Interfaces interfaces;
     Capture capture;
+    Capture capture2;
     SceneTrack sceneTrack;
     Stabilizer stabilizer;
     Writer writer;

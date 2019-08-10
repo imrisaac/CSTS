@@ -9,6 +9,9 @@
 //
 //
 
+#ifndef captureCommon_hpp
+#define captureCommon_hpp
+
 enum CamIndex
 {
     DevKitTx2 = 0,
@@ -25,10 +28,4 @@ enum WbAlgo
     Learning,
 };
 
-struct CaptureParams
-{
-    WbAlgo wbAlgo;
-    CamIndex camIndex;
-    int gstFlip;
-    CaptureParams();
-};
+#endif // captureCommon_hpp
