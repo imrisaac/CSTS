@@ -76,6 +76,8 @@ private:
     // newest color frame
     cv::Mat newFrame;
 
+    cv::Mat previousFrame;
+
     // newest color frame converted to
     cv::Mat newFrameGray;
 

@@ -32,7 +32,8 @@ if(MAC_BUILD)
 
   add_executable(vision_core4
                   src/main.cpp  
-                  src/capture.cpp 
+                  src/capture.cpp
+                  src/capture2.cpp 
                   src/interfaces/interfaces.cpp 
                   src/sceneTrack.cpp
                   src/stabilizer.cpp

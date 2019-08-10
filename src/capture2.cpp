@@ -14,11 +14,11 @@
 Capture2Params::Capture2Params()
 {
     camIndex = Boson;
-    wbAlgo = Simple;
+    wbAlgo = Disabled;
     captureWidth = 640;
     captureHeight = 512;
     captureFPS = 60;
-    blenderEnable = false;
+    blenderEnable = false;  
     blenderAlpha = 0.5;
     blenderBeta = 0.5;
     gstFlip = 0;
@@ -103,6 +103,10 @@ void Capture2::run()
         // will block until new frame is available
         cap >> newFrame;
 
+        if ( true == params_.blenderEnable ){
+            previousFrame = newFrame.clone();
+        }
+
         // pthread_mutex_unlock(&capture_mutex);
 
         /* 
@@ -110,26 +114,22 @@ void Capture2::run()
             be done faster than the stabilization. 
             Final warp is applied to the preProcessedFrame
         */
-        if (newFrame.data != NULL)
-        {
+        if (newFrame.data != NULL){
 
             // this is expensive to do
             preProcessedFrame = newFrame.clone();
 
             // white balance
-           // wb->balanceWhite(preProcessedFrame, preProcessedFrame);
-
-           // addWeighted(src1, params_.blenderAlpha, src2, params_.blenderBlpha, 0.0, *dst);
-
+            if (params_.wbAlgo != Disabled){
+                wb->balanceWhite(preProcessedFrame, preProcessedFrame);
+            }
         }
-        else if (newFrame.empty())
-        {
+        else if (newFrame.empty()){
 
-            cout << "End of video file" << endl;
+            cout << "Frame capture error" << endl;
             break;
-        }
-        else
-        {
+
+        }else{
 
             cout << "Frame capture error" << endl;
         }
