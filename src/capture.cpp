@@ -46,6 +46,8 @@ void Capture::initilize(){
 #endif
 
     switch( params_.wbAlgo){
+        case Disabled:
+            break;
 
         case Simple:
 
@@ -101,7 +103,9 @@ void Capture::run(){
             preProcessedFrame = newFrame.clone();
 
             // white balance
-            //wb->balanceWhite(preProcessedFrame, preProcessedFrame);
+            if ( params_.wbAlgo != Disabled ){
+                wb->balanceWhite(preProcessedFrame, preProcessedFrame);
+            }
 
         }else if (newFrame.empty()){
 

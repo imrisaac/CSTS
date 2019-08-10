@@ -23,6 +23,7 @@ enum CamIndex
 
 enum WbAlgo
 {
+    Disabled,
     Simple,
     GrayWorld,
     Learning,

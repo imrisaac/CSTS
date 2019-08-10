@@ -36,6 +36,9 @@ struct Capture2Params
     int captureWidth;
     int captureHeight;
     int captureFPS;
+    bool blenderEnable;
+    double blenderAlpha;
+    double blenderBeta;
     int gstFlip;
     Capture2Params();
 };
@@ -65,6 +68,8 @@ public:
 
 private:
     std::string getCameraPipeline(CamIndex index, int width, int height, int fps);
+
+    void blender(cv::Mat src1, cv::Mat src2, cv::Mat dst);
 
     cv::VideoCapture cap;
 

@@ -18,6 +18,9 @@ Capture2Params::Capture2Params()
     captureWidth = 640;
     captureHeight = 512;
     captureFPS = 60;
+    blenderEnable = false;
+    blenderAlpha = 0.5;
+    blenderBeta = 0.5;
     gstFlip = 0;
 }
 
@@ -55,6 +58,8 @@ void Capture2::initilize()
 
     switch (params_.wbAlgo)
     {
+    case Disabled:
+        break;
 
     case Simple:
 
@@ -112,7 +117,10 @@ void Capture2::run()
             preProcessedFrame = newFrame.clone();
 
             // white balance
-            wb->balanceWhite(preProcessedFrame, preProcessedFrame);
+           // wb->balanceWhite(preProcessedFrame, preProcessedFrame);
+
+           // addWeighted(src1, params_.blenderAlpha, src2, params_.blenderBlpha, 0.0, *dst);
+
         }
         else if (newFrame.empty())
         {
@@ -133,8 +141,12 @@ void Capture2::run()
 
     cout << "capture pipeline released" << std::endl;
 
+
+#if not MAC
+    // osx does this for us 
     // this is the only writer, destroy mutex
     pthread_mutex_destroy(&capture_mutex);
+#endif 
 
     cout << "capture mutex destroyed, capture exiting" << std::endl;
 }
