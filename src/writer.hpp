@@ -47,6 +47,7 @@ struct WriterParams
     string udp_port; 
     int stream_width;
     int stream_height;
+    StreamType streamType;
     WriterParams();   
 };
 
@@ -90,17 +91,18 @@ private:
     cv::Mat outFrame;
 
     std::queue<cv::Mat> frames;
+    
+    std::queue<cv::Mat> dual;
 
     cv::Point fpsTextOrigin;
 
     cv::Point upTimeTextOrigin;
 
     pthread_mutex_t inject_mutex;
+    
+    cv::Mat dualCanvas;
+    
 
-    // Create blank Altavian Blue image
-    cv::Mat dual;
-
-    StreamType streamType;
 };
 
 #endif /* writer_hpp */

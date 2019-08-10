@@ -17,6 +17,7 @@ WriterParams::WriterParams()
     udp_port = "49410";
     stream_width = 1280;
     stream_height = 720;
+    streamType = EO;
 
 }
 
@@ -36,10 +37,9 @@ void Writer::init(const cv::Mat &start_frame)
     
     openSink(gstJetsonUDP, start_frame);
 
-    // create a canvas to add IR and EO images side by side, boson is 640 x 512, EO is temporarily 720 x 1920 
-    dual.create(cv::Size(params_.stream_width, params_.stream_height), CV_8UC3);
+    // create a canvas to add IR and EO images side by side, boson is 640 x 512, EO is temporarily 720 x 1280 
+    dualCanvas.create(cv::Size(params_.stream_width, params_.stream_height), CV_8UC3);
 
-    streamType = DUAL;
 
 }
 
@@ -61,40 +61,48 @@ void Writer::run(){
         
         if(false == frames.empty()){
 
-            outFrame = frames.front();
-
-            if (outFrame.data != NULL)
-            {
-               
-               udpWriter << outFrame;
-
-            }
-            else
-            {
-                cout << "no image data" << endl;
-            }
-
             // cv::putText(outFrame, std::to_string(telemetry_.currentFps), fpsTextOrigin, cv::FONT_HERSHEY_SIMPLEX, 2, cv::Scalar::all(255), 3, 8);
 
             // udpWriter << outFrame;
 
             // switch case for deciding
-            switch(streamType){
+            switch(params_.streamType){
+				
                 case EO:
+                
+					outFrame = frames.front();
+
+					if (outFrame.data != NULL){
+               
+					   udpWriter << outFrame;
+
+					}else{
+						cout << "no image data" << endl;
+					}
+					
+					// done with this frame for good
+					frames.pop();
+					
                     break;
 
                 case IR:
                     break;
 
                 case DUAL:
+                				
+					// 1280 x 720 = 640 x 720 | 640 x 720
+					frames.front().copyTo(dualCanvas(cv::Rect( 0, 0, (params_.stream_width / 2), params_.stream_height/2)) );
+					frames.pop();
+					frames.front().copyTo(dualCanvas(cv::Rect( (params_.stream_width / 2), 0, params_.stream_width, params_.stream_height)) );
+					frames.pop();
+					
                     break;
 
                 default:
                     break;
+                    
             } 
 
-            // done with this frame for good
-            frames.pop();
         }
 
         // dont go crazy TODO: something other than this
@@ -115,16 +123,6 @@ void Writer::write(cv::Mat new_frame){
     pthread_mutex_lock(&inject_mutex);
     frames.push(new_frame);
     pthread_mutex_unlock(&inject_mutex);
-}
-
-/*
-    Write two frames side by side for streaming
- */
-void Writer::writeDual(cv::Mat left, cv::Mat right){
-
-    // 1280 x 720 = 640 x 720 | 640 x 720
-    left.copyTo(dual(cv::Rect( 0, 0, (params_.stream_width / 2), params_.stream_height/2)) );
-    right.copyTo(dual(cv::Rect( (params_.stream_width / 2), 0, params_.stream_width, params_.stream_height)) );
 }
 
 /**
