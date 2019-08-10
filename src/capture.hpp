@@ -33,6 +33,12 @@ struct CaptureParams
 {
     WbAlgo wbAlgo;
     CamIndex camIndex;
+    int captureWidth;
+    int captureHeight;
+    int captureFPS;
+    bool blenderEnable;
+    double blenderAlpha;
+    double blenderBeta;
     int gstFlip;
     CaptureParams();
 };

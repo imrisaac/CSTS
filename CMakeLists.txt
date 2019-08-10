@@ -5,8 +5,8 @@ project(vision_core4)
 set(default_build_type "Release")
 
 option(MAC_BUILD "Build for OSX" OFF)
-option(JETSON_BUILD "Build for the Nvidia Jetson TX1, TX2, or Nano" OFF)
-option(UBUNTU_VM_BUiLD "Build for Ubuntu VM" ON)
+option(JETSON_BUILD "Build for the Nvidia Jetson TX1, TX2, or Nano" ON)
+option(UBUNTU_VM_BUiLD "Build for Ubuntu VM" OFF)
 
 # ================ MAC Build ===================
 if(MAC_BUILD)
@@ -62,18 +62,21 @@ if(JETSON_BUILD)
   find_package(OpenCV 3.4.1 REQUIRED)
   find_package(Threads REQUIRED)
 
-  find_package(catkin REQUIRED COMPONENTS
-    roscpp
-    rospy
-    std_msgs
-    tf2_ros
-  )
+  #find_package(catkin REQUIRED COMPONENTS
+    #roscpp
+    #rospy
+    #std_msgs
+    #tf2_ros
+  #)
+  
+  #include_directories(${catkin_INCLUDE_DIRS})
 
-  include_directories(${OpenCV_INCLUDE_DIRS} ${PROJECT_SOURCE_DIR} ${catkin_INCLUDE_DIRS})
+  include_directories(${OpenCV_INCLUDE_DIRS} ${PROJECT_SOURCE_DIR} )
 
   add_executable(vision_core4
                   src/main.cpp  
-                  src/capture.cpp 
+                  src/capture.cpp
+                  src/capture2.cpp 
                   src/interfaces/interfaces.cpp 
                   src/sceneTrack.cpp
                   src/stabilizer.cpp
@@ -84,6 +87,8 @@ if(JETSON_BUILD)
                   )
 
   target_link_libraries(vision_core4 ${OpenCV_LIBS} ${CMAKE_THREAD_LIBS_INIT} ${catkin_LIBRARIES})
+  
+ # target_link_libraries(vision_core4 ${catkin_LIBRARIES})
 
 endif()
 
@@ -111,7 +116,8 @@ if(Ubuntu_VM_BUILD)
 
   add_executable(vision_core4
                   src/main.cpp  
-                  src/capture.cpp 
+                  src/capture.cpp
+                  src/capture2.cpp 
                   src/interfaces.cpp 
                   src/sceneTrack.cpp
                   src/stabilizer.cpp

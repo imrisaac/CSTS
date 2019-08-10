@@ -127,7 +127,7 @@ int main(int argc, char **argv){
     usleep(100000);
    // interfaces.initilize(argc, argv);
 
-    writer.init(capture.getLatestFrameColor());
+    //writer.init(capture.getLatestFrameColor());
     
     // interfaces thread
     std::thread interfacesThread([&](){
@@ -151,26 +151,28 @@ int main(int argc, char **argv){
     
     // writer thread
     std::thread writerThread([&](){
-        writer.run();
+       // writer.run();
     });
 
     cout << "starting main loop" << endl;
 
     while ( true ) {
 
-        Mat image = capture.getLatestFramePreProcessed();
+        Mat image = capture.getLatestFrameColor();
 
-        writer.write(image);
+        //writer.write(image);
 
         if (image.data != NULL){
-            imshow("Vision Core", capture.getLatestFramePreProcessed());
+            imshow("Vision Core", image);
 
             const int key = cv::waitKey(5) & 0xff;
 
             if (key == 27 /*Esc*/){
                 break;
             }
-        }
+        }else{
+			cout << "no image data" << endl;
+		}
 
         // waitkey for 33ms resulting approximatly 30fps display, TODO: paramaterize all fps related values
         waitKey(33);
