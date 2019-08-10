@@ -110,7 +110,7 @@ void Writer::write(cv::Mat new_frame){
  */
 void Writer::writeDual(cv::Mat left, cv::Mat right){
 
-    // 1280 x 720
+    // 1280 x 720 = 640 x 720 | 640 x 720
     left.copyTo(dual(cv::Rect( 0, 0, (params_.stream_width / 2), params_.stream_height/2)) );
     right.copyTo(dual(cv::Rect( (params_.stream_width / 2), 0, params_.stream_width, params_.stream_height)) );
 }

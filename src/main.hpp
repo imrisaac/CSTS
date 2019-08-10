@@ -25,15 +25,6 @@
 #include <stdio.h>
 #include <unistd.h>
 
-// special sauce
-#include "interfaces/interfaces.hpp"
-#include "capture.hpp"
-#include "sceneTrack.hpp"
-#include "stabilizer.hpp"
-#include "writer.hpp"
-#include "system.hpp"
-#include "common.h"
-
 // opencv
 #include "opencv2/core/core.hpp"
 #include "opencv2/opencv.hpp"
@@ -41,6 +32,15 @@
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/tracking.hpp"
 
+// in repo
+#include "interfaces/interfaces.hpp"
+#include "capture.hpp"
+#include "capture2.hpp"
+#include "sceneTrack.hpp"
+#include "stabilizer.hpp"
+#include "writer.hpp"
+#include "system.hpp"
+#include "common.h"
 
 volatile sig_atomic_t flag = 0;
 
