@@ -53,36 +53,46 @@ void Writer::init(const cv::Mat &start_frame)
 void Writer::run(){
     std::cout << "writer start" << std::endl;
 
-   // cv::namedWindow("Vision Core", cv::WINDOW_AUTOSIZE);
+    cv::namedWindow("Writer", cv::WINDOW_AUTOSIZE);
 
     // Check if thread is requested to stop ?
     while ( false == stopRequested() ){
         
         if(false == frames.empty()){
 
-           // outFrame = frames.front();
+            outFrame = frames.front();
 
-           // cv::putText(outFrame, std::to_string(telemetry_.currentFps), fpsTextOrigin, cv::FONT_HERSHEY_SIMPLEX, 2, cv::Scalar::all(255), 3, 8);
+            if (image.data != NULL)
+            {
+                imshow("Writer", image);
 
-           // udpWriter << outFrame;
+            }
+            else
+            {
+                cout << "no image data" << endl;
+            }
 
-           // switch case for deciding
-           switch(streamType){
-               case EO:
+            // cv::putText(outFrame, std::to_string(telemetry_.currentFps), fpsTextOrigin, cv::FONT_HERSHEY_SIMPLEX, 2, cv::Scalar::all(255), 3, 8);
+
+            // udpWriter << outFrame;
+
+            // switch case for deciding
+            switch(streamType){
+                case EO:
                     break;
 
-               case IR:
+                case IR:
                     break;
 
-               case DUAL:
+                case DUAL:
                     break;
 
                 default:
                     break;
-           } 
+            } 
 
             // done with this frame for good
-           // frames.pop();
+            frames.pop();
         }
 
         // dont go crazy TODO: something other than this
