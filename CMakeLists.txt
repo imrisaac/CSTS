@@ -4,8 +4,8 @@ project(vision_core4)
 
 set(default_build_type "Release")
 
-option(MAC_BUILD "Build for OSX" OFF)
-option(JETSON_BUILD "Build for the Nvidia Jetson TX1, TX2, or Nano" ON)
+option(MAC_BUILD "Build for OSX" ON)
+option(JETSON_BUILD "Build for the Nvidia Jetson TX1, TX2, or Nano" OFF)
 option(UBUNTU_VM_BUiLD "Build for Ubuntu VM" OFF)
 
 # ================ MAC Build ===================
@@ -28,12 +28,16 @@ if(MAC_BUILD)
   #   tf2_ros
   # )
 
-  include_directories(${OpenCV_INCLUDE_DIRS} ${PROJECT_SOURCE_DIR})
+  include_directories(${OpenCV_INCLUDE_DIRS} 
+                      ${PROJECT_SOURCE_DIR}/capture  
+                      ${PROJECT_SOURCE_DIR}/src 
+                      )
+
 
   add_executable(vision_core4
                   src/main.cpp  
-                  src/capture.cpp
-                  src/capture2.cpp 
+                  src/capture/capture.cpp
+                  src/capture/capture2.cpp 
                   src/interfaces/interfaces.cpp 
                   src/sceneTrack.cpp
                   src/stabilizer.cpp
@@ -71,12 +75,16 @@ if(JETSON_BUILD)
   
   #include_directories(${catkin_INCLUDE_DIRS})
 
-  include_directories(${OpenCV_INCLUDE_DIRS} ${PROJECT_SOURCE_DIR} )
+  include_directories(${OpenCV_INCLUDE_DIRS} 
+                      ${PROJECT_SOURCE_DIR}/capture  
+                      ${PROJECT_SOURCE_DIR}/src 
+                      )
+
 
   add_executable(vision_core4
                   src/main.cpp  
-                  src/capture.cpp
-                  src/capture2.cpp 
+                  src/capture/capture.cpp
+                  src/capture/capture2.cpp 
                   src/interfaces/interfaces.cpp 
                   src/sceneTrack.cpp
                   src/stabilizer.cpp
@@ -116,8 +124,8 @@ if(Ubuntu_VM_BUILD)
 
   add_executable(vision_core4
                   src/main.cpp  
-                  src/capture.cpp
-                  src/capture2.cpp 
+                  src/capture/capture.cpp
+                  src/capture/capture2.cpp 
                   src/interfaces.cpp 
                   src/sceneTrack.cpp
                   src/stabilizer.cpp
@@ -133,7 +141,7 @@ endif()
 
 
 # ================ Windows Build ===================
-if(MAC_BUILD)
+if(WINDOWS_BUILD)
 
   message("configuring for fucking Windows")
 

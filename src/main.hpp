@@ -34,8 +34,8 @@
 
 // in repo
 #include "interfaces/interfaces.hpp"
-#include "capture.hpp"
-#include "capture2.hpp"
+#include "capture/capture.hpp"
+#include "capture/capture2.hpp"
 #include "sceneTrack.hpp"
 #include "stabilizer.hpp"
 #include "writer.hpp"
