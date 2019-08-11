@@ -8,8 +8,8 @@
 //  Copyright © 2019 Isaac Reed. All rights reserved.
 //
 
-#ifndef capture2_hpp
-#define capture2_hpp
+#ifndef patternGenerator_hpp
+#define patternGenerator_hpp
 
 #include <iostream>
 #include <cmath>
@@ -43,7 +43,7 @@
 using namespace std;
 using namespace cv;
 
-struct Capture2Params
+struct PatternGeneratorParams
 {
     WbAlgo wbAlgo;
     CamIndex camIndex;
@@ -53,8 +53,8 @@ struct Capture2Params
     bool blenderEnable;
     double blenderAlpha;
     double blenderBeta;
-    int gstFlip;
-    Capture2Params();
+    string pattern0Dir;
+    PatternGeneratorParams();
 };
 
 /**
@@ -63,7 +63,7 @@ struct Capture2Params
  
  responsible for captureing new frames from vide feed and doing minimal pre-preocessing
  */
-class Capture2 : public Threader
+class PatternGenerator : public Threader
 {
 public:
     /// Initilizes the frame source and populates initial Mats
@@ -81,7 +81,6 @@ public:
     cv::Mat getLatestFramePreProcessed() { return preProcessedFrame; };
 
 private:
-    std::string getCameraPipeline(CamIndex index);
 
     void blender(cv::Mat src1, cv::Mat src2, cv::Mat dst);
 
@@ -101,9 +100,9 @@ private:
     cv::Ptr<cv::xphoto::WhiteBalancer> wb;
 
     // parameters for reading only, for now
-    Capture2Params params_;
+    PatternGeneratorParams params_;
 
     pthread_mutex_t capture_mutex;
 };
 
-#endif /* capture2_hpp */
+#endif // patterhGenerator

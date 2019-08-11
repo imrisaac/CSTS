@@ -37,7 +37,7 @@ if(MAC_BUILD)
   add_executable(vision_core4
                   src/main.cpp  
                   src/capture/capture.cpp
-                  src/capture/capture2.cpp 
+                  src/capture/patternGenerator.cpp
                   src/interfaces/interfaces.cpp 
                   src/sceneTrack.cpp
                   src/stabilizer.cpp
@@ -84,7 +84,7 @@ if(JETSON_BUILD)
   add_executable(vision_core4
                   src/main.cpp  
                   src/capture/capture.cpp
-                  src/capture/capture2.cpp 
+                  src/capture/patternGenerator.cpp
                   src/interfaces/interfaces.cpp 
                   src/sceneTrack.cpp
                   src/stabilizer.cpp
@@ -125,7 +125,7 @@ if(Ubuntu_VM_BUILD)
   add_executable(vision_core4
                   src/main.cpp  
                   src/capture/capture.cpp
-                  src/capture/capture2.cpp 
+                  src/capture/patternGenerator.cpp 
                   src/interfaces.cpp 
                   src/sceneTrack.cpp
                   src/stabilizer.cpp

@@ -124,6 +124,7 @@ int main(int argc, char **argv){
     Writer writer;
     
     capture.initilize();
+    capture2.initilize();
     usleep(100000);
    // interfaces.initilize(argc, argv);
 
@@ -163,7 +164,7 @@ int main(int argc, char **argv){
 
     while ( true ) {
 
-        Mat image = capture.getLatestFrameColor();
+        Mat image = capture2.getLatestFrameColor();
 
         if (image.data != NULL){
 			
@@ -171,7 +172,7 @@ int main(int argc, char **argv){
             imshow("Vision Core", image);
 #endif
             
-            writer.write(image);
+           // writer.write(image);
 
             const int key = cv::waitKey(5) & 0xff;
 
