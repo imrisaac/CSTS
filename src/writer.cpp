@@ -13,10 +13,10 @@ WriterParams::WriterParams()
 {
     encoder = "omxh264enc";
     udp_bitrate = 4096;
-    udp_ip = "192.168.0.255";
+    udp_ip = "255.255.255.255";
     udp_port = "49410";
     stream_width = 1280;
-    stream_height = 720;
+    stream_height = 640;
 
 }
 
@@ -183,7 +183,7 @@ bool Writer::openSink(Sinker sink, cv::Mat start_frame)
         cout << "GST writer sink: " + gstSink + "\n";
 
         // TODO: initilize writer resolution using start_frame size
-        udpWriter.open(gstSink, 0, (double)30, cv::Size(1280, 720), true);
+        udpWriter.open(gstSink, 0, (double)30, cv::Size(1280, 640), true);
 
         break;
 

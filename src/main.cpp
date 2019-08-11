@@ -162,7 +162,7 @@ int main(int argc, char **argv){
     usleep(100000);
    // interfaces.initilize(argc, argv);
 
-    //writer.init(capture.getLatestFrameColor());
+    writer.init(capture.getLatestFrameColor());
     
     // interfaces thread
     std::thread interfacesThread([&](){
@@ -191,7 +191,7 @@ int main(int argc, char **argv){
     
     // writer thread
     std::thread writerThread([&](){
-	//	writer.run();
+		writer.run();
     });
 
     cout << "starting main loop" << endl;
@@ -209,7 +209,7 @@ int main(int argc, char **argv){
     int stream_width = writer.getStreamWidth();
     int stream_height = writer.getStreamHeight();
 
-    //dualCanvas.create(cv::Size(stream_width, stream_height), CV_8UC3);
+    dualCanvas.create(cv::Size(stream_width, stream_height), CV_8UC3);
 
     while ( true ) {
 
@@ -223,10 +223,12 @@ int main(int argc, char **argv){
             tick++;
             cout << "Frames per second: " << frameCounter << endl;
             frameCounter = 0;
+            cout << dualCanvas.cols << dualCanvas.rows << endl;
         }
 
         left = patternGenerator.getLatestFrameColor();
         right = capture.getLatestFrameColor();
+        
 
         // convert images to correct aspect ratio
         if (left.data != NULL){
@@ -244,10 +246,14 @@ int main(int argc, char **argv){
        // right.copyTo(dualCanvas( cv::Rect((stream_width / 2), 0, stream_width, stream_height)) );
 
         if (left.data != NULL && right.data != NULL){
+			
            hconcat(left, right, dualCanvas);
-           // writer.write(image);
+           
+			writer.write(dualCanvas);
+           
 
-#if HAVE_DISPLAY
+
+#ifdef HAVE_DISPLAY
 
             imshow("Vision Core", dualCanvas);
             const int key = cv::waitKey(1) & 0xff;
