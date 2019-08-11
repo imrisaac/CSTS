@@ -237,13 +237,15 @@ int main(int argc, char **argv){
             right = GetSquareImage(right, stream_width / 2);
         }
 
-       // left.copyTo(dualCanvas(cv::Rect( 0, 0, (stream_width/2), stream_height)) );
+        //image_temp1.copyTo(result(Rect(0, 0, image.cols, image.rows / 2)));
+       // image_temp2.copyTo(result(Rect(0, image.rows/2, image.cols, image.rows/2));
+
+        
        // right.copyTo(dualCanvas( cv::Rect((stream_width / 2), 0, stream_width, stream_height)) );
 
         if (left.data != NULL && right.data != NULL){
-            hconcat(left, right, dualCanvas);
-
-            // writer.write(image);
+           hconcat(left, right, dualCanvas);
+           // writer.write(image);
 
 #if HAVE_DISPLAY
 
