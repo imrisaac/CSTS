@@ -44,7 +44,7 @@ struct WriterParams
 
 struct Telemetry
 {
-    int currentFps;
+    int mainLoopFPS;
     Telemetry();
 };
 
@@ -91,7 +91,6 @@ private:
     
     cv::Mat dualCanvas;
     
-
 };
 
 #endif /* writer_hpp */

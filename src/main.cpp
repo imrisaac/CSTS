@@ -106,6 +106,7 @@ int main(int argc, char **argv){
             printf("%s ", argv[optind++]);
         printf("\n");
     }
+    
 
 #ifdef WITH_ROS
     // Initilize ros
@@ -165,36 +166,48 @@ int main(int argc, char **argv){
 
     cout << "starting main loop" << endl;
 
+    long frameCounter = 0;
+
+    std::time_t timeBegin = std::time(0);
+    int tick = 0;
+
     while ( true ) {
 
-       // Mat image = capture2.getLatestFrameColor();
-       Mat image = patternGenerator.getLatestFrameColor();
+        frameCounter++;
+
+        std::time_t timeNow = std::time(0) - timeBegin;
+        clock_t stop = clock();
+
+        if (timeNow - tick >= 1)
+        {
+            tick++;
+            cout << "Frames per second: " << frameCounter << endl;
+            frameCounter = 0;
+        }
+
+        // Mat image = capture2.getLatestFrameColor();
+        Mat image = patternGenerator.getLatestFrameColor();
 
         if (image.data != NULL){
-			
-#if HAVE_DISPLAY
-            imshow("Vision Core", image);
-#endif
-            
-           // writer.write(image);
 
-            const int key = cv::waitKey(5) & 0xff;
+            // writer.write(image);
+
+#if HAVE_DISPLAY
+
+            imshow("Vision Core", image);
+            const int key = cv::waitKey(1) & 0xff;
 
             if (key == 27 /*Esc*/){
                 break;
             }
+#endif
+
         }else{
 			cout << "no image data" << endl;
 		}
 
-#if HAVE_DISPLAY
-        // waitkey for 33ms resulting approximatly 30fps display, TODO: paramaterize all fps related values
-        waitKey(33);
-#else
 		// stop this thread from running away
-		usleep(30000);
-#endif
-		
+		//usleep(30000);
 
         if (s_interrupted) {
             std::cout << "interrupt received, killing…" << std::endl;

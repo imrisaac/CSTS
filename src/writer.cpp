@@ -23,7 +23,7 @@ WriterParams::WriterParams()
 // telemetry data initilizers
 Telemetry::Telemetry()
 {
-    int currentFps = 0;
+    int mainLoopFPS = 0;
 }
 
 /**
@@ -141,7 +141,7 @@ void Writer::fileWrite(){
     Overlay telemetry onto frame
  */
 void Writer::updateTelemetry(int fps){
-    
+    telemetry_.mainLoopFPS = fps;
 }
 
 /**

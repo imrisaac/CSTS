@@ -20,10 +20,11 @@
 #include <getopt.h>         // cmd line option parsing
 #include <stdlib.h>         // cmd line option parsing
 #include <string>           // cmd line option parsing
-
 #include <signal.h>         // for exit handeling
 #include <stdio.h>
 #include <unistd.h>
+#include <ctime>            // for timing i.e. calculating frame rate
+#include <chrono>           // high resolution timing
 
 // opencv
 #include "opencv2/core/core.hpp"
