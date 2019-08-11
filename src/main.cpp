@@ -119,12 +119,15 @@ int main(int argc, char **argv){
     Interfaces interfaces;
     Capture capture;
     Capture capture2;
+    PatternGenerator patternGenerator;
     SceneTrack sceneTrack;
     Stabilizer stabilizer;
     Writer writer;
     
     capture.initilize();
     capture2.initilize();
+    patternGenerator.initilize();
+
     usleep(100000);
    // interfaces.initilize(argc, argv);
 
@@ -164,7 +167,8 @@ int main(int argc, char **argv){
 
     while ( true ) {
 
-        Mat image = capture2.getLatestFrameColor();
+       // Mat image = capture2.getLatestFrameColor();
+       Mat image = patternGenerator.getLatestFrameColor();
 
         if (image.data != NULL){
 			

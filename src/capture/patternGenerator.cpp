@@ -21,7 +21,7 @@ PatternGeneratorParams::PatternGeneratorParams()
     blenderEnable = false;  
     blenderAlpha = 0.5;
     blenderBeta = 0.5;
-    pattern0Dir = "../images/test_pattern.jpg";
+    pattern0Dir = "test_pattern.jpg";
 }
 
 /**
@@ -79,52 +79,11 @@ void PatternGenerator::run()
     // Check if thread is requested to stop ?
     while (false == stopRequested())
     {
-
-        //pthread_mutex_lock(&capture_mutex);
-        
-        if (Pattern != params_.camIndex){
+        // more to come
             
-            // will block until new frame is available
-            cap >> newFrame;
+        // without a capture there is now blocking element to throttle
+        usleep(30000);
             
-            if ( true == params_.blenderEnable ){
-                previousFrame = newFrame.clone();
-            }
-
-            // pthread_mutex_unlock(&capture_mutex);
-
-            /* 
-                here we will do as much free image processing as possible, this must
-                be done faster than the stabilization. 
-                Final warp is applied to the preProcessedFrame
-            */
-            if (newFrame.data != NULL){
-
-                // this is expensive to do
-                preProcessedFrame = newFrame.clone();
-
-                // white balance
-                if (params_.wbAlgo != Disabled){
-                    wb->balanceWhite(preProcessedFrame, preProcessedFrame);
-                }
-                
-            }else if (newFrame.empty()){
-
-                cout << "Frame capture error" << endl;
-                break;
-
-            }else{
-
-                cout << "Frame capture error" << endl;
-            }
-            
-        }else{
-            
-            // without a capture there is now blocking element to throttle
-            usleep(30000);
-            
-        }
-        
     }
 
     cout << "releasing capture pipeline" << std::endl;
