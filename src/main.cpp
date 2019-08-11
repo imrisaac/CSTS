@@ -156,7 +156,7 @@ int main(int argc, char **argv){
     Writer writer;
     
     capture.initilize(EO);
-    //capture2.initilize(IR);
+    capture2.initilize(BOSON);
     patternGenerator.initilize();
 
     usleep(100000);
@@ -176,7 +176,7 @@ int main(int argc, char **argv){
     
     // capture2 thread
     std::thread capture2Thread([&](){
-        //capture2.run();
+        capture2.run();
     });
 
     // sceneTrack thread
@@ -226,7 +226,7 @@ int main(int argc, char **argv){
             cout << dualCanvas.cols << dualCanvas.rows << endl;
         }
 
-        left = patternGenerator.getLatestFrameColor();
+        left = capture2.getLatestFrameColor();
         right = capture.getLatestFrameColor();
         
 
