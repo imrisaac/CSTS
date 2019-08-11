@@ -13,7 +13,7 @@
 // default parameters
 Capture2Params::Capture2Params()
 {
-    camIndex = Boson;
+    camIndex = Pattern;
     wbAlgo = Disabled;
     captureWidth = 640;
     captureHeight = 512;
@@ -34,14 +34,25 @@ void Capture2::initilize()
     cout << "Initilizing capture " << endl;
 
 #ifdef JETSON
-    // open gstreamer pipeline
-    if (!cap.open(getCameraPipeline(params_.camIndex), cv::CAP_GSTREAMER))
-    {
 
-        cout << "gstreamer capture failed to initilized" << endl;
+    if (Pattern == params_.camIndex){
+        
+        newFrame = imread( getCameraPipeline(params_.camIndex), IMREAD_COLOR );
+        cout << "test pattern initilized" << endl;
+        
+    }else{
+         
+        // open gstreamer pipeline
+        if (!cap.open(getCameraPipeline(params_.camIndex), cv::CAP_GSTREAMER))
+        {
+
+            cout << "gstreamer capture failed to initilized" << endl;
+            
+        }
     }
 
-    cout << "gstreamer capture initilized" << endl;
+    cout << "capture initilized" << endl;
+    
 #endif
 
 #if MAC
@@ -93,46 +104,57 @@ void Capture2::run()
 {
 
     cout << "capture start" << endl;
+    
 
     // Check if thread is requested to stop ?
     while (false == stopRequested())
     {
 
         //pthread_mutex_lock(&capture_mutex);
-
-        // will block until new frame is available
-        cap >> newFrame;
-
-        if ( true == params_.blenderEnable ){
-            previousFrame = newFrame.clone();
-        }
-
-        // pthread_mutex_unlock(&capture_mutex);
-
-        /* 
-            here we will do as much free image processing as possible, this must
-            be done faster than the stabilization. 
-            Final warp is applied to the preProcessedFrame
-        */
-        if (newFrame.data != NULL){
-
-            // this is expensive to do
-            preProcessedFrame = newFrame.clone();
-
-            // white balance
-            if (params_.wbAlgo != Disabled){
-                wb->balanceWhite(preProcessedFrame, preProcessedFrame);
+        
+        if (Pattern != params_.camIndex){
+            
+            // will block until new frame is available
+            cap >> newFrame;
+            
+            if ( true == params_.blenderEnable ){
+                previousFrame = newFrame.clone();
             }
-        }
-        else if (newFrame.empty()){
 
-            cout << "Frame capture error" << endl;
-            break;
+            // pthread_mutex_unlock(&capture_mutex);
 
+            /* 
+                here we will do as much free image processing as possible, this must
+                be done faster than the stabilization. 
+                Final warp is applied to the preProcessedFrame
+            */
+            if (newFrame.data != NULL){
+
+                // this is expensive to do
+                preProcessedFrame = newFrame.clone();
+
+                // white balance
+                if (params_.wbAlgo != Disabled){
+                    wb->balanceWhite(preProcessedFrame, preProcessedFrame);
+                }
+                
+            }else if (newFrame.empty()){
+
+                cout << "Frame capture error" << endl;
+                break;
+
+            }else{
+
+                cout << "Frame capture error" << endl;
+            }
+            
         }else{
-
-            cout << "Frame capture error" << endl;
+            
+            // without a capture there is now blocking element to throttle
+            usleep(30000);
+            
         }
+        
     }
 
     cout << "releasing capture pipeline" << std::endl;
@@ -186,6 +208,9 @@ std::string Capture2::getCameraPipeline(CamIndex camera)
         pipeline = "v4l2src device =/dev/video0 ! 'video/x-raw, format=(string)UYVY, width=(int)" + std::to_string(params_.captureWidth) + ", height=" +
                    std::to_string(params_.captureHeight) + ", framerate=(fraction)" + std::to_string(params_.captureFPS) +
                    "/1' ! nvvidconv flip - method = 4 ! ! video/x-raw, format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)BGR ! appsink";
+        break;
+    case Pattern:
+        pipeline = "test_pattern.jpg";
         break;
 
     default:

@@ -13,7 +13,7 @@ WriterParams::WriterParams()
 {
     encoder = "omxh264enc";
     udp_bitrate = 4096;
-    udp_ip = "255.255.255.255";
+    udp_ip = "192.168.0.255";
     udp_port = "49410";
     stream_width = 1280;
     stream_height = 720;
@@ -105,7 +105,7 @@ void Writer::run(){
         }
 
         // dont go crazy TODO: something other than this
-        usleep(10);
+        usleep(10000);
         
     }
 

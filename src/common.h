@@ -6,7 +6,7 @@
 #ifndef MAC
     #define JETSON
     #define WITH_CUDA
-    #define HAVE_DISPLAY		// remove this before deployment
+    //#define HAVE_DISPLAY		// remove this before deployment
 #endif
 
 #endif /* common.h  */

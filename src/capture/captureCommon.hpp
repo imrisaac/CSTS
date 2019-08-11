@@ -19,6 +19,7 @@ enum CamIndex
     DevKitNano = 2,
     AR1820 = 3,
     Boson = 4,
+    Pattern = 5,
 };
 
 enum WbAlgo

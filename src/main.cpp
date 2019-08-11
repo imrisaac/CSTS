@@ -138,6 +138,11 @@ int main(int argc, char **argv){
     std::thread captureThread([&](){
         capture.run();
     });
+    
+    // capture2 thread
+    std::thread capture2Thread([&](){
+        capture2.run();
+    });
 
     // sceneTrack thread
     std::thread sceneTrackThread([&](){
@@ -177,8 +182,14 @@ int main(int argc, char **argv){
 			cout << "no image data" << endl;
 		}
 
+#if HAVE_DISPLAY
         // waitkey for 33ms resulting approximatly 30fps display, TODO: paramaterize all fps related values
         waitKey(33);
+#else
+		// stop this thread from running away
+		usleep(30000);
+#endif
+		
 
         if (s_interrupted) {
             std::cout << "interrupt received, killing…" << std::endl;
@@ -193,6 +204,7 @@ int main(int argc, char **argv){
     sceneTrack.stop();
     stabilizer.stop();
     capture.stop();
+    capture2.stop();
     interfaces.stop();
     writer.stop();
     
@@ -206,6 +218,7 @@ int main(int argc, char **argv){
     // Waiting for thread to join, sync threads for exit
     // if a thread fails to stop we will get stuck waiting for that particular thread to join
     captureThread.join();
+    capture2Thread.join();
     sceneTrackThread.join();
     interfacesThread.join();
     stabilizerThread.join();

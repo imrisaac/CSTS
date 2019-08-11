@@ -11,8 +11,21 @@
 #ifndef capture2_hpp
 #define capture2_hpp
 
-#include <stdio.h>
-#include "thread.hpp"
+#include <iostream>
+#include <cmath>
+#include <fstream>
+#include <time.h>
+#include <pthread.h>
+#include <thread>         // std::thread
+#include <mutex>          // std::mutex
+#include <chrono>         // thread sleep
+
+#include <string>         // input arg parsing
+#include <vector>
+#include <algorithm>
+#include <numeric>
+#include <unistd.h>
+#include <getopt.h>
 
 // opencv
 #include "opencv2/core/core.hpp"
@@ -25,6 +38,7 @@
 // in repo
 #include "common.h"
 #include "captureCommon.hpp"
+#include "thread.hpp"
 
 using namespace std;
 using namespace cv;
