@@ -12,7 +12,7 @@
 WriterParams::WriterParams()
 {
     encoder = "omxh264enc";
-    udp_bitrate = 1024;
+    udp_bitrate = 4096;
     udp_ip = "255.255.255.255";
     udp_port = "49410";
     stream_width = 1280;
@@ -63,8 +63,6 @@ void Writer::run(){
 
             // cv::putText(outFrame, std::to_string(telemetry_.currentFps), fpsTextOrigin, cv::FONT_HERSHEY_SIMPLEX, 2, cv::Scalar::all(255), 3, 8);
 
-            // udpWriter << outFrame;
-
             // switch case for deciding
             switch(params_.streamType){
 				
@@ -103,6 +101,7 @@ void Writer::run(){
                     
             } 
 
+
         }
 
         // dont go crazy TODO: something other than this
@@ -119,10 +118,11 @@ void Writer::run(){
     Write frames to the gstreamer pipeline
  */
 void Writer::write(cv::Mat new_frame){
-
-    pthread_mutex_lock(&inject_mutex);
-    frames.push(new_frame);
-    pthread_mutex_unlock(&inject_mutex);
+	
+   // pthread_mutex_lock(&inject_mutex);
+	frames.push(new_frame);
+   // pthread_mutex_unlock(&inject_mutex);
+    
 }
 
 /**

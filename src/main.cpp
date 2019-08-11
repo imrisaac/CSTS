@@ -160,10 +160,13 @@ int main(int argc, char **argv){
 
         Mat image = capture.getLatestFrameColor();
 
-        writer.write(image);
-
         if (image.data != NULL){
+			
+#if HAVE_DISPLAY
             imshow("Vision Core", image);
+#endif
+            
+            writer.write(image);
 
             const int key = cv::waitKey(5) & 0xff;
 
