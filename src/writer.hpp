@@ -30,14 +30,6 @@ enum Sinker
     file1,
 };
 
-enum StreamType
-{
-    EO,
-    IR,
-    DUAL,
-
-};
-
 // Stabilizer params are common for all builds
 struct WriterParams
 {
@@ -47,7 +39,6 @@ struct WriterParams
     string udp_port; 
     int stream_width;
     int stream_height;
-    StreamType streamType;
     WriterParams();   
 };
 
@@ -69,8 +60,6 @@ public:
     void run();
     
     void write(cv::Mat new_frame);
-
-    void writeDual(cv::Mat left, cv::Mat right);
     
     void fileWrite();
     

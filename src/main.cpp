@@ -124,8 +124,8 @@ int main(int argc, char **argv){
     Stabilizer stabilizer;
     Writer writer;
     
-    capture.initilize();
-    capture2.initilize();
+    capture.initilize(EO);
+    //capture2.initilize(IR);
     patternGenerator.initilize();
 
     usleep(100000);
@@ -145,7 +145,7 @@ int main(int argc, char **argv){
     
     // capture2 thread
     std::thread capture2Thread([&](){
-        capture2.run();
+        //capture2.run();
     });
 
     // sceneTrack thread

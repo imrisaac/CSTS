@@ -54,7 +54,7 @@ class Capture: public Threader
 public:
     
     /// Initilizes the frame source and populates initial Mats
-    void initilize();
+    void initilize(CamIndex index);
     
     /// Runner containing the capture loop that runs in the capture thread
     void run();

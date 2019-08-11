@@ -41,6 +41,7 @@
 #include "writer.hpp"
 #include "system.hpp"
 #include "common.h"
+#include "capture/captureCommon.hpp"
 
 volatile sig_atomic_t flag = 0;
 

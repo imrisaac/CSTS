@@ -17,7 +17,6 @@ WriterParams::WriterParams()
     udp_port = "49410";
     stream_width = 1280;
     stream_height = 720;
-    streamType = EO;
 
 }
 
@@ -37,9 +36,8 @@ void Writer::init(const cv::Mat &start_frame)
     
     openSink(gstJetsonUDP, start_frame);
 
-    // create a canvas to add IR and EO images side by side, boson is 640 x 512, EO is temporarily 720 x 1280 
+    // create a canvas to add IR and EOO images side by side, boson is 640 x 512, EOO is temporarily 720 x 1280 
     dualCanvas.create(cv::Size(params_.stream_width, params_.stream_height), CV_8UC3);
-
 
 }
 
@@ -63,43 +61,49 @@ void Writer::run(){
 
             // cv::putText(outFrame, std::to_string(telemetry_.currentFps), fpsTextOrigin, cv::FONT_HERSHEY_SIMPLEX, 2, cv::Scalar::all(255), 3, 8);
 
-            // switch case for deciding
-            switch(params_.streamType){
+            outFrame = frames.front();
+            if (outFrame.data != NULL){
+
+                udpWriter << outFrame; 
+
+            }else{
+                cout << "no image date" << endl;
+            }
+
+            // // switch case for deciding
+            // switch(params_.streamType){
 				
-                case EO:
+            //     case SINGLE:
                 
-					outFrame = frames.front();
+			// 		outFrame = frames.front();
 
-					if (outFrame.data != NULL){
+			// 		if (outFrame.data != NULL){
                
-					   udpWriter << outFrame;
+			// 		   udpWriter << outFrame;
 
-					}else{
-						cout << "no image data" << endl;
-					}
+			// 		}else{
+			// 			cout << "no image data" << endl;
+			// 		}
 					
-					// done with this frame for good
-					frames.pop();
+			// 		// done with this frame for good
+			// 		frames.pop();
 					
-                    break;
+            //         break;
 
-                case IR:
-                    break;
-
-                case DUAL:
+            //     case DUAL:
                 				
-					// 1280 x 720 = 640 x 720 | 640 x 720
-					frames.front().copyTo(dualCanvas(cv::Rect( 0, 0, (params_.stream_width / 2), params_.stream_height/2)) );
-					frames.pop();
-					frames.front().copyTo(dualCanvas(cv::Rect( (params_.stream_width / 2), 0, params_.stream_width, params_.stream_height)) );
-					frames.pop();
+			// 		// 1280 x 720 = 640 x 720 | 640 x 720
+			// 		frames.front().copyTo(dualCanvas(cv::Rect( 0, 0, (params_.stream_width / 2), params_.stream_height/2)) );
+			// 		frames.pop();
+			// 		frames.front().copyTo(dualCanvas(cv::Rect( (params_.stream_width / 2), 0, params_.stream_width, params_.stream_height)) );
+			// 		frames.pop();
 					
-                    break;
+            //         break;
 
-                default:
-                    break;
+            //     default:
+            //         break;
                     
-            } 
+            // } 
 
 
         }

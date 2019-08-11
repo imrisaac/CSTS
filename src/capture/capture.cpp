@@ -27,18 +27,21 @@ CaptureParams::CaptureParams()
     Initilizer for the capture loop
     created capture object and tries to grab a frame from it
  */
-void Capture::initilize(){
+void Capture::initilize(CamIndex index){
     
     cout << "Initilizing capture " << endl;
 
 #ifdef JETSON
+
     // open gstreamer pipeline
     if ( !cap.open(getCameraPipeline(params_.camIndex), cv::CAP_GSTREAMER) ){
 
         cout << "gstreamer capture failed to initilized" << endl;
+
     }
     
     cout << "gstreamer capture initilized" << endl;
+    
 #endif
     
 #if MAC
