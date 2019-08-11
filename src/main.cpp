@@ -107,7 +107,6 @@ int main(int argc, char **argv){
         printf("\n");
     }
     
-
 #ifdef WITH_ROS
     // Initilize ros
     ros::init(argc, argv, "Vision_Core");
@@ -171,6 +170,11 @@ int main(int argc, char **argv){
     std::time_t timeBegin = std::time(0);
     int tick = 0;
 
+    cv::Mat dualCanvas;
+
+    cv::Mat left;
+    cv::Mat right;
+
     while ( true ) {
 
         frameCounter++;
@@ -185,16 +189,19 @@ int main(int argc, char **argv){
             frameCounter = 0;
         }
 
-        // Mat image = capture2.getLatestFrameColor();
-        Mat image = patternGenerator.getLatestFrameColor();
+        right = capture2.getLatestFrameColor();
+        left = patternGenerator.getLatestFrameColor();
 
-        if (image.data != NULL){
+		frames.front().copyTo(dualCanvas(cv::Rect( 0, 0, (params_.stream_width / 2), params_.stream_height/2)) );
+		frames.front().copyTo(dualCanvas(cv::Rect( (params_.stream_width / 2), 0, params_.stream_width, params_.stream_height)) );
+
+        if (left.data != NULL){
 
             // writer.write(image);
 
 #if HAVE_DISPLAY
 
-            imshow("Vision Core", image);
+            imshow("Vision Core", left);
             const int key = cv::waitKey(1) & 0xff;
 
             if (key == 27 /*Esc*/){

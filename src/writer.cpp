@@ -70,6 +70,8 @@ void Writer::run(){
                 cout << "no image date" << endl;
             }
 
+            frames.pop();
+
             // // switch case for deciding
             // switch(params_.streamType){
 				
