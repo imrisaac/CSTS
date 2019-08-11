@@ -123,6 +123,7 @@ void Writer::run(){
  */
 void Writer::write(cv::Mat new_frame){
 	
+    // TODO: autodetect changes in input frame size and either resize/scale them or restart gstreamer with new size
    // pthread_mutex_lock(&inject_mutex);
 	frames.push(new_frame);
    // pthread_mutex_unlock(&inject_mutex);
