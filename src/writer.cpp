@@ -37,7 +37,7 @@ void Writer::init(const cv::Mat &start_frame)
     openSink(gstJetsonUDP, start_frame);
 
     // create a canvas to add IR and EOO images side by side, boson is 640 x 512, EOO is temporarily 720 x 1280 
-    dualCanvas.create(cv::Size(params_.stream_width, params_.stream_height), CV_8UC3);
+   // dualCanvas.create(cv::Size(params_.stream_width, params_.stream_height), CV_8UC3);
 
 }
 

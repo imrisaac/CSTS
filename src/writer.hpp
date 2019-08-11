@@ -65,6 +65,10 @@ public:
     
     void updateTelemetry(int fps);
 
+    int getStreamWidth(){return params_.stream_width; };
+
+    int getStreamHeight(){return params_.stream_height; };
+
 private:
 
     bool openSink(Sinker sink, cv::Mat start_frame);

@@ -26,6 +26,37 @@ static void s_catch_signals (void){
     sigaction (SIGKILL, &action, NULL);
 }
 
+// TODO: do not return use a pointer
+cv::Mat GetSquareImage(const cv::Mat &img, int target_width = 640)
+{
+    int width = img.cols,
+        height = img.rows;
+
+    cv::Mat square = cv::Mat::zeros(target_width, target_width, img.type());
+
+    int max_dim = (width >= height) ? width : height;
+    float scale = ((float)target_width) / max_dim;
+    cv::Rect roi;
+    if (width >= height)
+    {
+        roi.width = target_width;
+        roi.x = 0;
+        roi.height = height * scale;
+        roi.y = (target_width - roi.height) / 2;
+    }
+    else
+    {
+        roi.y = 0;
+        roi.height = target_width;
+        roi.width = width * scale;
+        roi.x = (target_width - roi.width) / 2;
+    }
+
+    cv::resize(img, square(roi), roi.size());
+
+    return square;
+}
+
 int main(int argc, char **argv){
     int c;
     int digit_optind = 0;
@@ -131,7 +162,7 @@ int main(int argc, char **argv){
     usleep(100000);
    // interfaces.initilize(argc, argv);
 
-    writer.init(capture.getLatestFrameColor());
+    //writer.init(capture.getLatestFrameColor());
     
     // interfaces thread
     std::thread interfacesThread([&](){
@@ -160,7 +191,7 @@ int main(int argc, char **argv){
     
     // writer thread
     std::thread writerThread([&](){
-		writer.run();
+	//	writer.run();
     });
 
     cout << "starting main loop" << endl;
@@ -174,6 +205,11 @@ int main(int argc, char **argv){
 
     cv::Mat left;
     cv::Mat right;
+
+    int stream_width = writer.getStreamWidth();
+    int stream_height = writer.getStreamHeight();
+
+    //dualCanvas.create(cv::Size(stream_width, stream_height), CV_8UC3);
 
     while ( true ) {
 
@@ -189,19 +225,29 @@ int main(int argc, char **argv){
             frameCounter = 0;
         }
 
-        right = capture2.getLatestFrameColor();
         left = patternGenerator.getLatestFrameColor();
+        right = capture.getLatestFrameColor();
 
-		frames.front().copyTo(dualCanvas(cv::Rect( 0, 0, (params_.stream_width / 2), params_.stream_height/2)) );
-		frames.front().copyTo(dualCanvas(cv::Rect( (params_.stream_width / 2), 0, params_.stream_width, params_.stream_height)) );
-
+        // convert images to correct aspect ratio
         if (left.data != NULL){
+            left = GetSquareImage(left, stream_width / 2);
+        }
+
+        if(right.data != NULL){
+            right = GetSquareImage(right, stream_width / 2);
+        }
+
+       // left.copyTo(dualCanvas(cv::Rect( 0, 0, (stream_width/2), stream_height)) );
+       // right.copyTo(dualCanvas( cv::Rect((stream_width / 2), 0, stream_width, stream_height)) );
+
+        if (left.data != NULL && right.data != NULL){
+            hconcat(left, right, dualCanvas);
 
             // writer.write(image);
 
 #if HAVE_DISPLAY
 
-            imshow("Vision Core", left);
+            imshow("Vision Core", dualCanvas);
             const int key = cv::waitKey(1) & 0xff;
 
             if (key == 27 /*Esc*/){
@@ -210,7 +256,7 @@ int main(int argc, char **argv){
 #endif
 
         }else{
-			cout << "no image data" << endl;
+			//cout << "no image data" << endl;
 		}
 
 		// stop this thread from running away
