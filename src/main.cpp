@@ -156,9 +156,9 @@ int main(int argc, char **argv){
     // TODO: move this
     OutputMode outputMode = Dual;
 
-    interfaces.initilize();
+    //interfaces.initilize();
     usleep(100000);
-    
+
     capture.initilize(AR1820);
     capture2.initilize(Pattern);
     //patternGenerator.initilize();
@@ -172,7 +172,7 @@ int main(int argc, char **argv){
     
     // interfaces thread
     std::thread interfacesThread([&](){
-       interfaces.run();
+       //interfaces.run();
     });
 
     // capture thread
@@ -236,13 +236,23 @@ int main(int argc, char **argv){
         right = capture.getLatestFrameColor();
         
         // convert images to correct aspect ratio
-        if (left.data != NULL){
+        if (left.data != NULL && right.data != NULL ){
             left = GetSquareImage(left, stream_width / 2);
+          //  cout << "left: " << left.cols << " " << left.rows << endl;
+           left.copyTo(dualCanvas(Rect(0, 0, dualCanvas.cols/2, dualCanvas.rows)));
+
+            right = GetSquareImage(right, stream_width / 2);
+           // cout << "right " << right.cols << " " << right.rows << endl;
+           // cout << 0 << " " << dualCanvas.cols/2 << " " << dualCanvas.cols / 2 << " " << dualCanvas.rows *2 << endl;
+            right.copyTo(dualCanvas(Rect(dualCanvas.cols / 2, 0, dualCanvas.cols / 2, dualCanvas.rows)));
         }
 
         if(right.data != NULL){
-            right = GetSquareImage(right, stream_width / 2);
+
         }
+
+        
+        
 
         //image_temp1.copyTo(result(Rect(0, 0, image.cols, image.rows / 2)));
        // image_temp2.copyTo(result(Rect(0, image.rows/2, image.cols, image.rows/2));
@@ -263,14 +273,16 @@ int main(int argc, char **argv){
 
                 if (left.data != NULL && right.data != NULL){
 
-                    hconcat(left, right, dualCanvas);
+                  // hconcat(left, right, dualCanvas);
 
-                    writer.write(dualCanvas);
+                   rectangle(dualCanvas, Rect(0, 0, dualCanvas.cols / 2, dualCanvas.rows), Scalar(255, 0, 0), 1, 8, 0);
+                   rectangle(dualCanvas, Rect(dualCanvas.cols / 2, 0, dualCanvas.cols / 2, dualCanvas.rows), Scalar(255, 0, 0), 1, 8, 0);
+                   //writer.write(dualCanvas);
 
 #ifdef HAVE_DISPLAY
 
-                    imshow("Vision Core", dualCanvas);
-                    const int key = cv::waitKey(1) & 0xff;
+                       imshow("Vision Core", dualCanvas);
+                    const int key = cv::waitKey(1) & 0xff; 
 
                     if (key == 27 /*Esc*/){
                         break;
@@ -304,7 +316,9 @@ int main(int argc, char **argv){
     capture2.stop();
     interfaces.stop();
     writer.stop();
-    
+
+    usleep(300000);
+
     // exit object tracking thread
     // exit scene tracking thread
     // exit stabilization thread

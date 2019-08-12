@@ -99,5 +99,5 @@ void PatternGenerator::run()
     pthread_mutex_destroy(&capture_mutex);
 #endif 
 
-    cout << "capture mutex destroyed, capture exiting" << std::endl;
+    cout << "pattern mutex destroyed, capture exiting" << std::endl;
 }

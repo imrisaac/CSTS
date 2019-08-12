@@ -72,14 +72,14 @@ Serial_Port::~Serial_Port()
 void Serial_Port::initialize_defaults()
 {
 	// Initialize attributes
-	debug  = true;
+	debug  = false;
 	fd     = -1;
 	status = SERIAL_PORT_CLOSED;
 
 #ifdef MAC
 	uart_name = (char *)"/dev/tty.usbmodem01";
 #elif JETSON
-	uart_name = (char *)"/dev/ttyACMO";
+	uart_name = (char *)"/dev/ttyACM0";
 #else
 	uart_name = (char*)"/dev/ttyACM0";
 #endif

@@ -64,6 +64,8 @@ void Interfaces::run(){
         
     }
 
+    cout << "stopping serial port" << endl;
+    
     serial_port.stop();
 
     cout << "interface loop stopped" << endl;

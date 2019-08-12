@@ -16,6 +16,9 @@
 #include <stdexcept>
 #include <string>
 #include <array>        // ^
+#ifdef JETSON
+#include <linux/i2c-dev.h>
+#endif
 
 using namespace std;
 
