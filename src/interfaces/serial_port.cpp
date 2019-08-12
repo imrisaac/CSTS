@@ -105,6 +105,8 @@ int Serial_Port::read_message(mavlink_message_t &message)
 	mavlink_status_t status;
 	uint8_t          msgReceived = false;
 
+	std::cout << "reading from port" << std::endl;
+
 	// this function locks the port during read
 	int result = _read_port(cp);
 
@@ -442,6 +444,7 @@ int Serial_Port::_read_port(uint8_t &cp)
 	// Lock
 	pthread_mutex_lock(&lock);
 
+	std::cout << "really reading port" << std::endl;
 	int result = read(fd, &cp, 1);
 
 	// Unlock

@@ -157,6 +157,8 @@ int main(int argc, char **argv){
     OutputMode outputMode = Dual;
 
     interfaces.initilize();
+    usleep(100000);
+    
     capture.initilize(AR1820);
     capture2.initilize(Pattern);
     //patternGenerator.initilize();

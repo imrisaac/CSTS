@@ -58,9 +58,11 @@ void Interfaces::run(){
         }
 
         cout << "interface loop working" << endl;
-        this_thread::sleep_for(chrono::milliseconds(1000));
+        //this_thread::sleep_for(chrono::milliseconds(1000));
         
     }
+
+    serial_port.stop();
 
     cout << "interface loop stopped" << endl;
 

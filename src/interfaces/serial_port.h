@@ -58,6 +58,7 @@
 #include <pthread.h> // This uses POSIX Threads
 #include <signal.h>
 #include <time.h> 	// Used for ... timestamps, shocker
+#include <iostream>
 
 // TODO: please fix this ugly include
 #include "../../include/mavlink/v2.0/ardupilotmega/mavlink.h"
