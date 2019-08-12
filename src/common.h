@@ -9,4 +9,12 @@
     #define HAVE_DISPLAY		// remove this before deployment
 #endif
 
+enum OutputMode{
+
+    SingleCam0,
+    SingleCam1,
+    Dual,
+
+};
+
 #endif /* common.h  */

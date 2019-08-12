@@ -154,7 +154,10 @@ int main(int argc, char **argv){
     SceneTrack sceneTrack;
     Stabilizer stabilizer;
     Writer writer;
-    
+
+    // TODO: move this
+    OutputMode outputMode = Dual;
+
     capture.initilize(AR1820);
     capture2.initilize(Pattern);
     //patternGenerator.initilize();
@@ -245,27 +248,40 @@ int main(int argc, char **argv){
         
        // right.copyTo(dualCanvas( cv::Rect((stream_width / 2), 0, stream_width, stream_height)) );
 
-        if (left.data != NULL && right.data != NULL){
-			
-           hconcat(left, right, dualCanvas);
-           
-			writer.write(dualCanvas);
-           
+        switch(outputMode){
+            case SingleCam0:
+                writer.write(left);
+                break;
 
+            case SingleCam1:
+                writer.write(right);
+                break;
+
+            case Dual:
+
+                if (left.data != NULL && right.data != NULL){
+
+                    hconcat(left, right, dualCanvas);
+
+                    writer.write(dualCanvas);
 
 #ifdef HAVE_DISPLAY
 
-            imshow("Vision Core", dualCanvas);
-            const int key = cv::waitKey(1) & 0xff;
+                    imshow("Vision Core", dualCanvas);
+                    const int key = cv::waitKey(1) & 0xff;
 
-            if (key == 27 /*Esc*/){
-                break;
-            }
+                    if (key == 27 /*Esc*/){
+                        break;
+                    }
 #endif
 
-        }else{
-			//cout << "no image data" << endl;
-		}
+                }else{
+                    //cout << "no image data" << endl;
+                }
+
+                break;
+        }
+
 
 		// stop this thread from running away
 		//usleep(30000);
