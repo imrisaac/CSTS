@@ -155,8 +155,8 @@ int main(int argc, char **argv){
     Stabilizer stabilizer;
     Writer writer;
     
-    capture.initilize(EO);
-    capture2.initilize(BOSON);
+    capture.initilize(AR1820);
+    capture2.initilize(Boson);
     patternGenerator.initilize();
 
     usleep(100000);

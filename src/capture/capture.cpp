@@ -10,6 +10,9 @@
 
 #include "capture.hpp"
 
+// evil macro for printing variable name
+#define getName(var)  #var 
+
 // default parameters
 CaptureParams::CaptureParams()
 {
@@ -34,7 +37,7 @@ void Capture::initilize(CamIndex index){
 #ifdef JETSON
 
     // open gstreamer pipeline
-    if ( !cap.open(getCameraPipeline(params_.camIndex), cv::CAP_GSTREAMER) ){
+    if ( !cap.open(getCameraPipeline(index), cv::CAP_GSTREAMER) ){
 
         cout << "gstreamer capture failed to initilized" << endl;
 
@@ -180,9 +183,9 @@ std::string Capture::getCameraPipeline(CamIndex camera)
         break;
 
     case Boson:
-        pipeline = "v4l2src device =/dev/video0 ! 'video/x-raw, format=(string)UYVY, width=(int)" + std::to_string(params_.captureWidth) + ", height=" +
-                   std::to_string(params_.captureHeight) + ", framerate=(fraction)" + std::to_string(params_.captureFPS) +
-                   "/1' ! nvvidconv flip - method = 4 ! ! video/x-raw, format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)BGR ! appsink";
+        pipeline = "v4l2src device=/dev/video0 ! 'video/x-raw, format=(string)UYVY, width=(int)" + std::to_string(640) + ", height=(int)" +
+                   std::to_string(512) + ", framerate=(fraction)" + std::to_string(60) +
+                   "/1' ! nvvidconv flip-method=4 ! video/x-raw, format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)BGR ! appsink";
         break;
 
     default:
@@ -194,6 +197,7 @@ std::string Capture::getCameraPipeline(CamIndex camera)
                    "/1 ! nvvidconv flip-method=0 ! video/x-raw, format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)BGR ! appsink";
         break;
     }
+    cout << "pipeline selected: " << pipeline << endl;
 
     return pipeline;
 }
