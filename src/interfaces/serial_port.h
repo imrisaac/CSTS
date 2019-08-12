@@ -63,7 +63,7 @@
 #include <signal.h>
 #include <time.h> 	// Used for ... timestamps, shocker
 
-#include "include/mavlink/v2.0/ardupilotmega/mavlink.h"
+#include "../../include/mavlink/v2.0/ardupilotmega/mavlink.h"
 
 
 // ------------------------------------------------------------------------------

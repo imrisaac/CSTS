@@ -39,6 +39,7 @@ if(MAC_BUILD)
                   src/capture/capture.cpp
                   src/capture/patternGenerator.cpp
                   src/interfaces/interfaces.cpp 
+                  src/interfaces/serial_port.cpp
                   src/sceneTrack.cpp
                   src/stabilizer.cpp
                   src/thread.cpp
@@ -86,6 +87,7 @@ if(JETSON_BUILD)
                   src/capture/capture.cpp
                   src/capture/patternGenerator.cpp
                   src/interfaces/interfaces.cpp 
+                  src/interfaces/serial_port.cpp
                   src/sceneTrack.cpp
                   src/stabilizer.cpp
                   src/thread.cpp
@@ -101,6 +103,7 @@ if(JETSON_BUILD)
 endif()
 
 # ================ Ubuntu VM Build ===================
+# warning this is untested use at your own risk
 if(Ubuntu_VM_BUILD)
 
   message("configuring for Ubuntu VM")
@@ -126,7 +129,8 @@ if(Ubuntu_VM_BUILD)
                   src/main.cpp  
                   src/capture/capture.cpp
                   src/capture/patternGenerator.cpp 
-                  src/interfaces.cpp 
+                  src/interfaces.cpp
+                  src/interfaces/serial_port.cpp 
                   src/sceneTrack.cpp
                   src/stabilizer.cpp
                   src/thread.cpp

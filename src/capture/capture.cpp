@@ -27,6 +27,7 @@ CaptureParams::CaptureParams()
     gstFlip = 0;
     pattern0Dir = "test_pattern.jpg";
 }
+
 /**
     Initilizer for the capture loop
     created capture object and tries to grab a frame from it
@@ -66,7 +67,7 @@ void Capture::initilize(CamIndex index){
         }
 
         cout << "standard capture initilized" << endl;
-        
+
     }else{
 
         newFrame = imread(params_.pattern0Dir, IMREAD_COLOR);

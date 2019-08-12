@@ -10,29 +10,29 @@
 
 #include "interfaces.hpp"
 
+// default parameters
+InterfaceParams::InterfaceParams()
+{
+    serial_baud = 115200;
+
+#ifdef MAC
+    uart_name = (char *)"/dev/tty.usbmodem1";
+#else
+    uart_name = (char *)"/dev/ttyUSB0";
+#endif
+
+}
+
 void Interfaces::initilize(int &argc, char **argv){
 
     cout << "initilizing interfaces" << endl;
     
     int result;
-    
 
-#ifdef WITH_ROS
-    if (node.hasParam("")){
-        cout << "found parameter" << endl;
-    }else{
-        cout << "could not find parameter" << endl;
-    }
-#endif
+    Serial_Port serial_port(params_.uart_name, params_.serial_baud);
 
-    // check if the serial port is open
-    if ( serial_port->status != 1 ) 
-	{
-		fprintf(stderr,"ERROR: serial port not open\n");
-		throw 1;
-	}
-
-
+    // open serial port
+    serial_port.start();
 }
 
 /*

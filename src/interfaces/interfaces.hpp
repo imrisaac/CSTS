@@ -14,6 +14,9 @@
 // std libs
 #include <stdio.h>
 #include <stdio.h>
+
+// in repo
+#include "serial_port.h"
 #include "../thread.hpp"        //ugg really need to setup cmake properly
 
 #ifdef WITH_ROS
@@ -22,6 +25,13 @@
 #endif
 
 using namespace std;
+
+struct InterfaceParams
+{
+    int serial_baud;
+    char *uart_name ;
+    InterfaceParams();
+};
 
 /*
  Capture thread
@@ -40,6 +50,10 @@ public:
 #ifdef WITH_ROS
     ros::NodeHandle node;
 #endif
+
+private:
+
+    InterfaceParams params_;
 
 };
 
