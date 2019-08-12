@@ -155,6 +155,7 @@ int main(int argc, char **argv){
     // TODO: move this
     OutputMode outputMode = Dual;
 
+    interfaces.initilize();
     capture.initilize(AR1820);
     capture2.initilize(Pattern);
     //patternGenerator.initilize();

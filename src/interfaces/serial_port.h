@@ -50,10 +50,6 @@
 #ifndef SERIAL_PORT_H_
 #define SERIAL_PORT_H_
 
-// ------------------------------------------------------------------------------
-//   Includes
-// ------------------------------------------------------------------------------
-
 #include <cstdlib>
 #include <stdio.h>   // Standard input/output definitions
 #include <unistd.h>  // UNIX standard function definitions
@@ -63,12 +59,9 @@
 #include <signal.h>
 #include <time.h> 	// Used for ... timestamps, shocker
 
+// TODO: please fix this ugly include
 #include "../../include/mavlink/v2.0/ardupilotmega/mavlink.h"
 
-
-// ------------------------------------------------------------------------------
-//   Defines
-// ------------------------------------------------------------------------------
 
 // The following two non-standard baudrates should have been defined by the system
 // If not, just fallback to number
@@ -87,17 +80,6 @@
 #define SERIAL_PORT_ERROR -1;
 
 
-// ------------------------------------------------------------------------------
-//   Prototypes
-// ------------------------------------------------------------------------------
-
-//class Serial_Port;
-
-
-
-// ----------------------------------------------------------------------------------
-//   Serial Port Manager Class
-// ----------------------------------------------------------------------------------
 /*
  * Serial Port Class
  *

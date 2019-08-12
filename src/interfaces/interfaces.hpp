@@ -43,16 +43,14 @@ class Interfaces: public Threader
 {
 public:
 
-    void initilize(int &argc, char **argv);
+    void initilize();
 
     void run();
 
-#ifdef WITH_ROS
-    ros::NodeHandle node;
-#endif
-
 private:
 
+    Serial_Port serial_port;
+    
     InterfaceParams params_;
 
 };

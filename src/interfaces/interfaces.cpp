@@ -16,23 +16,29 @@ InterfaceParams::InterfaceParams()
     serial_baud = 115200;
 
 #ifdef MAC
-    uart_name = (char *)"/dev/tty.usbmodem1";
+    uart_name = (char *)"/dev/tty.usbmodem01";
 #else
-    uart_name = (char *)"/dev/ttyUSB0";
+    uart_name = (char *)"/dev/ttyTHS1";
 #endif
 
 }
 
-void Interfaces::initilize(int &argc, char **argv){
+void Interfaces::initilize(){
 
     cout << "initilizing interfaces" << endl;
     
     int result;
 
-    Serial_Port serial_port(params_.uart_name, params_.serial_baud);
+    serial_port.initialize_defaults();
+
+    //Serial_Port serial_port(params_.uart_name, params_.serial_baud);
+
+    cout << "opening serial port" << endl;
 
     // open serial port
     serial_port.start();
+
+    cout << "interfaces initilized" << endl;
 }
 
 /*
@@ -40,14 +46,14 @@ void Interfaces::initilize(int &argc, char **argv){
     contains the c2 loop
  */
 void Interfaces::run(){
-    std::cout << "interface loop start" << std::endl;
+    cout << "interface loop start" << endl;
     
     // Check if thread is requested to stop ?
     while ( false == stopRequested() ){
         
-        std::cout << "interface loop working" << std::endl;
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        cout << "interface loop working" << endl;
+        this_thread::sleep_for(chrono::milliseconds(1000));
         
     }
-    std::cout << "interface loop stopped" << std::endl;
+    cout << "interface loop stopped" << endl;
 }

@@ -48,20 +48,9 @@
  */
 
 
-// ------------------------------------------------------------------------------
-//   Includes
-// ------------------------------------------------------------------------------
-
 #include "serial_port.h"
 
 
-// ----------------------------------------------------------------------------------
-//   Serial Port Manager Class
-// ----------------------------------------------------------------------------------
-
-// ------------------------------------------------------------------------------
-//   Con/De structors
-// ------------------------------------------------------------------------------
 Serial_Port::Serial_Port(const char *uart_name_ , int baudrate_)
 {
 	initialize_defaults();
@@ -87,7 +76,14 @@ void Serial_Port::initialize_defaults()
 	fd     = -1;
 	status = SERIAL_PORT_CLOSED;
 
+#ifdef MAC
+	uart_name = (char *)"/dev/tty.usbmodem01";
+#elif JETOSN
+	uart_name = (char *)"/dev/ttyTHS1";
+#else
 	uart_name = (char*)"/dev/ttyUSB0";
+#endif
+
 	baudrate  = 115200;
 
 	// Start mutex
@@ -100,25 +96,19 @@ void Serial_Port::initialize_defaults()
 }
 
 
-// ------------------------------------------------------------------------------
-//   Read from Serial
-// ------------------------------------------------------------------------------
+/**
+ * 	read from serial
+ */
 int Serial_Port::read_message(mavlink_message_t &message)
 {
 	uint8_t          cp;
 	mavlink_status_t status;
 	uint8_t          msgReceived = false;
 
-	// --------------------------------------------------------------------------
-	//   READ FROM PORT
-	// --------------------------------------------------------------------------
-
 	// this function locks the port during read
 	int result = _read_port(cp);
 
-	// --------------------------------------------------------------------------
-	//   PARSE MESSAGE
-	// --------------------------------------------------------------------------
+	// parse message
 	if (result > 0)
 	{
 		// the parsing
@@ -140,9 +130,7 @@ int Serial_Port::read_message(mavlink_message_t &message)
 		fprintf(stderr, "ERROR: Could not read from fd %d\n", fd);
 	}
 
-	// --------------------------------------------------------------------------
-	//   DEBUGGING REPORTS
-	// --------------------------------------------------------------------------
+	// debugging reports
 	if(msgReceived && debug)
 	{
 		// Report info
@@ -178,9 +166,9 @@ int Serial_Port::read_message(mavlink_message_t &message)
 	return msgReceived;
 }
 
-// ------------------------------------------------------------------------------
-//   Write to Serial
-// ------------------------------------------------------------------------------
+/**
+ * write to serial
+ */
 int Serial_Port::write_message(const mavlink_message_t &message)
 {
 	char buf[300];
@@ -195,18 +183,14 @@ int Serial_Port::write_message(const mavlink_message_t &message)
 }
 
 
-// ------------------------------------------------------------------------------
-//   Open Serial Port
-// ------------------------------------------------------------------------------
 /**
+ * Open serial port
  * throws EXIT_FAILURE if could not open the port
  */
 void Serial_Port::open_serial()
 {
 
-	// --------------------------------------------------------------------------
-	//   OPEN PORT
-	// --------------------------------------------------------------------------
+
 	printf("OPEN PORT\n");
 
 	fd = _open_port(uart_name);
@@ -218,14 +202,8 @@ void Serial_Port::open_serial()
 		throw EXIT_FAILURE;
 	}
 
-	// --------------------------------------------------------------------------
-	//   SETUP PORT
-	// --------------------------------------------------------------------------
 	bool success = _setup_port(baudrate, 8, 1, false, false);
 
-	// --------------------------------------------------------------------------
-	//   CHECK STATUS
-	// --------------------------------------------------------------------------
 	if (!success)
 	{
 		printf("failure, could not configure port.\n");
@@ -237,9 +215,7 @@ void Serial_Port::open_serial()
 		throw EXIT_FAILURE;
 	}
 
-	// --------------------------------------------------------------------------
-	//   CONNECTED!
-	// --------------------------------------------------------------------------
+	// Connected!
 	printf("Connected to %s with %d baud, 8 data bits, no parity, 1 stop bit (8N1)\n", uart_name, baudrate);
 	lastStatus.packet_rx_drop_count = 0;
 
@@ -251,9 +227,9 @@ void Serial_Port::open_serial()
 
 }
 
-// ------------------------------------------------------------------------------
-//   Close Serial Port
-// ------------------------------------------------------------------------------
+/**
+ * close serial port
+ */
 void Serial_Port::close_serial()
 {
 	printf("CLOSE PORT\n");
@@ -271,9 +247,6 @@ void Serial_Port::close_serial()
 
 }
 
-// ------------------------------------------------------------------------------
-//   Convenience Functions
-// ------------------------------------------------------------------------------
 void Serial_Port::start()
 {
 	open_serial();
@@ -285,9 +258,6 @@ void Serial_Port::stop()
 }
 
 
-// ------------------------------------------------------------------------------
-//   Quit Handler
-// ------------------------------------------------------------------------------
 void Serial_Port::handle_quit( int sig )
 {
 	try {
@@ -298,10 +268,6 @@ void Serial_Port::handle_quit( int sig )
 	}
 }
 
-
-// ------------------------------------------------------------------------------
-//   Helper Function - Open Serial Port File Descriptor
-// ------------------------------------------------------------------------------
 // Where the actual port opening happens, returns file descriptor 'fd'
 int Serial_Port::_open_port(const char* port)
 {
@@ -327,9 +293,6 @@ int Serial_Port::_open_port(const char* port)
 	return fd;
 }
 
-// ------------------------------------------------------------------------------
-//   Helper Function - Setup Serial Port
-// ------------------------------------------------------------------------------
 // Sets configuration, flags, and baud rate
 bool Serial_Port::_setup_port(int baud, int data_bits, int stop_bits, bool parity, bool hardware_control)
 {
@@ -470,11 +433,9 @@ bool Serial_Port::_setup_port(int baud, int data_bits, int stop_bits, bool parit
 	return true;
 }
 
-
-
-// ------------------------------------------------------------------------------
-//   Read Port with Lock
-// ------------------------------------------------------------------------------
+/**
+ * Read port with lock
+ */
 int Serial_Port::_read_port(uint8_t &cp)
 {
 
@@ -489,10 +450,9 @@ int Serial_Port::_read_port(uint8_t &cp)
 	return result;
 }
 
-
-// ------------------------------------------------------------------------------
-//   Write Port with Lock
-// ------------------------------------------------------------------------------
+/**
+ * write port with lock
+ */
 int Serial_Port::_write_port(char *buf, unsigned len)
 {
 
