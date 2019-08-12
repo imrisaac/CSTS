@@ -11,8 +11,8 @@
 #include "interfaces.hpp"
 
 // default parameters
-InterfaceParams::InterfaceParams()
-{
+InterfaceParams::InterfaceParams(){
+    
     serial_baud = 115200;
 
 #ifdef MAC
@@ -61,5 +61,7 @@ void Interfaces::run(){
         this_thread::sleep_for(chrono::milliseconds(1000));
         
     }
+
     cout << "interface loop stopped" << endl;
+
 }

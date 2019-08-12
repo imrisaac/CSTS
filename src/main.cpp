@@ -61,6 +61,7 @@ int main(int argc, char **argv){
     // Register exit handler
     s_catch_signals();
     
+    // TODO: put this crap in a dumb helper
     while (1) {
 
         int this_option_optind = optind ? optind : 1;
@@ -164,13 +165,12 @@ int main(int argc, char **argv){
     // sceneTrack.initilize();
 
     usleep(100000);
-   // interfaces.initilize(argc, argv);
 
     writer.init(capture.getLatestFrameColor());
     
     // interfaces thread
     std::thread interfacesThread([&](){
-       // interfaces.run();
+       interfaces.run();
     });
 
     // capture thread
