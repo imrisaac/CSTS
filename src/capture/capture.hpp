@@ -68,7 +68,6 @@ public:
 
     cv::Mat getLatestFramePreProcessed(){return preProcessedFrame;};
 
-   
 private:
     
     std::string getCameraPipeline(CamIndex index);

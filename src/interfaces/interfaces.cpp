@@ -31,10 +31,6 @@ void Interfaces::initilize(){
 
     serial_port.initialize_defaults();
 
-    //Serial_Port serial_port(params_.uart_name, params_.serial_baud);
-
-    cout << "opening serial port" << endl;
-
     // open serial port
     serial_port.start();
 
@@ -47,10 +43,20 @@ void Interfaces::initilize(){
  */
 void Interfaces::run(){
     cout << "interface loop start" << endl;
-    
+
+    bool success = false;
+
     // Check if thread is requested to stop ?
     while ( false == stopRequested() ){
-        
+
+        // read message
+        mavlink_message_t message;
+        success = serial_port.read_message(message);
+
+        if (success){
+            mavlinkInterface.processMessage(message);
+        }
+
         cout << "interface loop working" << endl;
         this_thread::sleep_for(chrono::milliseconds(1000));
         

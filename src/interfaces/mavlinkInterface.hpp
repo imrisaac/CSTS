@@ -21,7 +21,6 @@
 #include "../../include/mavlink/v2.0/ardupilotmega/mavlink.h"
 
 using namespace std;
-using namespace cv;
 
 struct Time_Stamps
 {
@@ -106,11 +105,13 @@ class MavlinkInterface
 public:
     void init();
 
-    void read_messages();
+    void processMessage(mavlink_message_t message);
 
     void write_messages();
 
 private:
+
+    Mavlink_Messages current_messages;
 
 };
 

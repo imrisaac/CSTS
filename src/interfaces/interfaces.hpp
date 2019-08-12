@@ -51,6 +51,8 @@ public:
 private:
 
     Serial_Port serial_port;
+
+    MavlinkInterface mavlinkInterface;
     
     InterfaceParams params_;
 
