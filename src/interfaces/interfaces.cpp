@@ -29,9 +29,11 @@ void Interfaces::initilize(){
     
     int result;
 
+    cout << "init serial port defaults" << endl;
     serial_port.initialize_defaults();
 
     // open serial port
+    cout << "opening serial port" << endl;
     serial_port.start();
 
     cout << "interfaces initilized" << endl;

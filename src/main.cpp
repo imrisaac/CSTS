@@ -286,7 +286,7 @@ int main(int argc, char **argv){
 
 
 		// stop this thread from running away
-		//usleep(30000);
+		usleep(30000);
 
         if (s_interrupted) {
             std::cout << "interrupt received, killing…" << std::endl;

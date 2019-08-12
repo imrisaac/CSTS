@@ -78,10 +78,10 @@ void Serial_Port::initialize_defaults()
 
 #ifdef MAC
 	uart_name = (char *)"/dev/tty.usbmodem01";
-#elif JETOSN
-	uart_name = (char *)"/dev/ttyTHS1";
+#elif JETSON
+	uart_name = (char *)"/dev/ttyACMO";
 #else
-	uart_name = (char*)"/dev/ttyUSB0";
+	uart_name = (char*)"/dev/ttyACM0";
 #endif
 
 	baudrate  = 115200;
@@ -198,7 +198,7 @@ void Serial_Port::open_serial()
 	// Check success
 	if (fd == -1)
 	{
-		printf("failure, could not open port.\n");
+		printf("failure, could not open port %s\n", uart_name);
 		throw EXIT_FAILURE;
 	}
 
