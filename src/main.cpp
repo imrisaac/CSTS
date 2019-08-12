@@ -21,9 +21,6 @@ static void s_catch_signals (void){
     action.sa_flags = 0;
     sigemptyset (&action.sa_mask);
     sigaction (SIGINT, &action, NULL);
-    sigaction (SIGTSTP, &action, NULL);
-    sigaction (SIGTERM, &action, NULL);
-    sigaction (SIGKILL, &action, NULL);
 }
 
 // TODO: do not return use a pointer
@@ -162,6 +159,9 @@ int main(int argc, char **argv){
     capture2.initilize(Pattern);
     //patternGenerator.initilize();
 
+    // stabilizer.initilize();
+    // sceneTrack.initilize();
+
     usleep(100000);
    // interfaces.initilize(argc, argv);
 
@@ -179,7 +179,7 @@ int main(int argc, char **argv){
     
     // capture2 thread
     std::thread capture2Thread([&](){
-        //capture2.run();
+        capture2.run();
     });
 
     // sceneTrack thread
@@ -232,7 +232,6 @@ int main(int argc, char **argv){
         left = capture2.getLatestFrameColor();
         right = capture.getLatestFrameColor();
         
-
         // convert images to correct aspect ratio
         if (left.data != NULL){
             left = GetSquareImage(left, stream_width / 2);
