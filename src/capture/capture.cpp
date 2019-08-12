@@ -25,6 +25,7 @@ CaptureParams::CaptureParams()
     blenderAlpha = 0.5;
     blenderBeta = 0.5;
     gstFlip = 0;
+    pattern0Dir = "test_pattern.jpg";
 }
 /**
     Initilizer for the capture loop
@@ -34,27 +35,44 @@ void Capture::initilize(CamIndex index){
     
     cout << "Initilizing capture " << endl;
 
+    params_.camIndex = index;
+
 #ifdef JETSON
 
-    // open gstreamer pipeline
-    if ( !cap.open(getCameraPipeline(index), cv::CAP_GSTREAMER) ){
+    if( Pattern != index){
+        // open gstreamer pipeline
+        if ( !cap.open(getCameraPipeline(index), cv::CAP_GSTREAMER) ){
 
-        cout << "gstreamer capture failed to initilized" << endl;
+            cout << "gstreamer capture failed to initilized" << endl;
 
+        }
+        
+        cout << "gstreamer capture initilized" << endl;
+    }else{
+
+        newFrame = imread(params_.pattern0Dir, IMREAD_COLOR);
+
+        cout << "test pattern initilized" << endl;
     }
-    
-    cout << "gstreamer capture initilized" << endl;
     
 #endif
     
 #if MAC
 
-    // No gstreamer pipelines are working for MAC right now
-    if ( !cap.open(0) ){
-        cout << "capture failed to initilize" << endl;
-    }
+    if (Pattern != index ){
+        // No gstreamer pipelines are working for MAC right now
+        if ( !cap.open(0) ){
+            cout << "capture failed to initilize" << endl;
+        }
 
-    cout << "capture initilized" << endl;
+        cout << "standard capture initilized" << endl;
+        
+    }else{
+
+        newFrame = imread(params_.pattern0Dir, IMREAD_COLOR);
+
+        cout << "test pattern initilized" << endl;
+    }
 
 #endif
 
@@ -94,10 +112,15 @@ void Capture::initilize(CamIndex index){
 void Capture::run(){
     
     cout << "capture start" << endl;
+
+    if(Pattern == params_.camIndex ){
+        // pattern generator does not need the runner, exit immediatly
+        return;
+    }
     
     // Check if thread is requested to stop ?
     while ( false == stopRequested() ){
-        
+
         //pthread_mutex_lock(&capture_mutex);
         
         // will block until new frame is available
@@ -151,7 +174,7 @@ void Capture::run(){
 }
 
 /**
-    gstCameraPipeline
+    getCameraPipeline
     returns gstreamer pipeline string
  */
 std::string Capture::getCameraPipeline(CamIndex camera)
@@ -186,6 +209,10 @@ std::string Capture::getCameraPipeline(CamIndex camera)
         pipeline = "v4l2src device=/dev/video0 ! 'video/x-raw, format=(string)UYVY, width=(int)" + std::to_string(640) + ", height=(int)" +
                    std::to_string(512) + ", framerate=(fraction)" + std::to_string(60) +
                    "/1' ! nvvidconv flip-method=4 ! video/x-raw, format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)BGR ! appsink";
+        break;
+
+    case Pattern:
+        pipeline = "";
         break;
 
     default:

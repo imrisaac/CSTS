@@ -156,8 +156,8 @@ int main(int argc, char **argv){
     Writer writer;
     
     capture.initilize(AR1820);
-    capture2.initilize(Boson);
-    patternGenerator.initilize();
+    capture2.initilize(Pattern);
+    //patternGenerator.initilize();
 
     usleep(100000);
    // interfaces.initilize(argc, argv);
@@ -176,7 +176,7 @@ int main(int argc, char **argv){
     
     // capture2 thread
     std::thread capture2Thread([&](){
-        capture2.run();
+        //capture2.run();
     });
 
     // sceneTrack thread

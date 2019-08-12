@@ -40,6 +40,7 @@ struct CaptureParams
     double blenderAlpha;
     double blenderBeta;
     int gstFlip;
+    string pattern0Dir;
     CaptureParams();
 };
 
