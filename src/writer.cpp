@@ -33,8 +33,10 @@ void Writer::init(const cv::Mat &start_frame)
 {
 
     cout << "initilizing writer" << endl;    
-    
+
+#ifdef JETSON
     openSink(gstJetsonUDP, start_frame);
+#endif
 
     // create a canvas to add IR and EOO images side by side, boson is 640 x 512, EOO is temporarily 720 x 1280 
    // dualCanvas.create(cv::Size(params_.stream_width, params_.stream_height), CV_8UC3);
@@ -52,7 +54,7 @@ void Writer::run(){
     std::cout << "writer start" << std::endl;
 	
 	// you cannot call imshow from another thread?
-    //cv::namedWindow("Writer", cv::WINDOW_AUTOSIZE);
+   // cv::namedWindow("Writer", cv::WINDOW_AUTOSIZE);
 
     // Check if thread is requested to stop ?
     while ( false == stopRequested() ){
@@ -61,52 +63,19 @@ void Writer::run(){
 
             // cv::putText(outFrame, std::to_string(telemetry_.currentFps), fpsTextOrigin, cv::FONT_HERSHEY_SIMPLEX, 2, cv::Scalar::all(255), 3, 8);
 
+
             outFrame = frames.front();
             if (outFrame.data != NULL){
 
+#ifdef JETSON
                 udpWriter << outFrame; 
+#endif
 
             }else{
-                cout << "no image date" << endl;
+                cout << "no image data" << endl;
             }
 
             frames.pop();
-
-            // // switch case for deciding
-            // switch(params_.streamType){
-				
-            //     case SINGLE:
-                
-			// 		outFrame = frames.front();
-
-			// 		if (outFrame.data != NULL){
-               
-			// 		   udpWriter << outFrame;
-
-			// 		}else{
-			// 			cout << "no image data" << endl;
-			// 		}
-					
-			// 		// done with this frame for good
-			// 		frames.pop();
-					
-            //         break;
-
-            //     case DUAL:
-                				
-			// 		// 1280 x 720 = 640 x 720 | 640 x 720
-			// 		frames.front().copyTo(dualCanvas(cv::Rect( 0, 0, (params_.stream_width / 2), params_.stream_height/2)) );
-			// 		frames.pop();
-			// 		frames.front().copyTo(dualCanvas(cv::Rect( (params_.stream_width / 2), 0, params_.stream_width, params_.stream_height)) );
-			// 		frames.pop();
-					
-            //         break;
-
-            //     default:
-            //         break;
-                    
-            // } 
-
 
         }
 
