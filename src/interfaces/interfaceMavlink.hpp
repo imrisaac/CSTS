@@ -9,5 +9,14 @@
 #ifndef interfaceMavlink_hpp
 #define interfaceMavlink_hpp
 
+#include "serial_port.h"
+
+#include <signal.h>
+#include <time.h>
+#include <sys/time.h>
+#include <iostream>		// for basic file operations
+#include <fstream>		// for basic file operations
+
+#include "include/mavlink/ardupilotmega/mavlink.h"
 
 #endif //interfaceMavlink_hpp

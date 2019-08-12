@@ -13,14 +13,25 @@
 void Interfaces::initilize(int &argc, char **argv){
 
     cout << "initilizing interfaces" << endl;
+    
+    int result;
+    
 
 #ifdef WITH_ROS
-    if (node.hasParam("my_param")){
+    if (node.hasParam("")){
         cout << "found parameter" << endl;
     }else{
         cout << "could not find parameter" << endl;
     }
 #endif
+
+    // check if the serial port is open
+    if ( serial_port->status != 1 ) 
+	{
+		fprintf(stderr,"ERROR: serial port not open\n");
+		throw 1;
+	}
+
 
 }
 
