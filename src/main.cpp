@@ -24,7 +24,7 @@ static void s_catch_signals (void){
 }
 
 // TODO: do not return use a pointer
-cv::Mat GetSquareImage(const cv::Mat &img, int target_width = 640)
+cv::Mat GetSquareImage(const cv::Mat &img, int target_width)
 {
     int width = img.cols,
         height = img.rows;
@@ -238,8 +238,9 @@ int main(int argc, char **argv){
         // convert images to correct aspect ratio
         if (left.data != NULL && right.data != NULL ){
             left = GetSquareImage(left, stream_width / 2);
-          //  cout << "left: " << left.cols << " " << left.rows << endl;
-           left.copyTo(dualCanvas(Rect(0, 0, dualCanvas.cols/2, dualCanvas.rows)));
+            cout << "left: " << left.cols << " " << left.rows << endl;
+            cout << "left: 0 0 " << dualCanvas.cols/2 << " " << dualCanvas.rows << endl;
+            left.copyTo(dualCanvas(Rect(0, 0, dualCanvas.cols/2, dualCanvas.rows)));
 
             right = GetSquareImage(right, stream_width / 2);
            // cout << "right " << right.cols << " " << right.rows << endl;
