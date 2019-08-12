@@ -18,6 +18,7 @@
 // in repo
 #include "serial_port.h"
 #include "../thread.hpp"        //ugg really need to setup cmake properly
+#include "mavlinkInterface.hpp"
 
 #ifdef WITH_ROS
 // ros

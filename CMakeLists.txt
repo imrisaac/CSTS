@@ -40,6 +40,7 @@ if(MAC_BUILD)
                   src/capture/patternGenerator.cpp
                   src/interfaces/interfaces.cpp 
                   src/interfaces/serial_port.cpp
+                  src/interfaces/mavlinkInterface.cpp
                   src/sceneTrack.cpp
                   src/stabilizer.cpp
                   src/thread.cpp
@@ -86,7 +87,8 @@ if(JETSON_BUILD)
                   src/main.cpp  
                   src/capture/capture.cpp
                   src/capture/patternGenerator.cpp
-                  src/interfaces/interfaces.cpp 
+                  src/interfaces/interfaces.cpp
+                  src/interfaces/mavlinkInterface.cpp
                   src/interfaces/serial_port.cpp
                   src/sceneTrack.cpp
                   src/stabilizer.cpp
@@ -130,7 +132,8 @@ if(Ubuntu_VM_BUILD)
                   src/capture/capture.cpp
                   src/capture/patternGenerator.cpp 
                   src/interfaces.cpp
-                  src/interfaces/serial_port.cpp 
+                  src/interfaces/serial_port.cpp
+                  src/interfaces/mavlinkInterface.cpp
                   src/sceneTrack.cpp
                   src/stabilizer.cpp
                   src/thread.cpp
