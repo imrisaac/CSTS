@@ -272,11 +272,15 @@ int main(int argc, char **argv){
 
                 frameEO = captureEO.getLatestFrameColor();
 
+                // draw our purposed crop
+                rectangle(frameEO, roi, Scalar(255, 0, 0), 1, 8, 0);
+
                 if (frameEO.data != NULL){
 
                     writer.write(frameEO);
 
  #ifdef HAVE_DISPLAY
+
                     imshow("Vision Core", frameEO);
 
                     key = cv::waitKey(1) & 0xff;
