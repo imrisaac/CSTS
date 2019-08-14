@@ -19,6 +19,7 @@
 
 // in repo
 #include "thread.hpp"
+#include "common.h"
 
 using namespace std;
 

@@ -18,7 +18,7 @@ CaptureParams::CaptureParams()
 {
     camIndex = DevKitTx2;
     wbAlgo = Disabled;
-    captureWidth = 1280;
+    captureWidth = 960;
     captureHeight = 720;
     captureFPS = 30;
     blenderEnable = false;  
