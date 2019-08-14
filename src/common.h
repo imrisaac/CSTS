@@ -6,7 +6,7 @@
 #ifndef MAC
     #define JETSON
     #define WITH_CUDA
-  //  #define HAVE_DISPLAY		// remove this before deployment
+    #define HAVE_DISPLAY		// remove this before deployment
 #endif
 
 enum OutputMode{
@@ -15,6 +15,13 @@ enum OutputMode{
     simpleIR,
     Dual,
 
+};
+
+struct Zoom{
+    cv::Rect wide  = cv::Rect(0, 600, 1080, 810);
+    cv::Rect tele0 = cv::Rect(0, 600, 1080, 810);
+    cv::Rect tele1 = cv::Rect(0, 600, 1080, 810);
+    cv::Rect tele2 = cv::Rect(0, 600, 1080, 810);
 };
 
 #endif /* common.h  */

@@ -221,15 +221,14 @@ int main(int argc, char **argv){
     cv::Mat frameIR;
     
     cv::Mat cropped;
+    
+    Zoom zoom;
 
     int stream_width = writer.getStreamWidth();
     int stream_height = writer.getStreamHeight();
 
     dualCanvas.create(cv::Size(stream_width, stream_height), CV_8UC3);
     
-    // 960x720 crop
-    cv::Rect roi(0, 600, 1080, 810);
-
     while (true)
     {
 
@@ -275,11 +274,11 @@ int main(int argc, char **argv){
                 if (frameEO.data != NULL){
                     
                     // draw our purposed crop
-                    rectangle(frameEO, roi, Scalar(255, 0, 0), 1, 8, 0);
+                    //rectangle(frameEO, zoom.wide, Scalar(255, 0, 0), 1, 8, 0);
                     
-                    cropped = frameEO(roi);
+                    //cropped = frameEO(zoom.wide);
 
-                    writer.write(cropped);
+                  //  writer.write(cropped);
 
  #ifdef HAVE_DISPLAY
 
@@ -292,6 +291,7 @@ int main(int argc, char **argv){
                     }
 #endif
                     captureFrameCounter = captureEO.getFrameCount();
+                    cout << captureFrameCounter << endl;
 
                 }else{
                     // TODO: streame error screen instead
@@ -311,11 +311,6 @@ int main(int argc, char **argv){
 #ifdef HAVE_DISPLAY
                     imshow("Vision Core", frameIR);
 
-                    key = cv::waitKey(1) & 0xff;
-
-                    if (key == 27 /*Esc*/){
-                        break;
-                    }
 #endif
                     captureFrameCounter = captureIR.getFrameCount();
 
@@ -361,8 +356,8 @@ int main(int argc, char **argv){
                 break;
             }
 
-            freetime += 5;
-            usleep(5);
+            freetime += 1;
+            usleep(1);
         }
 
         if (s_interrupted) {
