@@ -141,6 +141,7 @@ void Capture::run(){
         
         // will block until new frame is available
         cap >> newFrame;
+        frameCount++;
 
         
        // pthread_mutex_unlock(&capture_mutex);

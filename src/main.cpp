@@ -207,6 +207,10 @@ int main(int argc, char **argv){
     // TODO: i have two things called frame count fix this
     long frameCounter = 0;
 
+    long captureFrameCounter = 0;
+
+    int freetime = 0;
+
     std::time_t timeBegin = std::time(0);
     int tick = 0;
 
@@ -232,11 +236,10 @@ int main(int argc, char **argv){
         {
             tick++;
             cout << "Frames per second: " << frameCounter << endl;
+            cout << "main freetime: " << freetime << "us" << endl;
             frameCounter = 0;
+            freetime = 0;
         }
-
-        frameEO = captureEO.getLatestFrameColor();
-        frameIR = captureIR.getLatestFrameColor();      // We still recieve IR frames as "color"
         
         // // convert images to correct aspect ratio
         // if (left.data != NULL && right.data != NULL ){
@@ -261,38 +264,53 @@ int main(int argc, char **argv){
         switch(outputMode){
             case simpleEO:
 
-                if (frameEO.data != NULL && frameIR.data != NULL){
-                        writer.write(frameEO);
+                frameEO = captureEO.getLatestFrameColor();
+
+                if (frameEO.data != NULL){
+
+                    writer.write(frameEO);
 
  #ifdef HAVE_DISPLAY
-
                     imshow("Vision Core", frameEO);
+
                     key = cv::waitKey(1) & 0xff;
 
                     if (key == 27 /*Esc*/){
                         break;
                     }
 #endif
-                    break;
+                    captureFrameCounter = captureEO.getFrameCount();
 
                 }else{
-                    // to do streame error screen instead
+                    // TODO: streame error screen instead
                     cout << "no image data" << endl;
                 }
 
-                case simpleIR:
+                break;
+
+            case simpleIR:
+
+                frameIR = captureIR.getLatestFrameColor(); // We still recieve IR frames as "color"
+
+                if (NULL != frameIR.data){
 
                     writer.write(frameIR);
 
 #ifdef HAVE_DISPLAY
+                    imshow("Vision Core", frameIR);
 
-                imshow("Vision Core", frameIR);
-                key = cv::waitKey(1) & 0xff;
+                    key = cv::waitKey(1) & 0xff;
 
-                if (key == 27 /*Esc*/){
-                    break;
-                }
+                    if (key == 27 /*Esc*/){
+                        break;
+                    }
 #endif
+                    captureFrameCounter = captureIR.getFrameCount();
+
+                }else{
+                    // TODO: streamer error screen instead
+                    cout << "no image data" << endl;
+                }
 
                 break;
 
@@ -323,15 +341,22 @@ int main(int argc, char **argv){
                 break;
         }
 
-        // TODO: block with capture instead of sleeping here
-		// stop this thread from running away
-		usleep(30000);
+        // Interrupt catcher and throtteling
+        while (captureFrameCounter == captureEO.getFrameCount()){
 
-        if (s_interrupted) {
-            std::cout << "interrupt received, killing…" << std::endl;
-            break;
+            if (s_interrupted) {
+                std::cout << "interrupt received" << std::endl;
+                break;
+            }
+
+            freetime += 5;
+            usleep(5);
         }
 
+        if (s_interrupted) {
+            std::cout << "killing from main" << std::endl;
+            break;
+        }
     }
 
     std::cout << "requesting thread stop" << std::endl;
