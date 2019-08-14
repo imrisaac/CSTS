@@ -11,8 +11,8 @@
 
 enum OutputMode{
 
-    SingleCam0,
-    SingleCam1,
+    simpleEO,
+    simpleIR,
     Dual,
 
 };

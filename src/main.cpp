@@ -143,24 +143,26 @@ int main(int argc, char **argv){
 
 #ifdef HAVE_DISPLAY
     namedWindow("Vision Core", WINDOW_AUTOSIZE);
+    int key;
 #endif
 
     Interfaces interfaces;
-    Capture capture;
-    Capture capture2;
+    Capture captureEO;
+    Capture captureIR;
     PatternGenerator patternGenerator;
     SceneTrack sceneTrack;
     Stabilizer stabilizer;
     Writer writer;
 
     // TODO: move this
-    OutputMode outputMode = Dual;
+    // Default to EO camera
+    OutputMode outputMode = simpleEO;
 
     //interfaces.initilize();
     usleep(100000);
 
-    capture.initilize(AR1820);
-    capture2.initilize(Pattern);
+    captureEO.initilize(AR1820);
+    captureIR.initilize(Pattern);
     //patternGenerator.initilize();
 
     // stabilizer.initilize();
@@ -168,7 +170,7 @@ int main(int argc, char **argv){
 
     usleep(100000);
 
-    writer.init(capture.getLatestFrameColor());
+    writer.init(captureEO.getLatestFrameColor());
     
     // interfaces thread
     std::thread interfacesThread([&](){
@@ -176,13 +178,13 @@ int main(int argc, char **argv){
     });
 
     // capture thread
-    std::thread captureThread([&](){
-        capture.run();
+    std::thread captureEOThread([&](){
+        captureEO.run();
     });
     
     // capture2 thread
-    std::thread capture2Thread([&](){
-        capture2.run();
+    std::thread captureIRThread([&](){
+        captureIR.run();
     });
 
     // sceneTrack thread
@@ -209,15 +211,16 @@ int main(int argc, char **argv){
 
     cv::Mat dualCanvas;
 
-    cv::Mat left;
-    cv::Mat right;
+    cv::Mat frameEO;
+    cv::Mat frameIR;
 
     int stream_width = writer.getStreamWidth();
     int stream_height = writer.getStreamHeight();
 
     dualCanvas.create(cv::Size(stream_width, stream_height), CV_8UC3);
 
-    while ( true ) {
+    while (true)
+    {
 
         frameCounter++;
 
@@ -229,30 +232,23 @@ int main(int argc, char **argv){
             tick++;
             cout << "Frames per second: " << frameCounter << endl;
             frameCounter = 0;
-            cout << dualCanvas.cols << dualCanvas.rows << endl;
         }
 
-        left = capture2.getLatestFrameColor();
-        right = capture.getLatestFrameColor();
+        frameEO = captureEO.getLatestFrameColor();
+        frameIR = captureIR.getLatestFrameColor();      // We still recieve EO frames as "color"
         
-        // convert images to correct aspect ratio
-        if (left.data != NULL && right.data != NULL ){
-            left = GetSquareImage(left, stream_width / 2);
-            cout << "left: " << left.cols << " " << left.rows << endl;
-            cout << "left: 0 0 " << dualCanvas.cols/2 << " " << dualCanvas.rows << endl;
-            left.copyTo(dualCanvas(Rect(0, 0, dualCanvas.cols/2, dualCanvas.rows)));
+        // // convert images to correct aspect ratio
+        // if (left.data != NULL && right.data != NULL ){
+        //     left = GetSquareImage(left, stream_width / 2);
+        //     cout << "left: " << left.cols << " " << left.rows << endl;
+        //     cout << "left: 0 0 " << dualCanvas.cols/2 << " " << dualCanvas.rows << endl;
+        //     left.copyTo(dualCanvas(Rect(0, 0, dualCanvas.cols/2, dualCanvas.rows)));
 
-            right = GetSquareImage(right, stream_width / 2);
-           // cout << "right " << right.cols << " " << right.rows << endl;
-           // cout << 0 << " " << dualCanvas.cols/2 << " " << dualCanvas.cols / 2 << " " << dualCanvas.rows *2 << endl;
-            right.copyTo(dualCanvas(Rect(dualCanvas.cols / 2, 0, dualCanvas.cols / 2, dualCanvas.rows)));
-        }
-
-        if(right.data != NULL){
-
-        }
-
-        
+        //     right = GetSquareImage(right, stream_width / 2);
+        //    // cout << "right " << right.cols << " " << right.rows << endl;
+        //    // cout << 0 << " " << dualCanvas.cols/2 << " " << dualCanvas.cols / 2 << " " << dualCanvas.rows *2 << endl;
+        //     right.copyTo(dualCanvas(Rect(dualCanvas.cols / 2, 0, dualCanvas.cols / 2, dualCanvas.rows)));
+        // }       
         
 
         //image_temp1.copyTo(result(Rect(0, 0, image.cols, image.rows / 2)));
@@ -262,17 +258,46 @@ int main(int argc, char **argv){
        // right.copyTo(dualCanvas( cv::Rect((stream_width / 2), 0, stream_width, stream_height)) );
 
         switch(outputMode){
-            case SingleCam0:
-                writer.write(left);
-                break;
+            case simpleEO:
 
-            case SingleCam1:
-                writer.write(right);
+                if (frameEO.data != NULL && frameIR.data != NULL){
+                        writer.write(frameEO);
+
+ #ifdef HAVE_DISPLAY
+
+                    imshow("Vision Core", frameEO);
+                    key = cv::waitKey(1) & 0xff;
+
+                    if (key == 27 /*Esc*/){
+                        break;
+                    }
+#endif
+                    break;
+
+                }else{
+                    // to do streame error screen instead
+                    cout << "no image data" << endl;
+                }
+
+                case simpleIR:
+
+                    writer.write(frameIR);
+
+#ifdef HAVE_DISPLAY
+
+                imshow("Vision Core", frameIR);
+                key = cv::waitKey(1) & 0xff;
+
+                if (key == 27 /*Esc*/){
+                    break;
+                }
+#endif
+
                 break;
 
             case Dual:
 
-                if (left.data != NULL && right.data != NULL){
+                if (frameEO.data != NULL && frameIR.data != NULL){
 
                   // hconcat(left, right, dualCanvas);
 
@@ -282,8 +307,8 @@ int main(int argc, char **argv){
 
 #ifdef HAVE_DISPLAY
 
-                       imshow("Vision Core", dualCanvas);
-                    const int key = cv::waitKey(1) & 0xff; 
+                    imshow("Vision Core", dualCanvas);
+                    key = cv::waitKey(1) & 0xff; 
 
                     if (key == 27 /*Esc*/){
                         break;
@@ -313,8 +338,8 @@ int main(int argc, char **argv){
     // Request threads to stop
     sceneTrack.stop();
     stabilizer.stop();
-    capture.stop();
-    capture2.stop();
+    captureEO.stop();
+    captureIR.stop();
     interfaces.stop();
     writer.stop();
 
@@ -329,8 +354,8 @@ int main(int argc, char **argv){
     
     // Waiting for thread to join, sync threads for exit
     // if a thread fails to stop we will get stuck waiting for that particular thread to join
-    captureThread.join();
-    capture2Thread.join();
+    captureEOThread.join();
+    captureIRThread.join();
     sceneTrackThread.join();
     interfacesThread.join();
     stabilizerThread.join();
