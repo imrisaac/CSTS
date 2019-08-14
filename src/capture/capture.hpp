@@ -68,6 +68,8 @@ public:
 
     cv::Mat getLatestFramePreProcessed(){return preProcessedFrame;};
 
+    long getFrameCount(){return frameCount;};
+
 private:
     
     std::string getCameraPipeline(CamIndex index);
@@ -88,6 +90,9 @@ private:
     CaptureParams params_;
 
     pthread_mutex_t capture_mutex;
+
+    //  this will limit runtime to...8.54e13 hours need to check that math
+    long frameCount;
 
 };
 

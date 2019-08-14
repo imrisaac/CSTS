@@ -38,12 +38,19 @@ void Capture::initilize(CamIndex index){
 
     params_.camIndex = index;
 
+    cout << "frame count reset" << endl;
+
+    cout << "max frames " << LONG_MAX << endl;
+
+    frameCount = 0;
+
 #ifdef JETSON
 
     if( Pattern != index){
         // open gstreamer pipeline
         if ( !cap.open(getCameraPipeline(index), cv::CAP_GSTREAMER) ){
 
+            // TODO: retry then fall back to error screen generator
             cout << "gstreamer capture failed to initilized" << endl;
 
         }
@@ -52,6 +59,7 @@ void Capture::initilize(CamIndex index){
     }else{
 
         newFrame = imread(params_.pattern0Dir, IMREAD_COLOR);
+
 
         cout << "test pattern initilized" << endl;
     }
@@ -65,12 +73,19 @@ void Capture::initilize(CamIndex index){
         if ( !cap.open(0) ){
             cout << "capture failed to initilize" << endl;
         }
+        cap >> newFrame;
+
+        if (NULL != newFrame.data){
+            cout << "first frame capture complete" << endl;
+            frameCount++;
+        }
 
         cout << "standard capture initilized" << endl;
 
     }else{
 
         newFrame = imread(params_.pattern0Dir, IMREAD_COLOR);
+        frameCount++;
 
         cout << "test pattern initilized" << endl;
     }
@@ -126,6 +141,7 @@ void Capture::run(){
         
         // will block until new frame is available
         cap >> newFrame;
+
         
        // pthread_mutex_unlock(&capture_mutex);
 
@@ -157,11 +173,11 @@ void Capture::run(){
         
     }
     
-    cout << "releasing capture pipeline" << std::endl;
+    cout << "releasing capture" << std::endl;
 
     cap.release();
 
-    cout << "capture pipeline released" << std::endl;
+    cout << "capture released" << std::endl;
 
     // this is the only writer, destroy mutex
 

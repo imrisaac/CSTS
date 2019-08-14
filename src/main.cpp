@@ -204,6 +204,7 @@ int main(int argc, char **argv){
 
     cout << "starting main loop" << endl;
 
+    // TODO: i have two things called frame count fix this
     long frameCounter = 0;
 
     std::time_t timeBegin = std::time(0);
@@ -235,7 +236,7 @@ int main(int argc, char **argv){
         }
 
         frameEO = captureEO.getLatestFrameColor();
-        frameIR = captureIR.getLatestFrameColor();      // We still recieve EO frames as "color"
+        frameIR = captureIR.getLatestFrameColor();      // We still recieve IR frames as "color"
         
         // // convert images to correct aspect ratio
         // if (left.data != NULL && right.data != NULL ){
@@ -322,7 +323,7 @@ int main(int argc, char **argv){
                 break;
         }
 
-
+        // TODO: block with capture instead of sleeping here
 		// stop this thread from running away
 		usleep(30000);
 
