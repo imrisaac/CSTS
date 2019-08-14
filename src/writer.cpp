@@ -12,11 +12,11 @@
 WriterParams::WriterParams()
 {
     encoder = "omxh265enc";
-    udp_bitrate = 2096;
+    udp_bitrate = 2500;
     udp_ip = "192.168.0.255";
     udp_port = "6660";
-    stream_width = 960;
-    stream_height = 720;
+    stream_width = 1080;
+    stream_height = 810;
 
 }
 
@@ -152,7 +152,7 @@ bool Writer::openSink(Sinker sink, cv::Mat start_frame)
 
         // assemble gstreamer pipeline, 
         // ***** please keep this on one line *****
-        gstSink = "appsrc ! timeoverlay halign=left valign=bottom ! video/x-raw, format=(string)BGR ! videoconvert ! video/x-raw, format=(string)I420 ! " + params_.encoder + " bitrate=" + to_string(params_.udp_bitrate * 1024) + " iframeinterval=8 preset-level=0 EnableStringentBitrate=true ! mpegtsmux alignment=7 ! udpsink host=" + params_.udp_ip + " port=" + params_.udp_port + " "; // 300ms
+        gstSink = "appsrc ! timeoverlay halign=left valign=bottom ! video/x-raw, format=(string)BGR ! videoconvert ! video/x-raw, format=(string)I420 ! " + params_.encoder + " bitrate=" + to_string(params_.udp_bitrate * 1000) + " iframeinterval=8 preset-level=0 EnableStringentBitrate=true ! mpegtsmux alignment=7 ! udpsink host=" + params_.udp_ip + " port=" + params_.udp_port + " "; // 300ms
 
         cout << "GST writer sink: " + gstSink + "\n";
 

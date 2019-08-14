@@ -18,13 +18,13 @@ CaptureParams::CaptureParams()
 {
     camIndex = DevKitTx2;
     wbAlgo = Disabled;
-    captureWidth = 960;
-    captureHeight = 720;
+    captureWidth = 1920;
+    captureHeight = 1080;
     captureFPS = 30;
     blenderEnable = false;  
     blenderAlpha = 0.5;
     blenderBeta = 0.5;
-    gstFlip = 0;
+    gstFlip = 3;
     pattern0Dir = "test_pattern.jpg";
 }
 

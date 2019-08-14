@@ -228,7 +228,7 @@ int main(int argc, char **argv){
     dualCanvas.create(cv::Size(stream_width, stream_height), CV_8UC3);
     
     // 960x720 crop
-    cv::Rect roi(60, 600, 960, 720);
+    cv::Rect roi(0, 600, 1080, 810);
 
     while (true)
     {
@@ -272,12 +272,14 @@ int main(int argc, char **argv){
 
                 frameEO = captureEO.getLatestFrameColor();
 
-                // draw our purposed crop
-                rectangle(frameEO, roi, Scalar(255, 0, 0), 1, 8, 0);
-
                 if (frameEO.data != NULL){
+                    
+                    // draw our purposed crop
+                    rectangle(frameEO, roi, Scalar(255, 0, 0), 1, 8, 0);
+                    
+                    cropped = frameEO(roi);
 
-                    writer.write(frameEO);
+                    writer.write(cropped);
 
  #ifdef HAVE_DISPLAY
 
