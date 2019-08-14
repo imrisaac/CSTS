@@ -21,6 +21,7 @@ static void s_catch_signals (void){
     action.sa_flags = 0;
     sigemptyset (&action.sa_mask);
     sigaction (SIGINT, &action, NULL);
+    sigaction (SIGTERM, &action, NULL);
 }
 
 // TODO: do not return use a pointer
@@ -218,11 +219,16 @@ int main(int argc, char **argv){
 
     cv::Mat frameEO;
     cv::Mat frameIR;
+    
+    cv::Mat cropped;
 
     int stream_width = writer.getStreamWidth();
     int stream_height = writer.getStreamHeight();
 
     dualCanvas.create(cv::Size(stream_width, stream_height), CV_8UC3);
+    
+    // 960x720 crop
+    cv::Rect roi(60, 600, 960, 720);
 
     while (true)
     {
