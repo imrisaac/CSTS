@@ -56,12 +56,12 @@ public:
     
     /// Initilizes the frame source and populates initial Mats
     void initilize(CamIndex index);
-    
-    void initiliize(CamIndex index, )
-    
-    /// Runner containing the capture loop that runs in the capture thread
-    void run();
-    
+
+    void initiliize(CamIndex index, std::queue<cv::Mat> capture)
+
+        /// Runner containing the capture loop that runs in the capture thread
+        void run();
+
     /// Returns latest available frame straight out of camera no preprocessing
     cv::Mat getLatestFrameColor(){return newFrame;};
     
