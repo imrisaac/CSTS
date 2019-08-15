@@ -276,9 +276,14 @@ int main(int argc, char **argv){
                     // draw our purposed crop
                     //rectangle(frameEO, zoom.wide, Scalar(255, 0, 0), 1, 8, 0);
                     
-                    //cropped = frameEO(zoom.wide);
+                    cropped = frameEO(zoom.wide);
 
-                  //  writer.write(cropped);
+                    writer.write(cropped);
+                    
+#ifdef DEBUG
+                    putText(result, "D", cvPoint(30,30), 
+                                                    FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(200,200,250), 1, CV_AA);
+#endif
 
  #ifdef HAVE_DISPLAY
 
@@ -291,7 +296,6 @@ int main(int argc, char **argv){
                     }
 #endif
                     captureFrameCounter = captureEO.getFrameCount();
-                    cout << captureFrameCounter << endl;
 
                 }else{
                     // TODO: streame error screen instead
