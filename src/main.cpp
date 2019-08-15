@@ -161,6 +161,9 @@ int main(int argc, char **argv){
 
     //interfaces.initilize();
     usleep(100000);
+    
+    std::queue<cv::Mat> captureFramesEO;
+    std::queue<cv::Mat> captureFramesIR;
 
     captureEO.initilize(AR1820);
     captureIR.initilize(Pattern);
@@ -221,6 +224,7 @@ int main(int argc, char **argv){
     cv::Mat frameIR;
     
     cv::Mat cropped;
+
     
     Zoom zoom;
 

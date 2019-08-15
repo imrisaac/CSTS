@@ -57,6 +57,8 @@ public:
     /// Initilizes the frame source and populates initial Mats
     void initilize(CamIndex index);
     
+    void initiliize(CamIndex index, )
+    
     /// Runner containing the capture loop that runs in the capture thread
     void run();
     
