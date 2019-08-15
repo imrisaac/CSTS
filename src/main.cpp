@@ -24,6 +24,16 @@ static void s_catch_signals (void){
     sigaction (SIGTERM, &action, NULL);
 }
 
+double mticks(){
+
+    typedef std::chrono::high_resolution_clock clock;
+    typedef std::chrono::duration<float, std::milli> duration;
+
+    static clock::time_point start = clock::now();
+    duration elapsed = clock::now() - start;
+    return elapsed.count();
+}
+
 // TODO: do not return use a pointer
 cv::Mat GetSquareImage(const cv::Mat &img, int target_width)
 {
@@ -228,6 +238,8 @@ int main(int argc, char **argv){
     int stream_height = writer.getStreamHeight();
 
     dualCanvas.create(cv::Size(stream_width, stream_height), CV_8UC3);
+
+    double start, notStart;
     
     while (true)
     {
@@ -237,11 +249,10 @@ int main(int argc, char **argv){
         std::time_t timeNow = std::time(0) - timeBegin;
         clock_t stop = clock();
 
-        if (timeNow - tick >= 1)
-        {
+        if (timeNow - tick >= 1){
             tick++;
             cout << "Frames per second: " << frameCounter << endl;
-            cout << "main freetime: " << freetime << "us" << endl;
+            cout << "main freetime: " << freetime << "us " << mticks() << endl;
             frameCounter = 0;
             freetime = 0;
         }
@@ -270,6 +281,8 @@ int main(int argc, char **argv){
             case simpleEO:
 
                 frameEO = captureEO.getLatestFrameColor();
+
+                cout << "time: " << mticks() << endl;
 
                 if (frameEO.data != NULL){
                     
@@ -310,7 +323,6 @@ int main(int argc, char **argv){
 
 #ifdef HAVE_DISPLAY
                     imshow("Vision Core", frameIR);
-
 #endif
                     captureFrameCounter = captureIR.getFrameCount();
 
@@ -332,7 +344,6 @@ int main(int argc, char **argv){
                    //writer.write(dualCanvas);
 
 #ifdef HAVE_DISPLAY
-
                     imshow("Vision Core", dualCanvas);
                     key = cv::waitKey(1) & 0xff; 
 
@@ -378,13 +389,6 @@ int main(int argc, char **argv){
 
     usleep(300000);
 
-    // exit object tracking thread
-    // exit scene tracking thread
-    // exit stabilization thread
-    // exit c2 thread
-    // exit capture thread
-    // exit main
-    
     // Waiting for thread to join, sync threads for exit
     // if a thread fails to stop we will get stuck waiting for that particular thread to join
     captureEOThread.join();
