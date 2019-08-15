@@ -56,6 +56,7 @@ void Capture::initilize(CamIndex index){
         }
         
         cout << "gstreamer capture initilized" << endl;
+
     }else{
 
         newFrame = imread(params_.pattern0Dir, IMREAD_COLOR);
@@ -133,6 +134,16 @@ void Capture::run(){
         // pattern generator does not need the runner, exit immediatly
         return;
     }
+
+    cap >> newFrame;
+
+    // TODO: add a timeout here
+    while(NULL == newFrame.data){
+        cap >> newFrame;
+        usleep(50);
+    }
+
+    cout << params_.camIndex << " first capture: " << newFrame.cols << "x" << newFrame.rows << endl;
     
     // Check if thread is requested to stop ?
     while ( false == stopRequested() ){

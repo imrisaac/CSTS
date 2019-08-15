@@ -167,7 +167,7 @@ int main(int argc, char **argv){
 
     // TODO: move this
     // Default to EO camera
-    OutputMode outputMode = simpleEO;
+    OutputMode outputMode = simpleIR;
 
     //interfaces.initilize();
     usleep(100000);
@@ -240,7 +240,7 @@ int main(int argc, char **argv){
     dualCanvas.create(cv::Size(stream_width, stream_height), CV_8UC3);
 
     double start, notStart;
-    
+
     while (true)
     {
 
@@ -289,9 +289,9 @@ int main(int argc, char **argv){
                     // draw our purposed crop
                     //rectangle(frameEO, zoom.wide, Scalar(255, 0, 0), 1, 8, 0);
                     
-                    cropped = frameEO(zoom.wide);
+                    //cropped = frameEO(zoom.wide);
 
-                    writer.write(cropped);
+                  //  writer.write(cropped);
                     
 #ifdef DEBUG
                     putText(result, "D", cvPoint(30,30), 
@@ -320,6 +320,8 @@ int main(int argc, char **argv){
             case simpleIR:
 
                 frameIR = captureIR.getLatestFrameColor(); // We still recieve IR frames as "color"
+
+               // cv::resize(frameIR, frameIR, cv::Size(0, 0), (1080/640), (810/512));
 
                 if (NULL != frameIR.data){
 
