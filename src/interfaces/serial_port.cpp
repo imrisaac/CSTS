@@ -78,10 +78,10 @@ void Serial_Port::initialize_defaults()
 
 #ifdef MAC
 	uart_name = (char *)"/dev/tty.usbmodem01";
-#elif JETSON
-	uart_name = (char *)"/dev/ttyACM0";
+#elif defined(JETSON)
+	uart_name = (char *)"/dev/ttyTHS1";
 #else
-	uart_name = (char*)"/dev/ttyACM0";
+	uart_name = (char*)"/dev/ttyTHS1";
 #endif
 
 	baudrate  = 115200;

@@ -17,11 +17,5 @@ enum OutputMode{
 
 };
 
-struct Zoom{
-    cv::Rect wide  = cv::Rect(0, 600, 1080, 810);
-    cv::Rect tele0 = cv::Rect(0, 600, 1080, 810);
-    cv::Rect tele1 = cv::Rect(0, 600, 1080, 810);
-    cv::Rect tele2 = cv::Rect(0, 600, 1080, 810);
-};
 
 #endif /* common.h  */

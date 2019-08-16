@@ -15,8 +15,8 @@ WriterParams::WriterParams()
     udp_bitrate = 2500;
     udp_ip = "192.168.0.255";
     udp_port = "6660";
-    stream_width = 512;
-    stream_height = 640;
+    stream_width = 960;
+    stream_height = 720;
 
 }
 
@@ -144,7 +144,7 @@ bool Writer::openSink(Sinker sink, cv::Mat start_frame)
         cout << "GST writer sink: " + gstSink + "\n";
 
         // TODO: initilize writer resolution using start_frame size
-        udpWriter.open(gstSink, 0, (double)30, cv::Size(1280, 720), true);
+        udpWriter.open(gstSink, 0, (double)30, cv::Size(params_.stream_width, params_.stream_height), true);
 
         break;
     
@@ -152,14 +152,24 @@ bool Writer::openSink(Sinker sink, cv::Mat start_frame)
 
         // assemble gstreamer pipeline, 
         // ***** please keep this on one line *****
-        gstSink = "appsrc ! timeoverlay halign=left valign=bottom ! video/x-raw, format=(string)BGR ! videoconvert ! video/x-raw, format=(string)I420 ! " + params_.encoder + " bitrate=" + to_string(params_.udp_bitrate * 1000) + " iframeinterval=8 preset-level=0 EnableStringentBitrate=true ! mpegtsmux alignment=7 ! udpsink host=" + params_.udp_ip + " port=" + params_.udp_port + " "; // 300ms
+        gstSink = "appsrc ! timeoverlay halign=left valign=bottom ! video/x-raw, format=(string)BGR ! videoconvert ! video/x-raw, format=(string)I420 ! " + params_.encoder + " bitrate=" + to_string(params_.udp_bitrate * 1000) + " ! mpegtsmux alignment=7 ! udpsink host=" + params_.udp_ip + " port=" + params_.udp_port + " "; // 300ms
 
         cout << "GST writer sink: " + gstSink + "\n";
+        
+        udpWriter.open(gstSink, 0, (double)30, cv::Size(params_.stream_width, params_.stream_height), true);
+        
+        break;
 
-        // TODO: initilize writer resolution using start_frame size
-        //udpWriter.open(gstSink, 0, (double)30, cv::Size(1280, 640), true);
-        udpWriter.open(gstSink, 0, (double)60, cv::Size(params_.stream_width, params_.stream_height), true);
+    case gstFlirCropped:
+    
+        // cropped flir pipeline
+        // ***** please keep this on one line *****
+        gstSink = "appsrc ! timeoverlay halign=left valign=bottom ! video/x-raw, format=(string)BGR width=960,height=720 ! videoconvert ! video/x-raw, format=(string)I420 ! " + params_.encoder + " bitrate=" + to_string(params_.udp_bitrate * 1000) + " iframeinterval=8 preset-level=0 EnableStringentBitrate=true ! mpegtsmux alignment=7 ! udpsink host=" + params_.udp_ip + " port=" + params_.udp_port + " "; // 300ms
 
+        cout << "GST writer sink: " + gstSink + "\n";
+        
+        udpWriter.open(gstSink, 0, (double)60, cv::Size(960, 720), true);
+    
         break;
 
     case file0:

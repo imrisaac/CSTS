@@ -43,6 +43,7 @@
 #include "system.hpp"
 #include "common.h"
 #include "capture/captureCommon.hpp"
+#include "resolutions.h"
 
 volatile sig_atomic_t flag = 0;
 

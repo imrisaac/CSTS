@@ -27,6 +27,7 @@ enum Sinker
 {
     gstMacUDP,
     gstJetsonUDP,
+    gstFlirCropped,
     file0,
     file1,
 };

@@ -52,6 +52,20 @@ void MavlinkInterface::processMessage(mavlink_message_t message){
         }
 
         case MAVLINK_MSG_ID_AV_PAYLOAD_CONTROL:{
+            
+            mavlink_av_payload_control_t packet;
+
+            mavlink_msg_av_payload_control_decode(&message, &packet);
+            
+            if( EO_COLOR_CAMERA == packet.control_type && CONNECTED == ( packet.control_flags & CONNECTED ) ){
+                
+                cout << "EO selected" << endl;
+
+            }else if ( IR_CAMERA == packet.control_type && CONNECTED == ( packet.control_flags & CONNECTED )  ){
+
+                cout << "IR selected" << endl;
+
+            }
 
             break;
         }

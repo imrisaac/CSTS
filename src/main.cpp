@@ -65,6 +65,7 @@ cv::Mat GetSquareImage(const cv::Mat &img, int target_width)
     return square;
 }
 
+
 int main(int argc, char **argv){
     int c;
     int digit_optind = 0;
@@ -164,16 +165,25 @@ int main(int argc, char **argv){
     SceneTrack sceneTrack;
     Stabilizer stabilizer;
     Writer writer;
+    
+    cv::Mat cropped;
+    cropped.create(cv::Size(960, 720), CV_8UC3);
+    
+    Zoom zoom;
+    
+    Boson640_90 boson640_90;
 
     // TODO: move this
     // Default to EO camera
-    OutputMode outputMode = simpleIR;
 
     interfaces.initilize();
     usleep(100000);
     
     cv::VideoCapture capEO;
     cv::VideoCapture capIR;
+    
+    cv::Mat frameEO;
+    cv::Mat frameIR;
     
     capEO = *captureEO.initilize(AR1820);
     capIR = *captureIR.initilize(Boson);
@@ -183,12 +193,22 @@ int main(int argc, char **argv){
     // sceneTrack.initilize();
 
     usleep(100000);
+    
+    capEO.read(frameEO);
+    frameEO(zoom.wide).copyTo(cropped);
+    
+    cout << "EO crop: " << cropped.cols << "x" << cropped.rows << endl;
+    cout << "EO crop: " << cropped.size().width << "x" << cropped.size().height << endl;
+    
+    capIR.read(frameIR);
 
-    writer.init(captureEO.getLatestFrameColor());
+    cout << "IR size: " << frameIR.cols << "x" << frameIR.rows << endl;
+
+    writer.init(cropped);
     
     // interfaces thread
     std::thread interfacesThread([&](){
-       interfaces.run();
+        interfaces.run();
     });
 
     // capture thread
@@ -229,27 +249,23 @@ int main(int argc, char **argv){
     int tick = 0;
 
     cv::Mat dualCanvas;
+    cv::Mat fourThreeCanvas;
 
-    cv::Mat frameEO;
-    cv::Mat frameIR;
+    int output_width = writer.getStreamWidth();
+    int output_height = writer.getStreamHeight();
+
+    dualCanvas.create(cv::Size(output_width, output_height), CV_8UC3);
     
-    cv::Mat cropped;
-    
-    Zoom zoom;
-
-    int stream_width = writer.getStreamWidth();
-    int stream_height = writer.getStreamHeight();
-
-    dualCanvas.create(cv::Size(stream_width, stream_height), CV_8UC3);
+    fourThreeCanvas.create(cv::Size(output_width, output_height), CV_8UC3);
 
     double start, notStart;
+    
+    OutputMode outputMode = simpleIR;
     
     clock_t t1;
 
     while (true)
     {
-
-        frameCounter++;
 
         std::time_t timeNow = std::time(0) - timeBegin;
         clock_t stop = clock();
@@ -257,43 +273,23 @@ int main(int argc, char **argv){
         if (timeNow - tick >= 1){
             tick++;
             cout << "Frames per second: " << frameCounter << endl;
-            cout << "main freetime: " << freetime << "us " << mticks() << endl;
             frameCounter = 0;
             freetime = 0;
         }
         
-        // // convert images to correct aspect ratio
-        // if (left.data != NULL && right.data != NULL ){
-        //     left = GetSquareImage(left, stream_width / 2);
-        //     cout << "left: " << left.cols << " " << left.rows << endl;
-        //     cout << "left: 0 0 " << dualCanvas.cols/2 << " " << dualCanvas.rows << endl;
-        //     left.copyTo(dualCanvas(Rect(0, 0, dualCanvas.cols/2, dualCanvas.rows)));
-
-        //     right = GetSquareImage(right, stream_width / 2);
-        //    // cout << "right " << right.cols << " " << right.rows << endl;
-        //    // cout << 0 << " " << dualCanvas.cols/2 << " " << dualCanvas.cols / 2 << " " << dualCanvas.rows *2 << endl;
-        //     right.copyTo(dualCanvas(Rect(dualCanvas.cols / 2, 0, dualCanvas.cols / 2, dualCanvas.rows)));
-        // }       
-        
-
-        //image_temp1.copyTo(result(Rect(0, 0, image.cols, image.rows / 2)));
-       // image_temp2.copyTo(result(Rect(0, image.rows/2, image.cols, image.rows/2));
-
-        
-       // right.copyTo(dualCanvas( cv::Rect((stream_width / 2), 0, stream_width, stream_height)) );
-
         switch(outputMode){
             case simpleEO:
             
-                t1 = clock();
+                
                 capEO.read(frameEO);
-                t1 = clock() - t1;
+
+                frameCounter++;
                 
                // std::cout << "it takes " << (((float)t1)/CLOCKS_PER_SEC)*1000 << " ms to capture a frame. The capture rate can reach " << 1/(((float)t1)/CLOCKS_PER_SEC) << " FPS" << std::endl;
 
                 if (frameEO.data != NULL){
                     
-                    cropped = frameEO(zoom.wide);
+                    frameEO(zoom.wide).copyTo(cropped);
 
                     writer.write(cropped);
                     
@@ -302,12 +298,12 @@ int main(int argc, char **argv){
                                                     FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(200,200,250), 1, CV_AA);
 #endif
 
- #ifdef HAVE_DISPLAY
+#ifdef HAVE_DISPLAY
  
                     // draw our purposed crop
                     rectangle(frameEO, zoom.wide, Scalar(255, 0, 0), 1, 8, 0);
 
-                    imshow("Vision Core", frameEO);
+                    imshow("Vision Core", cropped);
 
                     key = cv::waitKey(1) & 0xff;
 
@@ -326,20 +322,27 @@ int main(int argc, char **argv){
 
             case simpleIR:
 
-                t1 = clock();
                 capIR.read(frameIR);
-                t1 = clock() - t1;
-
-               // cv::resize(frameIR, frameIR, cv::Size(0, 0), (1080/640), (810/512));
-
+                
+                frameCounter++;
+                
+                cv::resize(frameIR, frameIR, cv::Size(0, 0), boson640_90.scaleFactor720 , boson640_90.scaleFactor720);
+                
+                cv::copyMakeBorder(frameIR, frameIR, 0, 0, 192, 192, BORDER_CONSTANT);
+                
                 if (NULL != frameIR.data){
 
                     writer.write(frameIR);
 
 #ifdef HAVE_DISPLAY
                     imshow("Vision Core", frameIR);
+                    
+                    key = cv::waitKey(1) & 0xff;
+
+                    if (key == 27 /*Esc*/){
+                        break;
+                    }
 #endif
-                    captureFrameCounter = captureIR.getFrameCount();
 
                 }else{
                     // TODO: streamer error screen instead
@@ -374,22 +377,8 @@ int main(int argc, char **argv){
                 break;
         }
 
-/*
-        // Interrupt catcher and throtteling
-        while (captureFrameCounter == captureEO.getFrameCount()){
-
-            if (s_interrupted) {
-                std::cout << "interrupt received" << std::endl;
-                break;
-            }
-
-            freetime += 1;
-            usleep(1);
-        }
-        * */
-
         if (s_interrupted) {
-            std::cout << "killing from main" << std::endl;
+            std::cout << "killing main" << std::endl;
             break;
         }
     }
