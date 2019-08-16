@@ -15,8 +15,8 @@ WriterParams::WriterParams()
     udp_bitrate = 2500;
     udp_ip = "192.168.0.255";
     udp_port = "6660";
-    stream_width = 1080;
-    stream_height = 810;
+    stream_width = 640;
+    stream_height = 512;
 
 }
 

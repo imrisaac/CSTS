@@ -236,9 +236,13 @@ std::string Capture::getCameraPipeline(CamIndex camera)
         break;
 
     case Boson:
-        pipeline = "v4l2src device=/dev/video0 ! 'video/x-raw, format=(string)UYVY, width=(int)" + std::to_string(640) + ", height=(int)" +
-                   std::to_string(512) + ", framerate=(fraction)" + std::to_string(60) +
-                   "/1' ! nvvidconv flip-method=4 ! video/x-raw, format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)BGR ! appsink";
+                // v4l2src device=/dev/video0 ! video/x-raw, format=(string)UYVY, width=(int)640, height=(int)512, framerate=(fraction)60/1 ! nvvidconv flip-method=4 ! video/x-raw(memory:NVMM), format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)BGR ! appsink
+                // v4l2src device=/dev/video0 ! video/x-raw, format=(string)UYVY, width=(int)640, height=(int)512, framerate=(fraction)60/1 ! nvvidconv flip-method=4 ! video/x-raw, format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)BGR ! appsink
+        pipeline = "v4l2src device=/dev/video0 ! video/x-raw, format=(string)UYVY, width=(int)640, height=(int)512, framerate=(fraction)60/1 ! videoconvert ! video/x-raw, width=(int)640, height=(int)512, format=(string)BGR, framerate=(fraction)60/1 ! appsink ";
+                // v4l2src device=/dev/video0 ! video/x-raw, format=(string)UYVY, width=(int)640, height=(int)512, framerate=(fraction)60/1 ! nvvidconv flip-method=2 ! video/x-raw(memory:NVMM), width=(int)640, height=(int)512, format=(string)I420, framerate=(fraction)60/1 ! omxh264enc bitrate=2000000 ! mpegtsmux alignment=7 ! udpsink host=192.168.0.255 port=6660
+    //    pipeline = "v4l2src device=/dev/video0 ! video/x-raw, format=(string)UYVY, width=(int)" + std::to_string(640) + ", height=(int)" +
+     //              std::to_string(512) + ", framerate=(fraction)" + std::to_string(60) +
+    //               "/1 ! nvvidconv flip-method=4 ! video/x-raw(memory:NVMM), format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)BGR ! appsink";
         break;
 
     case Pattern:

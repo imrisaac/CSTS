@@ -167,15 +167,16 @@ int main(int argc, char **argv){
 
     // TODO: move this
     // Default to EO camera
-    OutputMode outputMode = simpleEO;
+    OutputMode outputMode = simpleIR;
 
     //interfaces.initilize();
     usleep(100000);
     
     cv::VideoCapture capEO;
+    cv::VideoCapture capIR;
     
     capEO = *captureEO.initilize(AR1820);
-    //captureIR.initilize(Pattern);
+    capIR = *captureIR.initilize(Boson);
     //patternGenerator.initilize();
 
     // stabilizer.initilize();
@@ -288,17 +289,9 @@ int main(int argc, char **argv){
                 capEO.read(frameEO);
                 t1 = clock() - t1;
                 
-                std::cout << "it takes " << (((float)t1)/CLOCKS_PER_SEC)*1000 << " ms to capture a frame. The capture rate can reach " << 1/(((float)t1)/CLOCKS_PER_SEC) << " FPS" << std::endl;
-                
-                
-               // frameEO = captureEO.getLatestFrameColor();
-
-               // cout << "time: " << mticks() << endl;
+               // std::cout << "it takes " << (((float)t1)/CLOCKS_PER_SEC)*1000 << " ms to capture a frame. The capture rate can reach " << 1/(((float)t1)/CLOCKS_PER_SEC) << " FPS" << std::endl;
 
                 if (frameEO.data != NULL){
-                    
-                    // draw our purposed crop
-                    //rectangle(frameEO, zoom.wide, Scalar(255, 0, 0), 1, 8, 0);
                     
                     cropped = frameEO(zoom.wide);
 
@@ -310,6 +303,9 @@ int main(int argc, char **argv){
 #endif
 
  #ifdef HAVE_DISPLAY
+ 
+                    // draw our purposed crop
+                    rectangle(frameEO, zoom.wide, Scalar(255, 0, 0), 1, 8, 0);
 
                     imshow("Vision Core", frameEO);
 
@@ -330,7 +326,9 @@ int main(int argc, char **argv){
 
             case simpleIR:
 
-                frameIR = captureIR.getLatestFrameColor(); // We still recieve IR frames as "color"
+                t1 = clock();
+                capIR.read(frameIR);
+                t1 = clock() - t1;
 
                // cv::resize(frameIR, frameIR, cv::Size(0, 0), (1080/640), (810/512));
 
