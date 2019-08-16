@@ -55,7 +55,7 @@ class Capture: public Threader
 public:
     
     /// Initilizes the frame source and populates initial Mats
-    void initilize(CamIndex index);
+    cv::VideoCapture *initilize(CamIndex index);
     
     /// Runner containing the capture loop that runs in the capture thread
     void run();

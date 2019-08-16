@@ -167,13 +167,15 @@ int main(int argc, char **argv){
 
     // TODO: move this
     // Default to EO camera
-    OutputMode outputMode = simpleIR;
+    OutputMode outputMode = simpleEO;
 
     //interfaces.initilize();
     usleep(100000);
-
-    captureEO.initilize(AR1820);
-    captureIR.initilize(Pattern);
+    
+    cv::VideoCapture capEO;
+    
+    capEO = *captureEO.initilize(AR1820);
+    //captureIR.initilize(Pattern);
     //patternGenerator.initilize();
 
     // stabilizer.initilize();
@@ -190,12 +192,12 @@ int main(int argc, char **argv){
 
     // capture thread
     std::thread captureEOThread([&](){
-        captureEO.run();
+       // captureEO.run();
     });
     
     // capture2 thread
     std::thread captureIRThread([&](){
-        captureIR.run();
+        //captureIR.run();
     });
 
     // sceneTrack thread
@@ -279,19 +281,21 @@ int main(int argc, char **argv){
 
         switch(outputMode){
             case simpleEO:
+            
+               // cout << "Main capture" << endl;
+                capEO >> frameEO;
+               // frameEO = captureEO.getLatestFrameColor();
 
-                frameEO = captureEO.getLatestFrameColor();
-
-                cout << "time: " << mticks() << endl;
+               // cout << "time: " << mticks() << endl;
 
                 if (frameEO.data != NULL){
                     
                     // draw our purposed crop
                     //rectangle(frameEO, zoom.wide, Scalar(255, 0, 0), 1, 8, 0);
                     
-                    //cropped = frameEO(zoom.wide);
+                    cropped = frameEO(zoom.wide);
 
-                  //  writer.write(cropped);
+                    writer.write(cropped);
                     
 #ifdef DEBUG
                     putText(result, "D", cvPoint(30,30), 
@@ -365,6 +369,7 @@ int main(int argc, char **argv){
                 break;
         }
 
+/*
         // Interrupt catcher and throtteling
         while (captureFrameCounter == captureEO.getFrameCount()){
 
@@ -376,6 +381,7 @@ int main(int argc, char **argv){
             freetime += 1;
             usleep(1);
         }
+        * */
 
         if (s_interrupted) {
             std::cout << "killing from main" << std::endl;

@@ -32,7 +32,7 @@ CaptureParams::CaptureParams()
     Initilizer for the capture loop
     created capture object and tries to grab a frame from it
  */
-void Capture::initilize(CamIndex index){
+cv::VideoCapture *Capture::initilize(CamIndex index){
     
     cout << "Initilizing capture " << endl;
 
@@ -119,6 +119,7 @@ void Capture::initilize(CamIndex index){
             break;
     }
 
+    return &cap;
 }
 
 /**
