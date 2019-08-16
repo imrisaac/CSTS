@@ -158,7 +158,7 @@ bool Writer::openSink(Sinker sink, cv::Mat start_frame)
 
         // TODO: initilize writer resolution using start_frame size
         //udpWriter.open(gstSink, 0, (double)30, cv::Size(1280, 640), true);
-        udpWriter.open(gstSink, 0, (double)30, cv::Size(params_.stream_width, params_.stream_height), true);
+        udpWriter.open(gstSink, 0, (double)60, cv::Size(params_.stream_width, params_.stream_height), true);
 
         break;
 

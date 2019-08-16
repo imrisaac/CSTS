@@ -242,6 +242,8 @@ int main(int argc, char **argv){
     dualCanvas.create(cv::Size(stream_width, stream_height), CV_8UC3);
 
     double start, notStart;
+    
+    clock_t t1;
 
     while (true)
     {
@@ -282,8 +284,13 @@ int main(int argc, char **argv){
         switch(outputMode){
             case simpleEO:
             
-               // cout << "Main capture" << endl;
-                capEO >> frameEO;
+                t1 = clock();
+                capEO.read(frameEO);
+                t1 = clock() - t1;
+                
+                std::cout << "it takes " << (((float)t1)/CLOCKS_PER_SEC)*1000 << " ms to capture a frame. The capture rate can reach " << 1/(((float)t1)/CLOCKS_PER_SEC) << " FPS" << std::endl;
+                
+                
                // frameEO = captureEO.getLatestFrameColor();
 
                // cout << "time: " << mticks() << endl;
