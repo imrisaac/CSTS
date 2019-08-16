@@ -169,7 +169,7 @@ int main(int argc, char **argv){
     // Default to EO camera
     OutputMode outputMode = simpleIR;
 
-    //interfaces.initilize();
+    interfaces.initilize();
     usleep(100000);
     
     cv::VideoCapture capEO;
@@ -188,7 +188,7 @@ int main(int argc, char **argv){
     
     // interfaces thread
     std::thread interfacesThread([&](){
-       //interfaces.run();
+       interfaces.run();
     });
 
     // capture thread
