@@ -69,9 +69,6 @@ struct Mavlink_Messages
     // Battery Status
     mavlink_battery_status_t battery_status;
 
-    // Radio Status
-    mavlink_radio_status_t radio_status;
-
     // Local Position
     mavlink_local_position_ned_t local_position_ned;
 
