@@ -198,7 +198,7 @@ int main(int argc, char **argv){
     
     // read first EO frame and report its size
     capEO.read(frameEO);
-    cout << "EO crop: " << frameEO.cols << "x" << frameEO.rows << endl;
+    cout << "EO size: " << frameEO.cols << "x" << frameEO.rows << endl;
 
     // read first IR frame and report its size
     capIR.read(frameIR);
@@ -290,9 +290,9 @@ int main(int argc, char **argv){
                 
                 if (frameEO.data != NULL){
                     
-                    frameEO(zoom.wide0).copyTo(cropped);
+                    frameEO(zoom.wide0).copyTo(frameEO);
 
-                    cv::resize(cropped, cropped, cv::Size(0, 0), zoom.scaleFactor810, zoom.scaleFactor810);
+                    cv::resize(frameEO, cropped, cv::Size(0, 0), zoom.scaleFactor810, zoom.scaleFactor810);
 
                     //writer.write(cropped);                
                     udpWriter << cropped;
