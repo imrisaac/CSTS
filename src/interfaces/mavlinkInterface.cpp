@@ -34,8 +34,9 @@ void MavlinkInterface::processMessage(mavlink_message_t message){
 
             //printf("MAVLINK_MSG_ID_HEARTBEAT\n");
             mavlink_msg_heartbeat_decode(&message, &(current_messages.heartbeat));
-            cout << "heartbeat" << endl;
             current_messages.time_stamps.heartbeat = get_time_usec();
+            
+            cout << "heartbeat " << current_messages.time_stamps.heartbeat << endl;
 
             break;
 
