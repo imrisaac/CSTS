@@ -292,7 +292,7 @@ int main(int argc, char **argv){
                     
                     frameEO(zoom.wide0).copyTo(cropped);
 
-                    cv::resize(frameEO, frameEO, cv::Size(0, 0), zoom.scaleFactor810, zoom.scaleFactor810);
+                    cv::resize(cropped, cropped, cv::Size(0, 0), zoom.scaleFactor810, zoom.scaleFactor810);
 
                     //writer.write(cropped);                
                     udpWriter << cropped;
