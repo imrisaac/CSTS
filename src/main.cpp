@@ -196,14 +196,12 @@ int main(int argc, char **argv){
 
     usleep(100000);
     
+    // read first EO frame and report its size
     capEO.read(frameEO);
-    frameEO(zoom.wide).copyTo(cropped);
-    
-    cout << "EO crop: " << cropped.cols << "x" << cropped.rows << endl;
-    cout << "EO crop: " << cropped.size().width << "x" << cropped.size().height << endl;
-    
-    capIR.read(frameIR);
+    cout << "EO crop: " << frameEO.cols << "x" << frameEO.rows << endl;
 
+    // read first IR frame and report its size
+    capIR.read(frameIR);
     cout << "IR size: " << frameIR.cols << "x" << frameIR.rows << endl;
 
     udpWriter = *writer.init(cropped);
@@ -290,14 +288,13 @@ int main(int argc, char **argv){
 
                 frameCounter++;
                 
-               // std::cout << "it takes " << (((float)t1)/CLOCKS_PER_SEC)*1000 << " ms to capture a frame. The capture rate can reach " << 1/(((float)t1)/CLOCKS_PER_SEC) << " FPS" << std::endl;
-
                 if (frameEO.data != NULL){
                     
-                    frameEO(zoom.wide).copyTo(cropped);
+                    frameEO(zoom.wide0).copyTo(cropped);
 
-                    //writer.write(cropped);
-                    
+                    cv::resize(frameEO, frameEO, cv::Size(0, 0), zoom.scaleFactor810, zoom.scaleFactor810);
+
+                    //writer.write(cropped);                
                     udpWriter << cropped;
                     
 #ifdef DEBUG
