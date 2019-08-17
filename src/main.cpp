@@ -235,7 +235,7 @@ int main(int argc, char **argv){
     
     // writer thread
     std::thread writerThread([&](){
-		writer.run();
+		//writer.run();
     });
 
     cout << "starting main loop" << endl;
@@ -262,7 +262,7 @@ int main(int argc, char **argv){
 
     double start, notStart;
     
-    OutputMode outputMode = simpleIR;
+    OutputMode outputMode = simpleEO;
     
     clock_t t1;
 
@@ -278,7 +278,7 @@ int main(int argc, char **argv){
             frameCounter = 0;
             freetime = 0;
         }
-        
+    
         // get out desired output mode
         interfaces.getDesiredOutputMode(&outputMode);
         
