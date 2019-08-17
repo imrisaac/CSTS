@@ -17,8 +17,9 @@
 
 // in repo
 #include "serial_port.h"
-#include "../thread.hpp"        //ugg really need to setup cmake properly
+#include "../thread.hpp"        // ugg really need to setup cmake properly
 #include "mavlinkInterface.hpp"
+#include "../common.h"          // ugg
 
 #ifdef WITH_ROS
 // ros
@@ -47,6 +48,8 @@ public:
     void initilize();
 
     void run();
+
+    enum OutputMode getDesiredOutputMode();
 
 private:
 

@@ -276,6 +276,8 @@ int main(int argc, char **argv){
             frameCounter = 0;
             freetime = 0;
         }
+
+        outputMode = interfaces.getDesiredOutputMode();
         
         switch(outputMode){
             case simpleEO:

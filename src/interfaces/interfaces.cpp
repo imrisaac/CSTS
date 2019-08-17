@@ -71,3 +71,17 @@ void Interfaces::run(){
     cout << "interface loop stopped" << endl;
 
 }
+
+enum OutputMode Interfaces::getDesiredOutputMode(){
+
+    if (EO_COLOR_CAMERA == mavlinkInterface.current_messages.payload_control.control_type && CONNECTED == (mavlinkInterface.current_messages.payload_control.control_flags & CONNECTED))
+    {
+
+        return simpleEO;
+    }
+    else if (IR_CAMERA == mavlinkInterface.current_messages.payload_control.control_type && CONNECTED == (mavlinkInterface.current_messages.payload_control.control_flags & CONNECTED))
+    {
+
+        return simpleIR;
+    }
+}

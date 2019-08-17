@@ -87,6 +87,9 @@ struct Mavlink_Messages
     // Attitude
     mavlink_attitude_t attitude;
 
+    // Payload Control
+    mavlink_av_payload_control_t payload_control;
+
     // System Parameters?
 
     // Time Stamps
@@ -106,9 +109,10 @@ public:
 
     void write_messages();
 
-private:
-
+    // TODO: make private
     Mavlink_Messages current_messages;
+
+private:
 
 };
 

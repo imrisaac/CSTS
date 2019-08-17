@@ -56,6 +56,7 @@ void MavlinkInterface::processMessage(mavlink_message_t message){
             mavlink_av_payload_control_t packet;
 
             mavlink_msg_av_payload_control_decode(&message, &packet);
+            current_messages.payload_control = packet;
             
             if( EO_COLOR_CAMERA == packet.control_type && CONNECTED == ( packet.control_flags & CONNECTED ) ){
                 
