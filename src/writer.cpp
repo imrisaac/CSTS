@@ -29,7 +29,7 @@ Telemetry::Telemetry()
 /**
     initilize the writer 
  */
-void Writer::init(const cv::Mat &start_frame)
+cv::VideoWriter *Writer::init(const cv::Mat &start_frame)
 {
 
     cout << "initilizing writer" << endl;    
@@ -42,6 +42,8 @@ void Writer::init(const cv::Mat &start_frame)
 
     // create a canvas to add IR and EOO images side by side, boson is 640 x 512, EOO is temporarily 720 x 1280 
    // dualCanvas.create(cv::Size(params_.stream_width, params_.stream_height), CV_8UC3);
+   
+   return &udpWriter;
 
 }
 

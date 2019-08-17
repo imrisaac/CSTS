@@ -49,7 +49,7 @@ public:
 
     void run();
 
-    enum OutputMode getDesiredOutputMode();
+    void getDesiredOutputMode(enum OutputMode *outputMode);
 
 private:
 

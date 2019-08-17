@@ -182,6 +182,8 @@ int main(int argc, char **argv){
     cv::VideoCapture capEO;
     cv::VideoCapture capIR;
     
+    cv::VideoWriter udpWriter;
+    
     cv::Mat frameEO;
     cv::Mat frameIR;
     
@@ -204,7 +206,7 @@ int main(int argc, char **argv){
 
     cout << "IR size: " << frameIR.cols << "x" << frameIR.rows << endl;
 
-    writer.init(cropped);
+    udpWriter = *writer.init(cropped);
     
     // interfaces thread
     std::thread interfacesThread([&](){
@@ -272,12 +274,13 @@ int main(int argc, char **argv){
 
         if (timeNow - tick >= 1){
             tick++;
-            cout << "Frames per second: " << frameCounter << endl;
+            //cout << "Frames per second: " << frameCounter << endl;
             frameCounter = 0;
             freetime = 0;
         }
-
-        outputMode = interfaces.getDesiredOutputMode();
+        
+        // get out desired output mode
+        interfaces.getDesiredOutputMode(&outputMode);
         
         switch(outputMode){
             case simpleEO:
@@ -293,7 +296,9 @@ int main(int argc, char **argv){
                     
                     frameEO(zoom.wide).copyTo(cropped);
 
-                    writer.write(cropped);
+                    //writer.write(cropped);
+                    
+                    udpWriter << cropped;
                     
 #ifdef DEBUG
                     putText(result, "D", cvPoint(30,30), 
@@ -334,7 +339,8 @@ int main(int argc, char **argv){
                 
                 if (NULL != frameIR.data){
 
-                    writer.write(frameIR);
+                    //writer.write(frameIR);
+                    udpWriter << frameIR;
 
 #ifdef HAVE_DISPLAY
                     imshow("Vision Core", frameIR);

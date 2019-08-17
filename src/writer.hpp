@@ -57,7 +57,7 @@ struct Telemetry
 class Writer: public Threader
 {
 public:
-    void init(const cv::Mat &start_frame);
+    cv::VideoWriter *init(const cv::Mat &start_frame);
 
     void run();
     
