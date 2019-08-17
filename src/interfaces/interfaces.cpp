@@ -84,4 +84,7 @@ enum OutputMode Interfaces::getDesiredOutputMode(){
 
         return simpleIR;
     }
+    
+    // default to simpleEO
+    return simpleEO;
 }

@@ -20,13 +20,27 @@ indent_mode=2
 [project]
 name=vision_core_4
 base_path=/media/user/sd32/development/vision_core_4
+description=
 
 [long line marker]
 long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=-1
+current_page=4
+FILE_NAME_0=5457;C++;0;EUTF-8;0;1;0;%2Fmedia%2Fuser%2Fsd32%2Fdevelopment%2Fvision_core_4%2Fsrc%2Fmain.cpp;0;4
+FILE_NAME_1=1183;C++;0;EUTF-8;0;1;0;%2Fmedia%2Fuser%2Fsd32%2Fdevelopment%2Fvision_core_4%2Fsrc%2Fmain.hpp;0;4
+FILE_NAME_2=7001;C++;0;EUTF-8;0;1;0;%2Fmedia%2Fuser%2Fsd32%2Fdevelopment%2Fvision_core_4%2Fsrc%2Fcapture%2Fcapture.cpp;0;4
+FILE_NAME_3=1170;C++;0;EUTF-8;0;1;0;%2Fmedia%2Fuser%2Fsd32%2Fdevelopment%2Fvision_core_4%2Fsrc%2Fcapture%2Fcapture.hpp;0;4
+FILE_NAME_4=156;C++;0;EUTF-8;0;1;0;%2Fmedia%2Fuser%2Fsd32%2Fdevelopment%2Fvision_core_4%2Fsrc%2Fwriter.cpp;0;4
+FILE_NAME_5=450;C++;0;EUTF-8;0;1;0;%2Fmedia%2Fuser%2Fsd32%2Fdevelopment%2Fvision_core_4%2Fsrc%2Fwriter.hpp;0;4
+FILE_NAME_6=358;C++;0;EUTF-8;0;1;0;%2Fmedia%2Fuser%2Fsd32%2Fdevelopment%2Fvision_core_4%2Fsrc%2Fresolutions.h;0;4
+FILE_NAME_7=390;C++;0;EUTF-8;0;1;0;%2Fmedia%2Fuser%2Fsd32%2Fdevelopment%2Fvision_core_4%2Fsrc%2Fcapture%2FcaptureCommon.hpp;0;4
+FILE_NAME_8=0;C++;0;EUTF-8;0;1;0;%2Fmedia%2Fuser%2Fsd32%2Fdevelopment%2Fvision_core_4%2Fsrc%2Fcapture%2FcaptureCommon.cpp;0;4
+FILE_NAME_9=158;C++;0;EUTF-8;0;1;0;%2Fmedia%2Fuser%2Fsd32%2Fdevelopment%2Fvision_core_4%2Fsrc%2Fcommon.h;0;4
+FILE_NAME_10=2754;C++;0;EUTF-8;0;1;0;%2Fmedia%2Fuser%2Fsd32%2Fdevelopment%2Fvision_core_4%2Fsrc%2Finterfaces%2Fserial_port.cpp;0;4
+FILE_NAME_11=1608;C++;0;EUTF-8;0;1;0;%2Fmedia%2Fuser%2Fsd32%2Fdevelopment%2Fvision_core_4%2Fsrc%2Finterfaces%2FmavlinkInterface.cpp;0;4
+FILE_NAME_12=1211;C++;0;EUTF-8;0;1;0;%2Fmedia%2Fuser%2Fsd32%2Fdevelopment%2Fvision_core_4%2Fsrc%2Finterfaces%2FmavlinkInterface.hpp;0;4
 
 [VTE]
 last_dir=/home/user
