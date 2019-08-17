@@ -10,6 +10,7 @@
   - Currently no state feedback to system is done by the VPU
   -  Mavlink Hearbeat monitoring, displayed in IR camera overlay for debug 
 - Flight unit serial number displayed in IR camera overlay for debug.
+
 ## 0.0.0.0 / 17 Aug 2019
 
 - added a changelog
