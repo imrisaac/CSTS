@@ -233,7 +233,7 @@ int main(int argc, char **argv){
     
     // writer thread
     std::thread writerThread([&](){
-		//writer.run();
+		writer.run();
     });
 
     cout << "starting main loop" << endl;
@@ -263,19 +263,11 @@ int main(int argc, char **argv){
     OutputMode outputMode = simpleEO;
     
     clock_t t1;
+    
+    cv::cuda::GpuMat gpuMat;
 
     while (true)
     {
-
-        std::time_t timeNow = std::time(0) - timeBegin;
-        clock_t stop = clock();
-
-        if (timeNow - tick >= 1){
-            tick++;
-            //cout << "Frames per second: " << frameCounter << endl;
-            frameCounter = 0;
-            freetime = 0;
-        }
     
         // get out desired output mode
         interfaces.getDesiredOutputMode(&outputMode);
@@ -283,19 +275,34 @@ int main(int argc, char **argv){
         switch(outputMode){
             case simpleEO:
             
-                
                 capEO.read(frameEO);
-
-                frameCounter++;
                 
                 if (frameEO.data != NULL){
                     
+
+ /*                  
+                    // gpu crop and scale
+                    gpuMat.upload(frameEO);
+                    
+                    gpuMat(zoom.wide0).copyTo(gpuMat);
+                    
+                    cv::cuda::resize(gpuMat, gpuMat, cv::Size(0, 0), zoom.scaleFactor810, zoom.scaleFactor810);
+                    
+                    gpuMat.download(frameEO);
+                    t1 = clock() - t1;
+                    std::cout << (((float)t1)/CLOCKS_PER_SEC)*1000 << std::endl;
+*/
+                    
+                    // cpu crop and scale
                     frameEO(zoom.wide0).copyTo(frameEO);
-
-                    cv::resize(frameEO, cropped, cv::Size(0, 0), zoom.scaleFactor810, zoom.scaleFactor810);
-
-                    //writer.write(cropped);                
-                    udpWriter << cropped;
+                    cv::resize(frameEO, frameEO, cv::Size(0, 0), zoom.scaleFactor810, zoom.scaleFactor810);
+                    writer.write(frameEO); 
+                    
+               //     t1 = clock();               
+                   // udpWriter << frameEO;
+                 //   t1 = clock() - t1;
+                 //   std::cout << (((float)t1)/CLOCKS_PER_SEC)*1000 << std::endl;
+                    
                     
 #ifdef DEBUG
                     putText(result, "D", cvPoint(30,30), 
@@ -327,8 +334,6 @@ int main(int argc, char **argv){
             case simpleIR:
 
                 capIR.read(frameIR);
-                
-                frameCounter++;
                 
                 cv::resize(frameIR, frameIR, cv::Size(0, 0), boson640_90.scaleFactor720 , boson640_90.scaleFactor720);
                 
