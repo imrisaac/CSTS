@@ -59,7 +59,7 @@ void MavlinkInterface::processMessage(mavlink_message_t message){
             mavlink_msg_av_payload_control_decode(&message, &packet);
             current_messages.payload_control = packet;
             
-            cout << "zoom " << packet.zoom_index << endl;
+            cout << "zoom " << (int)packet.zoom_index << endl;
 
             break;
         }
