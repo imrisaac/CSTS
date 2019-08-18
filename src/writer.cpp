@@ -11,8 +11,8 @@
 // default parameters
 WriterParams::WriterParams()
 {
-    encoder = "omxh264enc";
-    udp_bitrate = 2500;
+    encoder = "omxh265enc";
+    udp_bitrate = 1000 * 1000;
     udp_ip = "192.168.0.255";
     udp_port = "49410";
     stream_width = 960;
@@ -67,10 +67,17 @@ void Writer::run(){
 
             // cv::putText(outFrame, std::to_string(telemetry_.currentFps), fpsTextOrigin, cv::FONT_HERSHEY_SIMPLEX, 2, cv::Scalar::all(255), 3, 8);
 
+
+            outFrame = frames.front();
+            if (outFrame.data != NULL){
+
 #ifdef JETSON
-            udpWriter << frames.front(); 
+                udpWriter << outFrame; 
 #endif
 
+            }else{
+                cout << "no image data" << endl;
+            }
 
             frames.pop();
 
@@ -149,7 +156,7 @@ bool Writer::openSink(Sinker sink, cv::Mat start_frame)
         // ***** please keep this on one line *****
       //  gstSink = "appsrc ! timeoverlay halign=left valign=bottom ! video/x-raw, format=(string)BGR ! videoconvert ! video/x-raw, format=(string)I420 ! " + params_.encoder + " bitrate=" + to_string(params_.udp_bitrate * 1000) + " ! mpegtsmux alignment=7 ! udpsink host=" + params_.udp_ip + " port=" + params_.udp_port + " "; // 500ms
 
-        gstSink = "appsrc ! videoconvert n-threads=3 ! " + params_.encoder + " bitrate=" + to_string(params_.udp_bitrate * 1000) + " control_rate=1 iframeinterval=8 ! mpegtsmux alignment=7 ! udpsink host=" + params_.udp_ip + " port=" + params_.udp_port + " "; // 300ms
+        gstSink = "appsrc ! videoconvert n-threads=3 ! " + params_.encoder + " bitrate=" + to_string(params_.udp_bitrate) + " control_rate=1 iframeinterval=8 ! mpegtsmux alignment=7 ! udpsink host=" + params_.udp_ip + " port=" + params_.udp_port + " sync=false async=false "; // 300ms
 
 
         cout << "GST writer sink: " + gstSink + "\n";
