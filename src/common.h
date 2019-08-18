@@ -17,5 +17,12 @@ enum OutputMode{
 
 };
 
+enum ZoomLevel{
+    wide44,
+    wide55,
+    tele66,
+    tele77,
+};
+
 
 #endif /* common.h  */

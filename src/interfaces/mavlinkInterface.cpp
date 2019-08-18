@@ -59,15 +59,7 @@ void MavlinkInterface::processMessage(mavlink_message_t message){
             mavlink_msg_av_payload_control_decode(&message, &packet);
             current_messages.payload_control = packet;
             
-            if( EO_COLOR_CAMERA == packet.control_type && CONNECTED == ( packet.control_flags & CONNECTED ) ){
-                
-                cout << "EO selected" << endl;
-
-            }else if ( IR_CAMERA == packet.control_type && CONNECTED == ( packet.control_flags & CONNECTED )  ){
-
-                cout << "IR selected" << endl;
-
-            }
+            cout << "zoom " << packet.zoom_index << endl;
 
             break;
         }

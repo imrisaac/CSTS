@@ -6,10 +6,10 @@ struct Zoom{
     cv::Rect wide0 = cv::Rect(0, 555, 1080, 810);
     double scaleFactor810 = 0.88888;       
     
-    cv::Rect wide1 = cv::Rect(60, 600, 960, 720);       
-    cv::Rect tele0 = cv::Rect(0, 600, 1080, 810);
-    cv::Rect tele1 = cv::Rect(0, 600, 1080, 810);
-    cv::Rect tele2 = cv::Rect(0, 600, 1080, 810);
+    cv::Rect wide44 = cv::Rect(60, 600, 960, 720);       
+    cv::Rect wide55 = cv::Rect(0, 600, 1080, 810);
+    cv::Rect tele66 = cv::Rect(0, 600, 1080, 810);
+    cv::Rect tele77 = cv::Rect(0, 600, 1080, 810);
 };
 
 /*

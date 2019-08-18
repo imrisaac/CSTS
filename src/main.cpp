@@ -312,7 +312,7 @@ int main(int argc, char **argv){
 #ifdef HAVE_DISPLAY
  
                     // draw our purposed crop
-                    rectangle(frameEO, zoom.wide, Scalar(255, 0, 0), 1, 8, 0);
+                    rectangle(frameEO, zoom.wide44, Scalar(255, 0, 0), 1, 8, 0);
 
                     imshow("Vision Core", cropped);
 

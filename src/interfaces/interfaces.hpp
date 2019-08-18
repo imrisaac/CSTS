@@ -51,6 +51,8 @@ public:
 
     void getDesiredOutputMode(enum OutputMode *outputMode);
 
+    void getZoomLevel();
+
 private:
 
     Serial_Port serial_port;
