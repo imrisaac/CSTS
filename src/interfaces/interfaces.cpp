@@ -88,3 +88,55 @@ void Interfaces::getDesiredOutputMode(enum OutputMode *outputMode){
     // 
     return;
 }
+
+
+void Interfaces::getZoom(int *focalLength){
+    
+    if ( 0 == mavlinkInterface.current_messages.payload_control.zoom_index ){
+        
+        // this is a focal length in mm, arbitrary for now but will be real i the future
+        *focalLength = 44;
+        
+    }else if ( 1 == mavlinkInterface.current_messages.payload_control.zoom_index ){
+        
+        *focalLength = 55;
+        
+    }else if ( 2 == mavlinkInterface.current_messages.payload_control.zoom_index ){
+        
+        *focalLength = 66;
+        
+    }else if ( 3 == mavlinkInterface.current_messages.payload_control.zoom_index ){
+        
+        *focalLength = 77;
+        
+    }else{
+        // do nothing 
+    }
+    
+    return;
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

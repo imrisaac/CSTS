@@ -51,7 +51,7 @@ public:
 
     void getDesiredOutputMode(enum OutputMode *outputMode);
 
-    void getZoomLevel();
+    void getZoom(int *focalLength);
 
 private:
 

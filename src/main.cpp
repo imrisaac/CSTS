@@ -265,6 +265,10 @@ int main(int argc, char **argv){
     clock_t t1;
     
     cv::cuda::GpuMat gpuMat;
+    
+    // TODO: refactor this zoom shit to actual focal lengths i mean FUUUUCK
+    int focalLength = 44;
+    double cropFactor = zoom.scaleFactor810;
 
     while (true)
     {
@@ -293,9 +297,39 @@ int main(int argc, char **argv){
                     std::cout << (((float)t1)/CLOCKS_PER_SEC)*1000 << std::endl;
 */
                     
-                    // cpu crop and scale
-                    frameEO(zoom.wide0).copyTo(frameEO);
-                    cv::resize(frameEO, frameEO, cv::Size(0, 0), zoom.scaleFactor810, zoom.scaleFactor810);
+                    interfaces.getZoom(&focalLength);
+                    
+                    // Apply crop
+                    switch(focalLength){
+                        case 44:
+                            frameEO(zoom.wide44).copyTo(frameEO);
+                            cropFactor = zoom.scaleFactor810;
+                            break;
+                            
+                        case 55:
+                            frameEO(zoom.wide55).copyTo(frameEO);
+                            cropFactor = zoom.scaleFactor720;
+                            break;
+                            
+                        case 66:
+                            frameEO(zoom.wide66).copyTo(frameEO);
+                            cropFactor = zoom.scaleFactor480;
+                            break;
+                            
+                        case 77:
+                            frameEO(zoom.tele77).copyTo(frameEO);
+                            cropFactor = zoom.scaleFactor240;
+                            break;
+                            
+                        default:
+                        
+                            // default to minimum required crop
+                            frameEO(zoom.wide44).copyTo(frameEO);
+                            cropFactor = zoom.scaleFactor810;
+                            break;
+                    }
+                    
+                    cv::resize(frameEO, frameEO, cv::Size(0, 0), cropFactor, cropFactor);
                     writer.write(frameEO); 
                     
                //     t1 = clock();               
