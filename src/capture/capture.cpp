@@ -51,7 +51,21 @@ cv::VideoCapture *Capture::initilize(CamIndex index){
         if ( !cap.open(getCameraPipeline(index), cv::CAP_GSTREAMER) ){
 
             // TODO: retry then fall back to error screen generator
-            cout << "gstreamer capture failed to initilized" << endl;
+            cout << "gstreamer capture failed to initilized, using videotestsrc" << endl;
+            
+
+            
+            switch(index){
+                
+                DevKitTx2 
+                DevKitTx1 
+                DevKitNano
+                AR1820
+                Boson
+                Pattern 
+                VideoTestSrc
+                cap.open(getCameraPipeline(VideoTestSrc), cv::CAP_GSTREAMER);
+            }
 
         }
         

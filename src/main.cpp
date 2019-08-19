@@ -170,6 +170,7 @@ int main(int argc, char **argv){
     cropped.create(cv::Size(960, 720), CV_8UC3);
     
     Zoom zoom;
+    Boson640_90_crop boson640_90_crop;
     
     Boson640_90 boson640_90;
 
@@ -269,6 +270,8 @@ int main(int argc, char **argv){
     // TODO: refactor this zoom shit to actual focal lengths i mean FUUUUCK
     int focalLength = 44;
     double cropFactor = zoom.scaleFactor810;
+    
+    double cropFactorBoson = boson640_90.scaleFactor720;
 
     while (true)
     {
@@ -330,6 +333,7 @@ int main(int argc, char **argv){
                     }
                     
                     cv::resize(frameEO, frameEO, cv::Size(0, 0), cropFactor, cropFactor);
+                    putText(frameEO, "8006 v0.1.0.0", cvPoint(25,25), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,255), 1, CV_AA);
                     writer.write(frameEO); 
                     
                //     t1 = clock();               
@@ -339,8 +343,8 @@ int main(int argc, char **argv){
                     
                     
 #ifdef DEBUG
-                    putText(result, "D", cvPoint(30,30), 
-                                                    FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(200,200,250), 1, CV_AA);
+                    putText(result, "8006", cvPoint(30,30), 
+                                                    FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,255), 1, CV_AA);
 #endif
 
 #ifdef HAVE_DISPLAY
@@ -369,9 +373,41 @@ int main(int argc, char **argv){
 
                 capIR.read(frameIR);
                 
-                cv::resize(frameIR, frameIR, cv::Size(0, 0), boson640_90.scaleFactor720 , boson640_90.scaleFactor720);
+                interfaces.getZoom(&focalLength);
                 
-                cv::copyMakeBorder(frameIR, frameIR, 0, 0, 192, 192, BORDER_CONSTANT);
+                // Apply crop
+                switch(focalLength){
+                    case 44:
+                        frameIR.copyTo(frameIR);
+                        cropFactorBoson = boson640_90.scaleFactor720;
+
+                        break;
+                        
+                    case 55:
+                        frameIR(boson640_90_crop.wide44).copyTo(frameIR);
+                        cropFactorBoson = boson640_90_crop.scaleFactor384;
+                        break;
+                        
+                    case 66:
+                        frameIR(boson640_90_crop.wide55).copyTo(frameIR);
+                        cropFactorBoson = boson640_90_crop.scaleFactor300;
+                        break;
+                        
+                    default:
+                    
+                        // default to minimum required crop
+                        cropFactor = boson640_90.scaleFactor720;
+                        focalLength = 44;
+                        break;
+                }
+            
+                cv::resize(frameIR, frameIR, cv::Size(0, 0), cropFactorBoson , cropFactorBoson);
+                
+                if(44 == focalLength){
+                    cv::copyMakeBorder(frameIR, frameIR, 0, 0, 192, 192, BORDER_CONSTANT);
+                }
+                
+                putText(frameIR, "8006 v0.1.0.0", cvPoint(25,25), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,255), 1, CV_AA);
                 
                 if (NULL != frameIR.data){
 

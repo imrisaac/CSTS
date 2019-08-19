@@ -111,6 +111,8 @@ public:
 
     // TODO: make private
     Mavlink_Messages current_messages;
+    
+    void send_heartbeat(uint8_t type, uint8_t base_mode, uint32_t custom_mode, uint8_t system_status);
 
 private:
 

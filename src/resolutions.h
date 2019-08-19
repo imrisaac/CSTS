@@ -17,6 +17,16 @@ struct Zoom{
     
 };
 
+struct Boson640_90_crop{
+    
+    cv::Rect wide44 = cv::Rect(0, 128, 512, 384);
+    double scaleFactor384 = 1.875;       
+    
+    cv::Rect wide55 = cv::Rect(56, 170, 400, 300);
+    double scaleFactor300 = 2.4;    
+           
+};
+
 /*
     Boson640
     Sensor rotated 90 deg clockwise, looking into the lense 

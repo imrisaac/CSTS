@@ -58,8 +58,6 @@ void MavlinkInterface::processMessage(mavlink_message_t message){
 
             mavlink_msg_av_payload_control_decode(&message, &packet);
             current_messages.payload_control = packet;
-            
-            cout << "zoom " << (int)packet.zoom_index << endl;
 
             break;
         }
@@ -67,3 +65,33 @@ void MavlinkInterface::processMessage(mavlink_message_t message){
 
     return;
 }
+
+
+/*
+	send_heartbeat
+	wrapper for sending heartbeat
+ */
+void MavlinkInterface::send_heartbeat(uint8_t type, uint8_t base_mode, uint32_t custom_mode, uint8_t system_status)
+{
+    /*
+	mavlink_heartbeat_t heartbeat;
+	mavlink_message_t message;
+
+	//uint16_t mavlink_msg_heartbeat_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t *msg, const mavlink_heartbeat_t *heartbeat)
+
+    mavlink_msg_heartbeat_encode(
+		system_id,
+		companion_id,
+        &message, 
+		&heartbeat);
+
+	// do the write
+	int len = write_message(message);
+
+	// check the write
+	if ( len <= 0 )
+		fprintf(stderr,"WARNING: could not send HEARTBEAT \n");
+* 
+* */
+}
+
