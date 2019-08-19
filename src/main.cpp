@@ -73,6 +73,18 @@ int main(int argc, char **argv){
     // Register exit handler
     s_catch_signals();
     
+    // super simple serial number file reading
+    std::ifstream serialNumFile;
+    std::string serialNum = "000000";
+
+    serialNumFile.open("/home/nvidia/serialnum");
+    
+    serialNumFile >> serialNum;
+    
+    serialNumFile.close();
+    
+    cout << "Booting on " << serialNum << endl;
+
     // TODO: put this crap in a dumb helper
     while (1) {
 
@@ -165,6 +177,9 @@ int main(int argc, char **argv){
     SceneTrack sceneTrack;
     Stabilizer stabilizer;
     Writer writer;
+    System system;
+    
+    system.helloWorld();
     
     cv::Mat cropped;
     cropped.create(cv::Size(960, 720), CV_8UC3);
@@ -333,7 +348,7 @@ int main(int argc, char **argv){
                     }
                     
                     cv::resize(frameEO, frameEO, cv::Size(0, 0), cropFactor, cropFactor);
-                    putText(frameEO, "8006 v0.1.0.0", cvPoint(25,25), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,255), 1, CV_AA);
+                    putText(frameEO, (serialNum + " v0.1.0.0"), cvPoint(25,25), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,255), 1, CV_AA);
                     writer.write(frameEO); 
                     
                //     t1 = clock();               
@@ -407,7 +422,7 @@ int main(int argc, char **argv){
                     cv::copyMakeBorder(frameIR, frameIR, 0, 0, 192, 192, BORDER_CONSTANT);
                 }
                 
-                putText(frameIR, "8006 v0.1.0.0", cvPoint(25,25), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,255), 1, CV_AA);
+                putText(frameIR, (serialNum + " v0.1.0.0"), cvPoint(25,25), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,255), 1, CV_AA);
                 
                 if (NULL != frameIR.data){
 

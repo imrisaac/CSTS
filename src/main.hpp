@@ -25,6 +25,8 @@
 #include <unistd.h>
 #include <ctime>            // for timing i.e. calculating frame rate
 #include <chrono>           // high resolution timing
+#include <iomanip>          // file handeling
+#include <fstream>          // file handeling
 
 // opencv
 #include "opencv2/core/core.hpp"

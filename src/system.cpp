@@ -26,6 +26,17 @@ bool System::restartNVArgus(){
 }
 
 
+bool System::helloWorld(){
+
+    cout << "ececutin hello world" << endl;
+    string key = "";
+
+    exec("echo hello fucking world");
+
+    return true;
+}
+
+
 /**
     exec
 

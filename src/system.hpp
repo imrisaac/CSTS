@@ -29,6 +29,8 @@ public:
     bool restartNVArgus();
 
     bool stopNVArgus();
+    
+    bool helloWorld();
 
 private:
 

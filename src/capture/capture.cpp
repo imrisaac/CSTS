@@ -71,6 +71,7 @@ cv::VideoCapture *Capture::initilize(CamIndex index){
                     break;
 
                 default:
+                    break;
                     
             }
 

@@ -1,5 +1,9 @@
 # TAC(Tegra Application Code) Change Log
 
+## 0.1.0.0 / 18 Aug 2019
+
+- fix serialnum file path
+
 ## 0.1.0.0 / 17 Aug 2019
 
 - First release of VPU application code.
