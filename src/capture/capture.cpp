@@ -57,14 +57,21 @@ cv::VideoCapture *Capture::initilize(CamIndex index){
             
             switch(index){
                 
-                DevKitTx2 
-                DevKitTx1 
-                DevKitNano
-                AR1820
-                Boson
-                Pattern 
-                VideoTestSrc
-                cap.open(getCameraPipeline(VideoTestSrc), cv::CAP_GSTREAMER);
+                case DevKitTx2: 
+                case DevKitTx1: 
+                case DevKitNano:
+                    break;
+
+                case AR1820:
+                    cap.open(getCameraPipeline(VideoTestSrcAr1820), cv::CAP_GSTREAMER);
+                    break;
+
+                case Boson:
+                    cap.open(getCameraPipeline(VideoTestSrcBoson), cv::CAP_GSTREAMER);
+                    break;
+
+                default:
+                    
             }
 
         }
@@ -230,6 +237,7 @@ std::string Capture::getCameraPipeline(CamIndex camera)
     switch (camera)
     {
     case DevKitTx1:
+
         pipeline = "nvcamerasrc ! video/x-raw(memory:NVMM), width=(int)" + std::to_string(params_.captureWidth) + ", height=(int)" +
                    std::to_string(params_.captureHeight) + ", format=(string)I420, framerate=(fraction)" + std::to_string(params_.captureFPS) +
                    "/1 ! nvvidconv flip-method=0 ! video/x-raw, format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)BGR ! appsink";
@@ -237,6 +245,7 @@ std::string Capture::getCameraPipeline(CamIndex camera)
 
     case DevKitTx2:
     case DevKitNano:
+
         pipeline = "nvarguscamerasrc ! video/x-raw(memory:NVMM), width=(int)" + std::to_string(params_.captureWidth) + ", height=(int)" +
                    std::to_string(params_.captureHeight) + ", format=(string)NV12, framerate=(fraction)" + std::to_string(params_.captureFPS) +
                    "/1 ! nvvidconv flip-method=0 ! video/x-raw, format=(string)BGRx ! videoconvert ! video/x-raw, width=(int)" + std::to_string(params_.captureWidth) + 
@@ -250,17 +259,23 @@ std::string Capture::getCameraPipeline(CamIndex camera)
         break;
 
     case Boson:
-         pipeline = "v4l2src device=/dev/video0 ! video/x-raw, format=(string)UYVY, width=(int)640, height=(int)512, framerate=(fraction)60/1 ! videoconvert ! video/x-raw, width=(int)640, height=(int)512, format=(string)BGR, framerate=(fraction)60/1 ! videoflip method=clockwise ! appsink ";
+
+        pipeline = "v4l2src device=/dev/video0 ! video/x-raw, format=(string)UYVY, width=(int)640, height=(int)512, framerate=(fraction)60/1 ! videoconvert ! video/x-raw, width=(int)640, height=(int)512, format=(string)BGR, framerate=(fraction)60/1 ! videoflip method=clockwise ! appsink ";
         break;
 
     case Pattern:
+
         pipeline = "";
         break;
         
-    case VideoTestSrc:
+    case VideoTestSrcBoson:
         
         pipeline = "videotestsrc ! video/x-raw, framerate=60/1, width=(int)640, height=(int)512 ! videoflip method=clockwise ! appsink";
+        break;
 
+    case VideoTestSrcAr1820:
+    
+        pipeline = "videotestsrc ! video/x-raw, framerate=60/1, width=(int)1080, height=(int)1920 ! videoflip method=clockwise ! appsink";
         break;
 
     default:

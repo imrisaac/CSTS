@@ -20,7 +20,8 @@ enum CamIndex
     AR1820 = 3,
     Boson = 4,
     Pattern = 5,
-    VideoTestSrc = 6,
+    VideoTestSrcBoson = 6,
+    VideoTestSrcAr1820,
 };
 
 enum WbAlgo
