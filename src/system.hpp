@@ -10,12 +10,9 @@
 #define system_hpp
 
 // std libs
-#include <cstdio>       // for executing system cmds
-#include <iostream>     // .
-#include <memory>
-#include <stdexcept>
+#include <iostream>  
 #include <string>
-#include <array>        // ^
+
 #ifdef JETSON
 #include <linux/i2c-dev.h>
 #endif
@@ -26,17 +23,23 @@ class System {
 
 public:
 
+    void init();
+
     bool restartNVArgus();
 
     bool stopNVArgus();
     
     bool helloWorld();
 
+    bool insertKernelModule();
+
 private:
 
     string exec(const char *cmd);
 
     int getTxBitrate(int interface);
+
+    bool cmdProcessorAvailable;
 
 };
 

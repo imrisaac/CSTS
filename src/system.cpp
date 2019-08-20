@@ -8,6 +8,21 @@
 
 #include "system.hpp"
 
+void System::init(){
+
+    cmdProcessorAvailable = false;
+
+    if (system(NULL)){
+        cout << "Command processor available on system";
+        cmdProcessorAvailable = true;
+    }else{
+        cout << "Command processor not available on this system";
+        cmdProcessorAvailable = false;
+    }
+    return;
+
+}
+
 /**
     restartNVArgus
 
@@ -15,23 +30,30 @@
  */
 bool System::restartNVArgus(){
 
-    string key = "";
-
-    // need sudo for this, TODO
-    if ( !key.compare(exec("systemctl restart nvargus-daemon") ) ) {
+    if(!cmdProcessorAvailable){
         return false;
     }
 
+    system("sudo systemclt restart nvargus-daemon");
+
+    // TODO: check response
     return true;
 }
 
+bool System::insertKernelModule(){
+    
+}
 
+/*
+    because of course this is here
+ */
 bool System::helloWorld(){
 
-    cout << "ececutin hello world" << endl;
-    string key = "";
+    if(!cmdProcessorAvailable){
+        return false;
+    }
 
-    exec("echo hello fucking world");
+    system("echo hello world");
 
     return true;
 }
@@ -42,23 +64,11 @@ bool System::helloWorld(){
 
     executes a command in the system shell
  */
-string System::exec(const char *cmd)
-{
-    std::array<char, 128> buffer;
-    std::string result;
-    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
-    if (!pipe)
-    {
-        throw std::runtime_error("popen() failed!");
-    }
-    while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr)
-    {
-        result += buffer.data();
-    }
-    return result;
+string System::exec(const char *cmd){
+
 }
 
 int System::getTxBitrate(int interface){
 
-    
+
 }

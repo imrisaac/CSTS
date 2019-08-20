@@ -1,6 +1,6 @@
 # TAC(Tegra Application Code) Change Log
 
-## 0.1.0.0 / 18 Aug 2019
+## 0.1.0.1 / 18 Aug 2019
 
 - fix serialnum file path
 - reverted isp_overrides file however this may have been unnecessary
