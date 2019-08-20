@@ -3,3 +3,7 @@
 *build
 *.bin
 docs
+*.DS_Store
+.DS_Store
+DS_Store*
+

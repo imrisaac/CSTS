@@ -33,6 +33,8 @@ public:
 
     bool insertKernelModule();
 
+    bool removeKernelModule();
+
 private:
 
     string exec(const char *cmd);

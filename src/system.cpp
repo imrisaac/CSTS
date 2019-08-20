@@ -41,6 +41,10 @@ bool System::restartNVArgus(){
 }
 
 bool System::insertKernelModule(){
+
+}
+
+bool System::removeKernelModule(){
     
 }
 
