@@ -57,3 +57,8 @@ string System::exec(const char *cmd)
     }
     return result;
 }
+
+int System::getTxBitrate(int interface){
+
+    
+}

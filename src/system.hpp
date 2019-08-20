@@ -36,6 +36,8 @@ private:
 
     string exec(const char *cmd);
 
+    int getTxBitrate(int interface);
+
 };
 
 

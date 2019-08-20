@@ -348,7 +348,7 @@ int main(int argc, char **argv){
                     }
                     
                     cv::resize(frameEO, frameEO, cv::Size(0, 0), cropFactor, cropFactor);
-                    putText(frameEO, (serialNum + " v0.1.0.0"), cvPoint(25,25), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,255), 1, CV_AA);
+                    putText(frameEO, (serialNum + " v0.1.0.0"), cvPoint(25, 25), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
                     writer.write(frameEO); 
                     
                //     t1 = clock();               
@@ -358,8 +358,8 @@ int main(int argc, char **argv){
                     
                     
 #ifdef DEBUG
-                    putText(result, "8006", cvPoint(30,30), 
-                                                    FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,255), 1, CV_AA);
+                    putText(result, "8006", cvPoint(30, 30),
+                            FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
 #endif
 
 #ifdef HAVE_DISPLAY
@@ -421,9 +421,9 @@ int main(int argc, char **argv){
                 if(44 == focalLength){
                     cv::copyMakeBorder(frameIR, frameIR, 0, 0, 192, 192, BORDER_CONSTANT);
                 }
-                
-                putText(frameIR, (serialNum + " v0.1.0.0"), cvPoint(25,25), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,255), 1, CV_AA);
-                
+
+                putText(frameIR, (serialNum + " v0.1.0.0"), cvPoint(25, 25), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
+
                 if (NULL != frameIR.data){
 
                     //writer.write(frameIR);

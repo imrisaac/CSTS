@@ -3,6 +3,7 @@
 ## 0.1.0.0 / 18 Aug 2019
 
 - fix serialnum file path
+- reverted isp_overrides file however this may have been unnecessary
 
 ## 0.1.0.0 / 17 Aug 2019
 
