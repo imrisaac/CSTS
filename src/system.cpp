@@ -40,12 +40,47 @@ bool System::restartNVArgus(){
     return true;
 }
 
-bool System::insertKernelModule(){
+bool System::insertKernelModule(enum KernelModules module)
+{
 
+    if(!cmdProcessorAvailable){
+        return false;
+    }
+
+    //nobody returns -2 right?
+    int exit_code = -2;
+
+    switch( module ){
+        
+        case AR1820HS:
+            exit_code = system("sudo insmod /home/nvidia/camera_drivers/ar1820hs.ko");
+            break;
+
+        case FLIR640:   
+            exit_code = system("sudo insmod /home/nvidia/camera_drivers/flir641.ko");
+            break;
+
+        default:
+            cout << "kernel module insertion requested but no module specified" << endl;
+    }
+
+    if( 0 == exit_code ){
+        cout << "kernel module insertion sucess, this sounds dirty" << endl;
+        return true;
+    }else{
+        cout << "kernel module insertion failed, this sounds dirty" << endl;
+        return false;
+    }
+
+    return false; 
 }
 
 bool System::removeKernelModule(){
-    
+
+    if(!cmdProcessorAvailable){
+        return false;
+    }
+
 }
 
 /*
@@ -54,10 +89,12 @@ bool System::removeKernelModule(){
 bool System::helloWorld(){
 
     if(!cmdProcessorAvailable){
-        return false;
+        //return false;
     }
 
-    system("echo hello world");
+    int exit_code = system("echo hello world");
+
+    cout << "exit core " << exit_code << endl;
 
     return true;
 }

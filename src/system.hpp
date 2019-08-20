@@ -17,6 +17,11 @@
 #include <linux/i2c-dev.h>
 #endif
 
+enum KernelModules{
+    AR1820HS,
+    FLIR640,
+};
+
 using namespace std;
 
 class System {
@@ -31,7 +36,7 @@ public:
     
     bool helloWorld();
 
-    bool insertKernelModule();
+    bool insertKernelModule(enum KernelModules module);
 
     bool removeKernelModule();
 
