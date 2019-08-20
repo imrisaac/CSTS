@@ -5,7 +5,8 @@
 - fix serialnum file path
 - reverted isp_overrides file however this may have been unnecessary
 - added basic Doxygen config file
-- added backend for realtime tx bitrate reporting
+- added backend for realtime tx bitrate reporting on eth0
+- added backend for internal handeling of kernel module insert
 
 ## 0.1.0.0 / 17 Aug 2019
 
