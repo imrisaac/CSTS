@@ -1,4 +1,4 @@
-# TAC(Tegra Application Code) Change Log
+# VCSTS(Video Capture Stabilization and Streaming) Change Log
 
 ## 0.1.0.1 / 18 Aug 2019
 
