@@ -69,16 +69,18 @@ private:
 class Stabilizer: public Threader
 {
 public:
-    
-    /// Initilize the stabilizer algo with necessary startup frames and parameters
-    void init(const cv::Mat &start_frame);
 
-    /// runner contaning the capture loop
+    /// runner for stabilizer estimator
     void run();
+
+    /// stabilize the given frame in realtime
+    void process(const cv::Mat &current_frame);
 
 private:
 
     void drawArrows(Mat& frame, const vector<Point2f>& prevPts, const vector<Point2f>& nextPts, const vector<uchar>& status, cv::Scalar line_color);
+
+    void init(const cv::Mat &start_frame);
 
     cv::Mat applyPerspectiveTransformation(cv::Matx33f transformation);
 
@@ -87,6 +89,17 @@ private:
     StabilizerParams params_;
 
     cv::Rect search_box;
+    std::queue<cv::Mat> frames;
+    cv::Ptr<HomographySmoother> homography_smoother_;
+    StabilizerParams params_;
+    std::vector<cv::KeyPoint> key_points_;
+    std::vector<cv::Point2f> points_;
+    std::vector<cv::Point2f> corresponding_points_;
+    std::vector<uchar> status_;
+    cv::Mat gray_latest_frame_;
+    cv::Mat gray_current_frame_;
+    std::vector<cv::Mat> latest_pyr_;
+    std::vector<cv::Mat> current_pyr_;
 };
 
 #endif

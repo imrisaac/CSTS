@@ -45,7 +45,7 @@ void Stabilizer::init(const cv::Mat &start_frame){
 }
 
 
-    /**
+/**
     Runner for the stabilizer thread
     contains the stabilizer loop that grabs new frames, process them and makes them available for writing/streaming
  */
