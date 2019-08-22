@@ -8,6 +8,21 @@
 
 #include "system.hpp"
 
+void System::init(){
+
+    cmdProcessorAvailable = false;
+
+    if (system(NULL)){
+        cout << "Command processor available on system";
+        cmdProcessorAvailable = true;
+    }else{
+        cout << "Command processor not available on this system";
+        cmdProcessorAvailable = false;
+    }
+    return;
+
+}
+
 /**
     restartNVArgus
 
@@ -15,21 +30,71 @@
  */
 bool System::restartNVArgus(){
 
-    string key = "";
-
-    // need sudo for this, TODO
-    if ( !key.compare(exec("systemctl restart nvargus-daemon") ) ) {
+    if(!cmdProcessorAvailable){
         return false;
     }
 
+    system("sudo systemclt restart nvargus-daemon");
+
+    // TODO: check response
     return true;
 }
 
+bool System::insertKernelModule(enum KernelModules module)
+{
 
+    if(!cmdProcessorAvailable){
+        return false;
+    }
+
+    //nobody returns -2 right?
+    int exit_code = -2;
+
+    switch( module ){
+        
+        case AR1820HS:
+            exit_code = system("sudo insmod /home/nvidia/camera_drivers/ar1820hs.ko");
+            break;
+
+        case FLIR640:   
+            exit_code = system("sudo insmod /home/nvidia/camera_drivers/flir641.ko");
+            break;
+
+        default:
+            cout << "kernel module insertion requested but no module specified" << endl;
+    }
+
+    if( 0 == exit_code ){
+        cout << "kernel module insertion sucess, this sounds dirty" << endl;
+        return true;
+    }else{
+        cout << "kernel module insertion failed, this sounds dirty" << endl;
+        return false;
+    }
+
+    return false; 
+}
+
+bool System::removeKernelModule(){
+
+    if(!cmdProcessorAvailable){
+        return false;
+    }
+
+}
+
+/*
+    because of course this is here
+ */
 bool System::helloWorld(){
 
+    if(!cmdProcessorAvailable){
+        //return false;
+    }
 
-    exec("echo hello fucking world");
+    int exit_code = system("echo hello world");
+
+    cout << "exit core " << exit_code << endl;
 
     return true;
 }
@@ -40,18 +105,11 @@ bool System::helloWorld(){
 
     executes a command in the system shell
  */
-string System::exec(const char *cmd)
-{
-    std::array<char, 128> buffer;
-    std::string result;
-    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
-    if (!pipe)
-    {
-        throw std::runtime_error("popen() failed!");
-    }
-    while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr)
-    {
-        result += buffer.data();
-    }
-    return result;
+string System::exec(const char *cmd){
+
+}
+
+int System::getTxBitrate(int interface){
+
+
 }

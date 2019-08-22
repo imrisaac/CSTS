@@ -179,6 +179,8 @@ int main(int argc, char **argv){
     System system;
     
     system.helloWorld();
+
+    exit(0);
     
     cv::Mat cropped;
     cropped.create(cv::Size(960, 720), CV_8UC3);
