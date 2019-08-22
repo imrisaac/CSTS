@@ -40,7 +40,7 @@
 #include "capture/capture.hpp"
 #include "capture/patternGenerator.hpp"
 #include "sceneTrack.hpp"
-#include "stabilizer.hpp"
+#include "stabilizer/stabilizer.hpp"
 #include "writer.hpp"
 #include "system.hpp"
 #include "common.h"

@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include "thread.hpp"
 #include "common.h"
+#include "homographySmoother.hpp"
 
 using namespace std;
 using namespace cv;
@@ -32,7 +33,6 @@ struct StabilizerParams
     StabilizerParams();
 };
 
-#ifdef MAC
 /**
     Stabilizer thread
     inherits from Threader class
@@ -58,40 +58,9 @@ private:
     StabilizerParams params_;
 
     cv::Rect search_box;
-};
-#endif // mac
-
-#ifdef JETSON
-/**
-    Stabilizer thread
-    inherits from Threader class
- */
-class Stabilizer: public Threader
-{
-public:
-
-    /// runner for stabilizer estimator
-    void run();
-
-    /// stabilize the given frame in realtime
-    void process(const cv::Mat &current_frame);
-
-private:
-
-    void drawArrows(Mat& frame, const vector<Point2f>& prevPts, const vector<Point2f>& nextPts, const vector<uchar>& status, cv::Scalar line_color);
-
-    void init(const cv::Mat &start_frame);
-
-    cv::Mat applyPerspectiveTransformation(cv::Matx33f transformation);
-
-    cv::Matx33f findHomogrpahyMatrix(const cv::Mat &current_frame);
-
-    StabilizerParams params_;
-
-    cv::Rect search_box;
     std::queue<cv::Mat> frames;
     cv::Ptr<HomographySmoother> homography_smoother_;
-    StabilizerParams params_;
+
     std::vector<cv::KeyPoint> key_points_;
     std::vector<cv::Point2f> points_;
     std::vector<cv::Point2f> corresponding_points_;
@@ -102,6 +71,5 @@ private:
     std::vector<cv::Mat> current_pyr_;
 };
 
-#endif
 
-#endif /* stabilizer_hpp */
+#endif // stabilizer_hpp

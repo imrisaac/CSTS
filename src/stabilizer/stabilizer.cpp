@@ -106,3 +106,71 @@ void Stabilizer::drawArrows(Mat &frame, const vector<Point2f> &prevPts, const ve
         }
     }
 }
+
+cv::Matx33f Stabilizer::findHomogrpahyMatrix(const cv::Mat &current_frame)
+{
+
+    cv::FAST(gray_latest_frame_, key_points_, params_.fast_threshold, true);
+
+    cv::cvtColor(current_frame, gray_current_frame_, cv::COLOR_BGRA2GRAY);
+
+    cv::buildOpticalFlowPyramid(gray_current_frame_,
+                                current_pyr_,
+                                cv::Size(params_.opt_flow_win_size, params_.opt_flow_win_size),
+                                params_.num_pyramid_levels);
+
+    cv::KeyPoint::convert(key_points_, points_);
+
+    //cout << "Points: " << points_ << endl;
+    //cout << "Corresponding points: " << corresponding_points_ << endl;
+
+    if (points_.empty())
+    {
+        points_ = corresponding_points_;
+        cout << "NO TRACKED POINTS IN CURRENT FRAME!" << endl;
+    }
+
+    cv::calcOpticalFlowPyrLK(latest_pyr_,
+                             current_pyr_,
+                             points_,
+                             corresponding_points_,
+                             status_,
+                             cv::noArray(),
+                             cv::Size(params_.opt_flow_win_size, params_.opt_flow_win_size),
+                             params_.num_pyramid_levels,
+                             cv::TermCriteria(cv::TermCriteria::COUNT + cv::TermCriteria::EPS, params_.opt_flow_num_iterations, params_.opt_flow_epsilon),
+                             params_.opt_flow_use_initial_estimate);
+
+    std::swap(gray_latest_frame_, gray_current_frame_);
+    std::swap(latest_pyr_, current_pyr_);
+
+    cv::Mat homography;
+    int n = key_points_.size();
+
+    std::vector<cv::Point2f> points0, points1;
+    points0.reserve(n);
+    points1.reserve(n);
+
+    for (int i = 0; i < n; i++)
+    {
+        if (status_[i])
+        {
+            points0.push_back(key_points_[i].pt);
+            points1.push_back(corresponding_points_[i]);
+        }
+    }
+
+    if (points0.size() >= 4)
+    {
+
+        homography = cv::findHomography(points0,
+                                        points1,
+                                        params_.homography_method,
+                                        params_.homography_ransac_threshold);
+    }
+    else
+    {
+        homography = cv::Mat(cv::Matx33f::eye());
+    }
+    return cv::Matx33f(homography);
+}

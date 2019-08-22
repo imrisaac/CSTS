@@ -42,7 +42,7 @@ if(MAC_BUILD)
                   src/interfaces/serial_port.cpp
                   src/interfaces/mavlinkInterface.cpp
                   src/sceneTrack.cpp
-                  src/stabilizer.cpp
+                  src/stabilizer/stabilizer.cpp
                   src/thread.cpp
                   src/writer.cpp
                   src/objectTrack.cpp
@@ -91,7 +91,7 @@ if(JETSON_BUILD)
                   src/interfaces/mavlinkInterface.cpp
                   src/interfaces/serial_port.cpp
                   src/sceneTrack.cpp
-                  src/stabilizer.cpp
+                  src/stabilizer/stabilizer.cpp
                   src/thread.cpp
                   src/writer.cpp
                   src/objectTrack.cpp
@@ -135,7 +135,7 @@ if(Ubuntu_VM_BUILD)
                   src/interfaces/serial_port.cpp
                   src/interfaces/mavlinkInterface.cpp
                   src/sceneTrack.cpp
-                  src/stabilizer.cpp
+                  src/stabilizer/stabilizer.cpp
                   src/thread.cpp
                   src/writer.cpp
                   src/objectTrack.cpp
