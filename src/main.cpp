@@ -65,7 +65,6 @@ cv::Mat GetSquareImage(const cv::Mat &img, int target_width)
     return square;
 }
 
-
 int main(int argc, char **argv){
     int c;
     int digit_optind = 0;
@@ -151,7 +150,7 @@ int main(int argc, char **argv){
             default:
                 printf("?? getopt returned character code 0%o ??\n", c);
         }
-    }
+    } // argument parsing
     
     if (optind < argc) {
         printf("non-option ARGV-elements: ");
@@ -280,6 +279,8 @@ int main(int argc, char **argv){
     
     clock_t t1;
     
+    auto startupTime = std::chrono::system_clock::now();
+    
     cv::cuda::GpuMat gpuMat;
     
     // TODO: refactor this zoom shit to actual focal lengths i mean FUUUUCK
@@ -348,19 +349,9 @@ int main(int argc, char **argv){
                     }
                     
                     cv::resize(frameEO, frameEO, cv::Size(0, 0), cropFactor, cropFactor);
-                    putText(frameEO, (serialNum + " v0.1.0.0"), cvPoint(25,25), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,255), 1, CV_AA);
+                    putText(frameEO, (serialNum + " v0.1.0.43"), cvPoint(25,25), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,255), 1, CV_AA);
                     writer.write(frameEO); 
                     
-               //     t1 = clock();               
-                   // udpWriter << frameEO;
-                 //   t1 = clock() - t1;
-                 //   std::cout << (((float)t1)/CLOCKS_PER_SEC)*1000 << std::endl;
-                    
-                    
-#ifdef DEBUG
-                    putText(result, "8006", cvPoint(30,30), 
-                                                    FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,255), 1, CV_AA);
-#endif
 
 #ifdef HAVE_DISPLAY
  
@@ -422,12 +413,12 @@ int main(int argc, char **argv){
                     cv::copyMakeBorder(frameIR, frameIR, 0, 0, 192, 192, BORDER_CONSTANT);
                 }
                 
-                putText(frameIR, (serialNum + " v0.1.0.0"), cvPoint(25,25), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,255), 1, CV_AA);
+                putText(frameIR, (serialNum + " v0.1.0.43"), cvPoint(25,25), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255,255,255), 1, CV_AA);
                 
                 if (NULL != frameIR.data){
 
-                    //writer.write(frameIR);
-                    udpWriter << frameIR;
+                    writer.write(frameIR);
+                    //udpWriter << frameIR;
 
 #ifdef HAVE_DISPLAY
                     imshow("Vision Core", frameIR);
@@ -454,7 +445,7 @@ int main(int argc, char **argv){
 
                    rectangle(dualCanvas, Rect(0, 0, dualCanvas.cols / 2, dualCanvas.rows), Scalar(255, 0, 0), 1, 8, 0);
                    rectangle(dualCanvas, Rect(dualCanvas.cols / 2, 0, dualCanvas.cols / 2, dualCanvas.rows), Scalar(255, 0, 0), 1, 8, 0);
-                   //writer.write(dualCanvas);
+                   writer.write(dualCanvas);
 
 #ifdef HAVE_DISPLAY
                     imshow("Vision Core", dualCanvas);
