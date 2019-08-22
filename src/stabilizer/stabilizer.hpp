@@ -47,6 +47,9 @@ public:
     /// runner contaning the capture loop
     void run();
 
+    /// Process frame
+    cv::Mat process(const cv::Mat &current_frame);
+
 private:
 
     void drawArrows(Mat& frame, const vector<Point2f>& prevPts, const vector<Point2f>& nextPts, const vector<uchar>& status, cv::Scalar line_color);

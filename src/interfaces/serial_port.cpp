@@ -77,7 +77,7 @@ void Serial_Port::initialize_defaults()
 	status = SERIAL_PORT_CLOSED;
 
 #ifdef MAC
-	uart_name = (char *)"/dev/tty.usbmodem01";
+	uart_name = (char *)"/dev/tty.Bluetooth-Incoming-Port";
 #elif defined(JETSON)
 	uart_name = (char *)"/dev/ttyTHS1";
 #else

@@ -42,6 +42,7 @@ void Stabilizer::init(const cv::Mat &start_frame){
     search_box.height = s.height - (search_box.y * 2);  
     search_box.width = s.width - (search_box.x * 2);
 
+    homography_smoother_ = new HomographySmoother(params_.smoothing_window_size);
 }
 
 
@@ -173,4 +174,42 @@ cv::Matx33f Stabilizer::findHomogrpahyMatrix(const cv::Mat &current_frame)
         homography = cv::Mat(cv::Matx33f::eye());
     }
     return cv::Matx33f(homography);
+}
+
+cv::Mat Stabilizer::process(const cv::Mat &current_frame)
+{
+    assert(!current_frame.empty());
+
+    // Initialization
+    if (frames.empty())
+    {
+        frames.push(current_frame.clone());
+        init(current_frame);
+        return cv::Mat();
+    }
+
+    cv::Mat latest_frame = frames.back();
+    frames.push(current_frame.clone());
+    cv::Matx33f homography = findHomogrpahyMatrix(current_frame);
+    homography_smoother_->push(homography);
+    cv::Matx33f smoothed_homography;
+
+    if (!homography_smoother_->getSmoothedHomography(smoothed_homography))
+    {
+        return cv::Mat();
+    }
+    cv::Mat stabilized_frame = applyPerspectiveTransformation(smoothed_homography);
+    return stabilized_frame;
+}
+
+cv::Mat Stabilizer::applyPerspectiveTransformation(cv::Matx33f transformation)
+{
+    cv::Mat oldest_frame = frames.front();
+    cv::Mat stabilized_frame;
+
+    cv::warpPerspective(oldest_frame, stabilized_frame,
+                        cv::Mat(transformation), oldest_frame.size());
+
+    frames.pop();
+    return stabilized_frame;
 }
