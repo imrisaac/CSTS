@@ -280,9 +280,8 @@ int main(int argc, char **argv){
     OutputMode outputMode = simpleEO;
     
     clock_t t1;
-    
-    auto startupTime = std::chrono::system_clock::now();
-    auto end = std::chrono::system_clock::now();
+
+    auto startupTime = std::time(nullptr);
 
     cv::cuda::GpuMat gpuMat;
     
@@ -292,9 +291,16 @@ int main(int argc, char **argv){
     
     double cropFactorBoson = boson640_90.scaleFactor720;
 
+    std::time_t t;
+
+    char mbstr[100];
+
     while (true)
     {
-    
+
+        t = startupTime - std::time(nullptr);
+        std::strftime(mbstr, sizeof(mbstr), "%T", std::localtime(&t));
+
         // get out desired output mode
         interfaces.getDesiredOutputMode(&outputMode);
         
@@ -353,6 +359,8 @@ int main(int argc, char **argv){
                     
                     cv::resize(frameEO, frameEO, cv::Size(0, 0), cropFactor, cropFactor);
                     putText(frameEO, (serialNum + " " + THISFIRMWARE), cvPoint(25, 25), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
+                    putText(frameEO, (mbstr), cvPoint(25, 25), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
+
                     writer.write(frameEO); 
                     
 
@@ -417,6 +425,7 @@ int main(int argc, char **argv){
                 }
 
                 putText(frameIR, (serialNum + " " + THISFIRMWARE), cvPoint(25, 25), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
+                putText(frameIR, (mbstr), cvPoint(25, 25), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
 
                 if (NULL != frameIR.data){
 
