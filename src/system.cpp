@@ -83,6 +83,34 @@ bool System::removeKernelModule(){
 
 }
 
+bool System::maxVIClock(){
+
+    cout << "setting max video interface clock" << endl;
+    ofstream viClock;
+    viClock.open("/sys/kernel/debug/bpmp/debug/clk/vi/mrq_rate_locked");
+    viClock << "1";
+    viClock.close();
+
+    /// /sys/kernel/debug/bpmp/debug/clk/vi/max_rate
+   // int exit_code = system("echo 1 > /sys/kernel/debug/bpmp/debug/clk/vi/mrq_rate_locked");
+
+    return true;
+}
+
+bool System::maxISPClock(){
+
+    cout << "setting max isp clock" << endl;
+    ofstream viClock;
+    viClock.open("/sys/kernel/debug/bpmp/debug/clk/isp/mrq_rate_locked");
+    viClock << "1";
+    viClock.close();
+
+    /// /sys/kernel/debug/bpmp/debug/clk/isp/max_rate
+   // int exit_code = system("echo 1 > /sys/kernel/debug/bpmp/debug/clk/isp/mrq_rate_locked");
+
+    return true;
+}
+
 /*
     because of course this is here
  */

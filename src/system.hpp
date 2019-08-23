@@ -12,6 +12,7 @@
 // std libs
 #include <iostream>  
 #include <string>
+#include <fstream>      // basic file operations
 
 #ifdef JETSON
 #include <linux/i2c-dev.h>
@@ -39,6 +40,10 @@ public:
     bool insertKernelModule(enum KernelModules module);
 
     bool removeKernelModule();
+
+    bool maxVIClock();
+
+    bool maxISPClock();
 
 private:
 
