@@ -11,7 +11,7 @@
 // default parameters
 WriterParams::WriterParams()
 {
-    encoder = "omxh265enc";
+    encoder = "omxh264enc";
     udp_bitrate = 1200 * 1000;
     udp_ip = "192.168.0.255";
     udp_port = "49410";

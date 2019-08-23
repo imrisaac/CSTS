@@ -122,9 +122,6 @@ bool System::maxVIClock(){
     viClock << "1";
     viClock.close();
 
-    /// /sys/kernel/debug/bpmp/debug/clk/vi/max_rate
-   // int exit_code = system("echo 1 > /sys/kernel/debug/bpmp/debug/clk/vi/mrq_rate_locked");
-
     return true;
 }
 
@@ -135,9 +132,6 @@ bool System::maxISPClock(){
     viClock.open("/sys/kernel/debug/bpmp/debug/clk/isp/mrq_rate_locked");
     viClock << "1";
     viClock.close();
-
-    /// /sys/kernel/debug/bpmp/debug/clk/isp/max_rate
-   // int exit_code = system("echo 1 > /sys/kernel/debug/bpmp/debug/clk/isp/mrq_rate_locked");
 
     return true;
 }
