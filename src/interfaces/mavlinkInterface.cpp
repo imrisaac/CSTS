@@ -61,6 +61,12 @@ void MavlinkInterface::processMessage(mavlink_message_t message){
 
             break;
         }
+
+        case MAVLINK_MSG_ID_GPS_RAW_INT:{
+
+            cout << "recieved gps raw int" << endl;
+        }
+
     } // message id switch case
 
     return;

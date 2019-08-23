@@ -282,7 +282,8 @@ int main(int argc, char **argv){
     clock_t t1;
     
     auto startupTime = std::chrono::system_clock::now();
-    
+    auto end = std::chrono::system_clock::now();
+
     cv::cuda::GpuMat gpuMat;
     
     // TODO: refactor this zoom shit to actual focal lengths i mean FUUUUCK
