@@ -13,6 +13,7 @@
 #include <iostream>  
 #include <string>
 #include <fstream>      // basic file operations
+#include <sstream>      // weirh string conversion thing
 
 // in repo
 #include "thread.hpp"
@@ -49,6 +50,8 @@ public:
     bool maxVIClock();
 
     bool maxISPClock();
+    
+    int getInstantTXRate(){return instantTXRate;};
 
 private:
 
@@ -57,6 +60,9 @@ private:
     int getTxBitrate(int interface);
 
     bool cmdProcessorAvailable;
+    
+    int instantTXRate;
+    
 
 };
 

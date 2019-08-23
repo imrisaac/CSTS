@@ -1,15 +1,18 @@
 # VCSTS(Video Capture Stabilization and Streaming) Change Log
 
-## 0.1.0.x / 18 Aug 2019
+## 0.1.1.0 / 22 Aug 2019
 
 - fix serialnum file path
-- reverted isp_overrides file however this may have been unnecessary
+- isp adnd vi clocks set to max, 
+    - this seems to improve csi stability and reduce isp errors. 
 - changes to gstreamer writer pipeline: 
-    -appsrc ! timeoverlay halign=left valign=bottom ! videoconvert n-threads=3 ! omxh265enc bitrate=1200000 control_rate=2 low-latency=true EnableTwopassCBR=true ! mpegtsmux alignment=7 ! udpsink host=192.168.0.255 port=49410 sync=false async=false 
+    - appsrc ! timeoverlay halign=left valign=bottom ! videoconvert n-threads=3 ! omxh265enc bitrate=1200000 control_rate=2 low-latency=true EnableTwopassCBR=true ! mpegtsmux alignment=7 ! udpsink host=192.168.0.255 port=49410 sync=false async=false 
 - new runtime counter calculated internally, now runs at correct speed with matching font
-- added basic Doxygen config file
-- added backend for realtime tx bitrate reporting on eth0
-- added backend for internal handeling of kernel module insert
+- tx rate over eth0 is displayed in overlay in Kbits/sec 
+- added basic Doxygen config file for auto docs
+- added backend for internal handeling of kernel module insert, not yet implemented
+- added backend for writing i2c internally, not yet implemented
+- added tcp handler to interfaces
 
 
 ## 0.1.0.0 / 17 Aug 2019

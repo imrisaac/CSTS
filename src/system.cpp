@@ -8,6 +8,7 @@
 
 #include "system.hpp"
 
+
 void System::init(){
 
     cmdProcessorAvailable = false;
@@ -26,21 +27,31 @@ void System::init(){
 void System::run(){
 
     ifstream eth0tx;
-    eth0tx.open("/sys/kernel/debug/bpmp/debug/clk/vi/mrq_rate_locked");
+    
 
-    int test;
+    long previousTxBytes = 0;
+    long nowTxBytes = 0;
+    
+    std::stringstream instantTXRateStream;
 
     while( false == stopRequested() ){
-
-        eth0tx >> test;
-        std::cout << "tx bytes: " << test << std::endl;
-
+        
+        eth0tx.open("/sys/class/net/eth0/statistics/tx_bytes");
+        eth0tx >> nowTxBytes;
+        eth0tx.close();
+        
+        //std::cout << "tx bytes: " << (nowTxBytes - previousTxBytes)/100000.0 << std::endl;
+        
+        instantTXRate = (nowTxBytes - previousTxBytes)/10000;
+        
+        previousTxBytes = nowTxBytes;
+        
         // 1hz loop rate
         usleep(1000 * 1000);
 
     }
 
-    eth0tx.close();
+ 
 }
 
 /**
