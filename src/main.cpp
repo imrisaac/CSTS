@@ -359,7 +359,7 @@ int main(int argc, char **argv){
                     
                     cv::resize(frameEO, frameEO, cv::Size(0, 0), cropFactor, cropFactor);
                     putText(frameEO, (serialNum + " " + THISFIRMWARE), cvPoint(25, 25), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
-                    putText(frameEO, (mbstr), cvPoint(25, 25), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
+                    putText(frameEO, (mbstr), cvPoint(25, 50), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
 
                     writer.write(frameEO); 
                     
@@ -425,7 +425,7 @@ int main(int argc, char **argv){
                 }
 
                 putText(frameIR, (serialNum + " " + THISFIRMWARE), cvPoint(25, 25), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
-                putText(frameIR, (mbstr), cvPoint(25, 25), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
+                putText(frameIR, (mbstr), cvPoint(25, 50), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
 
                 if (NULL != frameIR.data){
 
