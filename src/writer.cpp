@@ -11,7 +11,7 @@
 // default parameters
 WriterParams::WriterParams()
 {
-    encoder = "omxh265enc";
+    encoder = "omxh264enc";
     udp_bitrate = 1200 * 1000;
     udp_ip = "192.168.0.255";
     udp_port = "49410";
@@ -35,7 +35,7 @@ cv::VideoWriter *Writer::init(const cv::Mat &start_frame)
     cout << "initilizing writer" << endl;    
 
 #ifdef JETSON
-    openSink(gstJetsonUDP, start_frame);
+    openSink(gstJetson265UDP, start_frame);
 #else
     cout << "no writer in build" << endl;
 #endif
@@ -149,8 +149,21 @@ bool Writer::openSink(Sinker sink, cv::Mat start_frame)
         udpWriter.open(gstSink, 0, (double)30, cv::Size(params_.stream_width, params_.stream_height), true);
 
         break;
+
+    case gstJetson264UDP:
+
+        // assemble gstreamer pipeline,
+        // ***** please keep this on one line *****
+
+        gstSink = "appsrc ! videoconvert ! " + params_.encoder + " bitrate=" + to_string(params_.udp_bitrate) + " control_rate=2 low-latency=true EnableTwopassCBR=true ! mpegtsmux alignment=7 ! udpsink host=" + params_.udp_ip + " port=" + params_.udp_port + " sync=false async=false "; // 300ms
+
+        cout << "GST writer sink: " + gstSink + "\n";
+
+        udpWriter.open(gstSink, 0, (double)30, cv::Size(params_.stream_width, params_.stream_height), true);
+
+        break;
     
-    case gstJetsonUDP:
+    case gstJetson265UDP:
 
         // assemble gstreamer pipeline, 
         // ***** please keep this on one line *****
