@@ -23,6 +23,26 @@ void System::init(){
 
 }
 
+void System::run(){
+
+    ifstream eth0tx;
+    eth0tx.open("/sys/kernel/debug/bpmp/debug/clk/vi/mrq_rate_locked");
+
+    int test;
+
+    while( false == stopRequested() ){
+
+        eth0tx >> test;
+        std::cout << "tx bytes: " << test << std::endl;
+
+        // 1hz loop rate
+        usleep(1000 * 1000);
+
+    }
+
+    eth0tx.close();
+}
+
 /**
     restartNVArgus
 

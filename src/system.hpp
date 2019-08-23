@@ -14,6 +14,9 @@
 #include <string>
 #include <fstream>      // basic file operations
 
+// in repo
+#include "thread.hpp"
+
 #ifdef JETSON
 #include <linux/i2c-dev.h>
 #endif
@@ -25,11 +28,13 @@ enum KernelModules{
 
 using namespace std;
 
-class System {
+class System: public Threader {
 
 public:
 
     void init();
+
+    void run();
 
     bool restartNVArgus();
 

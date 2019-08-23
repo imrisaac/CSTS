@@ -54,8 +54,8 @@ struct Telemetry
     Writer class
     inherits from Threader class
  */
-class Writer: public Threader
-{
+class Writer: public Threader{
+    
 public:
     cv::VideoWriter *init(const cv::Mat &start_frame);
 

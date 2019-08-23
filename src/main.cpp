@@ -251,6 +251,11 @@ int main(int argc, char **argv){
 		writer.run();
     });
 
+    // system thread runs at 1 hz
+    std::thread systemThread([&]() {
+        system.run();
+    });
+
     cout << "starting main loop" << endl;
 
     // TODO: i have two things called frame count fix this
@@ -277,9 +282,9 @@ int main(int argc, char **argv){
     
     OutputMode outputMode = simpleEO;
     
-    clock_t t1;
-
+    // runtime counter
     std::time_t startupTime = std::time(nullptr);
+    std::time_t t;
 
     cv::cuda::GpuMat gpuMat;
     
@@ -289,7 +294,6 @@ int main(int argc, char **argv){
     
     double cropFactorBoson = boson640_90.scaleFactor720;
 
-    std::time_t t;
 
     char mbstr[100];
 
@@ -488,6 +492,7 @@ int main(int argc, char **argv){
     captureIR.stop();
     interfaces.stop();
     writer.stop();
+    system.stop();
 
     usleep(300000);
 
@@ -498,6 +503,7 @@ int main(int argc, char **argv){
     sceneTrackThread.join();
     interfacesThread.join();
     stabilizerThread.join();
+    systemThread.join();
     
     // we close the writer last so we can use it for remote debug output as long as possible
     writerThread.join();
