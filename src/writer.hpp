@@ -26,7 +26,8 @@ using namespace std;
 enum Sinker
 {
     gstMacUDP,
-    gstJetsonUDP,
+    gstJetson264UDP,
+    gstJetson265UDP,
     gstFlirCropped,
     file0,
     file1,
