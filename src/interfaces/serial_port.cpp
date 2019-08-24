@@ -104,7 +104,7 @@ int Serial_Port::read_message(mavlink_message_t &message)
 	uint8_t          cp;
 	mavlink_status_t status;
 	uint8_t          msgReceived = false;
-
+    
 	// this function locks the port during read
 	int result = _read_port(cp);
 
@@ -127,7 +127,7 @@ int Serial_Port::read_message(mavlink_message_t &message)
 	// Couldn't read from port
 	else
 	{
-		fprintf(stderr, "ERROR: Could not read from fd %d\n", fd);
+		//fprintf(stderr, "ERROR: Could not read from fd %d\n", fd);
 	}
 
 	// debugging reports
@@ -348,7 +348,7 @@ bool Serial_Port::_setup_port(int baud, int data_bits, int stop_bits, bool parit
 
 	// One input byte is enough to return from read()
 	// Inter-character timer off
-	config.c_cc[VMIN]  = 1;
+	config.c_cc[VMIN]  = 0;
 	config.c_cc[VTIME] = 10; // was 0
 
 	// Get the current options for the port

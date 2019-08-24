@@ -178,7 +178,7 @@ int main(int argc, char **argv){
     Writer writer;
     System system;
     
-    system.helloWorld();
+    system.init();
    // system.maxVIClock();
    // system.maxISPClock();
     
@@ -498,7 +498,7 @@ int main(int argc, char **argv){
     writer.stop();
     system.stop();
 
-    usleep(300000);
+    usleep(3000);
 
     // Waiting for thread to join, sync threads for exit
     // if a thread fails to stop we will get stuck waiting for that particular thread to join

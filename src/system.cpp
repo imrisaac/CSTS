@@ -20,36 +20,26 @@ void System::init(){
         cout << "Command processor not available on this system";
         cmdProcessorAvailable = false;
     }
+    
+    maxVIClock(true);
+    maxISPClock(true);
+    
     return;
 
 }
 
 void System::run(){
 
-    ifstream eth0tx;
-    
-
-    long previousTxBytes = 0;
-    long nowTxBytes = 0;
-    
-    std::stringstream instantTXRateStream;
-
     while( false == stopRequested() ){
         
-        eth0tx.open("/sys/class/net/eth0/statistics/tx_bytes");
-        eth0tx >> nowTxBytes;
-        eth0tx.close();
-        
-        //std::cout << "tx bytes: " << (nowTxBytes - previousTxBytes)/100000.0 << std::endl;
-        
-        instantTXRate = (nowTxBytes - previousTxBytes)/10000;
-        
-        previousTxBytes = nowTxBytes;
+        readTxBitrate(0);
         
         // 1hz loop rate
         usleep(1000 * 1000);
 
     }
+    
+    std::cout << "system loop stopped" << endl;
 
  
 }
@@ -114,24 +104,41 @@ bool System::removeKernelModule(){
 
 }
 
-bool System::maxVIClock(){
+bool System::maxVIClock(bool state){
 
     cout << "setting max video interface clock" << endl;
     ofstream viClock;
     viClock.open("/sys/kernel/debug/bpmp/debug/clk/vi/mrq_rate_locked");
-    viClock << "1";
+    
+    // set max(1) or Auto(0) video interface clock
+    if ( true == state ){
+        viClock << "1";
+    }else if (false == state ){
+        viClock << "0";
+    }else{
+        viClock << "0";
+    }
+    
     viClock.close();
 
     return true;
 }
 
-bool System::maxISPClock(){
+bool System::maxISPClock(bool state){
 
     cout << "setting max isp clock" << endl;
-    ofstream viClock;
-    viClock.open("/sys/kernel/debug/bpmp/debug/clk/isp/mrq_rate_locked");
-    viClock << "1";
-    viClock.close();
+    ofstream ispClock;
+    ispClock.open("/sys/kernel/debug/bpmp/debug/clk/isp/mrq_rate_locked");
+    
+    // set max(1) or Auto(0) isp clock
+    if ( true == state ){
+        ispClock << "1";
+    }else if (false == state ){
+        ispClock << "0";
+    }else{
+        ispClock << "0";
+    }
+    ispClock.close();
 
     return true;
 }
@@ -152,17 +159,29 @@ bool System::helloWorld(){
     return true;
 }
 
+int System::readTxBitrate(int interface){
+    
+    ifstream eth0tx;
+    
+    static long previousTxBytes = 0;
+    static long nowTxBytes = 0;
+    
+    std::stringstream instantTXRateStream;
+    
+    eth0tx.open("/sys/class/net/eth0/statistics/tx_bytes");
+    eth0tx >> nowTxBytes;
+    eth0tx.close();
+    
+    instantTXRate = (nowTxBytes - previousTxBytes)/10000;
+        
+    previousTxBytes = nowTxBytes;
+    
+}
 
 /**
-    exec
-
-    executes a command in the system shell
- */
-string System::exec(const char *cmd){
-
+    Read temperature sensors onboard the tegra module
+*/
+void System::readThermalZones(){
+    
 }
-
-int System::getTxBitrate(int interface){
-
-
-}
+    

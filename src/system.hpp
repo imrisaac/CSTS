@@ -46,10 +46,6 @@ public:
     bool insertKernelModule(enum KernelModules module);
 
     bool removeKernelModule();
-
-    bool maxVIClock();
-
-    bool maxISPClock();
     
     int getInstantTXRate(){return instantTXRate;};
 
@@ -57,7 +53,13 @@ private:
 
     string exec(const char *cmd);
 
-    int getTxBitrate(int interface);
+    int readTxBitrate(int interface);
+    
+    bool maxVIClock(bool state);
+
+    bool maxISPClock(bool state);
+    
+    void readThermalZones();
 
     bool cmdProcessorAvailable;
     
