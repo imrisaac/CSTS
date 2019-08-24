@@ -35,6 +35,7 @@ void System::run(){
     while( false == stopRequested() ){
         
         readTxBitrate(0);
+        readThermalZones();
         
         // 1hz loop rate
         usleep(1000 * 1000);
@@ -205,7 +206,9 @@ void System::readThermalZones(){
     
     tempSum += atof(readBuf);
     
-    cout << tempSum/3 << endl;
+    //cout << tempSum/3 << endl;
+    
+    thermal_zone_avg = tempSum/3000;
     
     
     

@@ -1,5 +1,22 @@
 # VCSTS(Video Capture Stabilization and Streaming) Change Log
 
+## 0.1.2.0 / 24 Aug 2019
+
+- Added temp monitiring of BCPU, MCPU and GPU
+    - these are averaged and reported in video overlay
+    - Vales are from on-die temp sensors near each cpu cluster and near the gpu
+- Fix bug causing serial read to block thread close
+- Moved ISP and VI clock up into system init.
+
+## 0.1.1.2 / 23 Aug 2019
+
+- reverted clock change
+
+## 0.1.1.1 / 23 Aug 2019
+
+- special version for Steve
+- does not bump clocks of ISP or VI
+
 ## 0.1.1.0 / 22 Aug 2019
 
 - fix serialnum file path

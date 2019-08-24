@@ -363,6 +363,9 @@ int main(int argc, char **argv){
                     putText(frameEO, (serialNum + " " + THISFIRMWARE), cvPoint(25, 25), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
                     putText(frameEO, (mbstr), cvPoint(25, 40), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
                     putText(frameEO, (std::to_string(system.getInstantTXRate()) + "Kbits/sec"), cvPoint(25, 55), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
+                    
+                    
+                    putText(frameEO, (std::to_string(system.getThermalZoneAvg()) + "c"), cvPoint(25, 70), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
 
                     writer.write(frameEO); 
                     

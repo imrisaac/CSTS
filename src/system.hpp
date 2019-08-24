@@ -49,6 +49,8 @@ public:
     bool removeKernelModule();
     
     int getInstantTXRate(){return instantTXRate;};
+    
+    int getThermalZoneAvg(){return thermal_zone_avg;};
 
 private:
 
@@ -65,6 +67,8 @@ private:
     bool cmdProcessorAvailable;
     
     int instantTXRate;
+    
+    int thermal_zone_avg;
     
 
 };
