@@ -59,7 +59,6 @@ void Interfaces::run(){
             mavlinkInterface.processMessage(message);
         }
 
-        cout << "interface loop working" << endl;
         usleep(100);
         
     }

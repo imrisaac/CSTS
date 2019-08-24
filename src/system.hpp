@@ -13,7 +13,8 @@
 #include <iostream>  
 #include <string>
 #include <fstream>      // basic file operations
-#include <sstream>      // weirh string conversion thing
+#include <sstream>      // weird string conversion thing
+#include <stdlib.h>     // for atof
 
 // in repo
 #include "thread.hpp"

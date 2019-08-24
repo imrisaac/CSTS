@@ -179,9 +179,7 @@ int main(int argc, char **argv){
     System system;
     
     system.init();
-   // system.maxVIClock();
-   // system.maxISPClock();
-    
+
     cv::Mat cropped;
     cropped.create(cv::Size(960, 720), CV_8UC3);
     
@@ -429,9 +427,9 @@ int main(int argc, char **argv){
                     cv::copyMakeBorder(frameIR, frameIR, 0, 0, 192, 192, BORDER_CONSTANT);
                 }
 
-                putText(frameIR, (serialNum + " " + THISFIRMWARE), cvPoint(25, 25), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
-                putText(frameIR, (mbstr), cvPoint(25, 32), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
-                putText(frameEO, (std::to_string(system.getInstantTXRate()) + "Kbits/sec"), cvPoint(25, 55), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
+                    putText(frameIR, (serialNum + " " + THISFIRMWARE), cvPoint(25, 25), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
+                    putText(frameIR, (mbstr), cvPoint(25, 40), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
+                    putText(frameIR, (std::to_string(system.getInstantTXRate()) + "Kbits/sec"), cvPoint(25, 55), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
 
                 if (NULL != frameIR.data){
 

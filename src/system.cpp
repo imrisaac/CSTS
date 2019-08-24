@@ -24,6 +24,8 @@ void System::init(){
     maxVIClock(true);
     maxISPClock(true);
     
+    readThermalZones();
+    
     return;
 
 }
@@ -38,6 +40,10 @@ void System::run(){
         usleep(1000 * 1000);
 
     }
+    
+    std::cout << "restoring VI and ISP clocks" << endl;
+    maxVIClock(false);
+    maxISPClock(false);
     
     std::cout << "system loop stopped" << endl;
 
@@ -106,7 +112,7 @@ bool System::removeKernelModule(){
 
 bool System::maxVIClock(bool state){
 
-    cout << "setting max video interface clock" << endl;
+    cout << "setting video interface clock" << endl;
     ofstream viClock;
     viClock.open("/sys/kernel/debug/bpmp/debug/clk/vi/mrq_rate_locked");
     
@@ -126,7 +132,7 @@ bool System::maxVIClock(bool state){
 
 bool System::maxISPClock(bool state){
 
-    cout << "setting max isp clock" << endl;
+    cout << "setting isp clock" << endl;
     ofstream ispClock;
     ispClock.open("/sys/kernel/debug/bpmp/debug/clk/isp/mrq_rate_locked");
     
@@ -147,14 +153,6 @@ bool System::maxISPClock(bool state){
     because of course this is here
  */
 bool System::helloWorld(){
-
-    if(!cmdProcessorAvailable){
-        //return false;
-    }
-
-    int exit_code = system("echo hello world");
-
-    cout << "exit core " << exit_code << endl;
 
     return true;
 }
@@ -182,6 +180,34 @@ int System::readTxBitrate(int interface){
     Read temperature sensors onboard the tegra module
 */
 void System::readThermalZones(){
+    
+    ifstream thermalZone;
+    
+    int tempSum = 0;
+    
+    char readBuf[16];
+    
+    thermalZone.open("/sys/devices/virtual/thermal/thermal_zone0/temp");
+    thermalZone >> readBuf;
+    thermalZone.close();
+    
+    tempSum += atof(readBuf);
+    
+    thermalZone.open("/sys/devices/virtual/thermal/thermal_zone1/temp");
+    thermalZone >> readBuf;
+    thermalZone.close();
+    
+    tempSum += atof(readBuf);
+    
+    thermalZone.open("/sys/devices/virtual/thermal/thermal_zone2/temp");
+    thermalZone >> readBuf;
+    thermalZone.close();
+    
+    tempSum += atof(readBuf);
+    
+    cout << tempSum/3 << endl;
+    
+    
     
 }
     
