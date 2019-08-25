@@ -67,6 +67,11 @@ void MavlinkInterface::processMessage(mavlink_message_t message){
             cout << "recieved gps raw int" << endl;
         }
 
+        case MAVLINK_MSG_ID_SYSTEM_TIME:{
+
+            cout << "recieved system time message" << endl;
+        }
+
     } // message id switch case
 
     return;
@@ -99,9 +104,5 @@ void MavlinkInterface::send_heartbeat(uint8_t type, uint8_t base_mode, uint32_t 
 		fprintf(stderr,"WARNING: could not send HEARTBEAT \n");
 * 
 * */
-}
-
-void MavlinkInterface::send_distance_sensor(int sensor){
-    
 }
 

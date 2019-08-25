@@ -114,7 +114,6 @@ public:
     
     void send_heartbeat(uint8_t type, uint8_t base_mode, uint32_t custom_mode, uint8_t system_status);
     
-    void send_distance_sensor(int sensor);
 
 private:
 
