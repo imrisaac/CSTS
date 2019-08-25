@@ -1,4 +1,4 @@
-# README
+k# README
 
 ## Outline
 
@@ -29,7 +29,7 @@ another method is to apply the same warp to 2 fsequential frames
 
 ## Tricks Done to Reduce Computational load
 
-In the name of processing speed corner detection in not performed on the entire frame because corners detected near the edge of the frame are most likely to not exist in the next frame.
+In the name of processing speed corner detection in not performed on the entire frame. Corners detected near the edge of the frame are most likely to not exist in the next frame.
 
 ## Stabilization Params
 

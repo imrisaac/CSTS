@@ -65,6 +65,10 @@ cv::Mat GetSquareImage(const cv::Mat &img, int target_width)
     return square;
 }
 
+void addOverlay(cv::Mat *frame){
+    
+}
+
 int main(int argc, char **argv){
     int c;
     int digit_optind = 0;

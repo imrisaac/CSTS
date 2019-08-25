@@ -101,3 +101,7 @@ void MavlinkInterface::send_heartbeat(uint8_t type, uint8_t base_mode, uint32_t 
 * */
 }
 
+void MavlinkInterface::send_distance_sensor(int sensor){
+    
+}
+
