@@ -112,5 +112,20 @@ void MavlinkInterface::send_heartbeat(uint8_t type, uint8_t base_mode, uint32_t 
  */
 void MavlinkInterface::send_payload_status(){
 
+    mavlink_av_payload_status_t payload_status;
+    mavlink_message_t message;
+
+    payload_status.type = 0;
+    payload_status.status_flags = 0;
+    payload_status.hfov = 0;
+    payload_status.vfov = 0;
+    payload_status.zoom_limit_and_index = 0;
+   // payload_status.hfov_list = NULL;
+   // payload_status.vfov_list = NULL;
+    payload_status.pan = 0;
+    payload_status.tilt = 0;
+    payload_status.expanded_config_flags = 0;
+
+    mavlink_msg_av_payload_status_encode(system_id, component_id, &message, &payload_status);
 }
 
