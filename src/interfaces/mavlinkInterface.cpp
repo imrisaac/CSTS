@@ -82,8 +82,8 @@ void MavlinkInterface::processMessage(mavlink_message_t message){
 	send_heartbeat
 	wrapper for sending heartbeat
  */
-void MavlinkInterface::send_heartbeat(uint8_t type, uint8_t base_mode, uint32_t custom_mode, uint8_t system_status)
-{
+void MavlinkInterface::send_heartbeat(uint8_t type, uint8_t base_mode, uint32_t custom_mode, uint8_t system_status){
+
     /*
 	mavlink_heartbeat_t heartbeat;
 	mavlink_message_t message;
@@ -104,5 +104,13 @@ void MavlinkInterface::send_heartbeat(uint8_t type, uint8_t base_mode, uint32_t 
 		fprintf(stderr,"WARNING: could not send HEARTBEAT \n");
 * 
 * */
+}
+
+
+/**
+    Send payload status message
+ */
+void MavlinkInterface::send_payload_status(){
+
 }
 
