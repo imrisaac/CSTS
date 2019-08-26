@@ -116,6 +116,8 @@ public:
     
     void send_payload_status();
 
+    void send_scaled_pressure(int temperature);
+
 private:
 
 };

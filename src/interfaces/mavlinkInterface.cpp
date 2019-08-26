@@ -114,3 +114,19 @@ void MavlinkInterface::send_payload_status(){
 
 }
 
+void MavlinkInterface::send_scaled_pressure(int temperature){
+
+    mavlink_scaled_pressure_t scaled_pressure;
+    mavlink_message_t message;
+
+    scaled_pressure.temperature = temperaturel;
+
+    mavlink_msg_scaled_pressure_encode(
+        system_id,
+        component_id,
+        &message,
+        &scaled_pressure
+    );
+
+} 
+
