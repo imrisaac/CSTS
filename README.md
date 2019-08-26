@@ -6,7 +6,7 @@ Based on the 5th major rewrite of what was originally called vision_core4
 
 incorperates new threading model from VC4, stabilization method from nano stab, and serial port handeling from nix_mvlink_parser
 
-Currently operates using three thread:
+Currently operates using three threads:
 
 1. main thread in main.cpp
     * Creats and destroys all other threads
