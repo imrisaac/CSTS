@@ -57,6 +57,7 @@ struct Time_Stamps
 struct Mavlink_Messages
 {
 
+    // sysid and compid of these messages
     int sysid;
     int compid;
 
@@ -119,6 +120,10 @@ public:
     void send_scaled_pressure(int temperature);
 
 private:
+
+    // this is our sys_id and component id
+    int system_id = 1;
+    int component_id = 193; // MAV_COMP_ID_MISSION_COMPUTER; TODO: fix this mavlink enum
 
 };
 
