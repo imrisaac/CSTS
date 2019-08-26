@@ -57,8 +57,6 @@ public:
 
 private:
 
-    void writeThreadRun()
-
     Serial_Port serial_port;
     
     InterfaceParams params_;
