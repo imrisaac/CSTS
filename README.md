@@ -1,10 +1,10 @@
-# Video Capture Stabilization Tracking and Streaming 
+# Video Capture Stabilization Tracking and Streaming (CSTS)
 
 Main camera processing application fot the Jetson TX2
 
-Based on the 5th major rewrite of what has originally called vision_core4
+Based on the 5th major rewrite of what was originally called vision_core4
 
-incorperates new threading model from VC4 and stabilization method from nano stab
+incorperates new threading model from VC4, stabilization method from nano stab, and serial port handeling from nix_mvlink_parser
 
 Currently operates using three thread:
 

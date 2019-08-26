@@ -58,7 +58,9 @@ void Interfaces::run(){
             mavlinkInterface.processMessage(message);
         }
 
-        // give time to write to port
+        serial_port.write_message_queue();
+
+        // dont go crazy
         usleep(100);
         
     }
