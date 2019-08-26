@@ -41,7 +41,6 @@ void Interfaces::initilize(){
 
 /*
     Runner for the c2 thread
-    contains the c2 loop
  */
 void Interfaces::run(){
     cout << "interface loop start" << endl;
@@ -69,6 +68,13 @@ void Interfaces::run(){
     serial_port.stop();
 
     cout << "interface loop stopped" << endl;
+
+}
+
+/**
+    Write messages over interfaces
+ */
+void Interfaces::writeThreadRun(){
 
 }
 

@@ -1,4 +1,4 @@
-k# README
+# README
 
 ## Outline
 
@@ -17,7 +17,11 @@ As latency is one of the primary concerns buffering frams and parallelizing the 
 This method would improve framerate but again signifiganlty increase latency
 
 State estimator method
-This methond involves a state estimator that is used to stabilize the realtime video feed while the estimator is updated in a seperate thread at a much loer framerate
+This methond involves a state estimator that is used to stabilize the realtime video feed while the estimator is updated in a seperate thread at a much lower framerate dropping intermediate frames
+    1. run at 1/2 framerate
+    2. Higher latency calculations are allowed but framerate must maintain.
+    3. i.e. 66.66ms calculation max
+    4. incorperate imu data from the autopilot
 
 another method is to apply the same warp to 2 fsequential frames
 

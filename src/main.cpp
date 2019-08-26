@@ -224,18 +224,20 @@ int main(int argc, char **argv){
     cout << "IR size: " << frameIR.cols << "x" << frameIR.rows << endl;
 
     udpWriter = *writer.init(cropped);
+
+    // TODO: combine interfaces and system threads
     
     // interfaces thread
     std::thread interfacesThread([&](){
         interfaces.run();
     });
 
-    // capture thread
+    // capture thread, deprecated
     std::thread captureEOThread([&](){
        // captureEO.run();
     });
     
-    // capture2 thread
+    // capture2 thread, deprecated
     std::thread captureIRThread([&](){
         //captureIR.run();
     });
@@ -245,7 +247,7 @@ int main(int argc, char **argv){
        // sceneTrack.run();
     });
     
-    // stabilizer thread
+    // stabilizer thread, not needed for simple stabilizer but needed for estimator stabilizer
     std::thread stabilizerThread([&](){
        // stabilizer.run();
     });
