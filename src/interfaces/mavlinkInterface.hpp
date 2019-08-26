@@ -17,8 +17,9 @@
 #include <iostream>		// for basic file operations
 #include <fstream>		// for basic file operations
 
-// TODO: fix ugly include
-#include "../../include/mavlink/v2.0/ardupilotmega/mavlink.h"
+// in repo
+#include "../../include/mavlink/v2.0/ardupilotmega/mavlink.h" // TODO: fix ugly include
+#include "serial_port.h"
 
 using namespace std;
 
@@ -104,7 +105,7 @@ struct Mavlink_Messages
 class MavlinkInterface
 {
 public:
-    void init();
+    void init(Serial_Port *serial_port_);
 
     void processMessage(mavlink_message_t message);
 
@@ -122,9 +123,12 @@ public:
 private:
 
     // this is our sys_id and component id
-    int system_id = 1;
-    int component_id = 193; // MAV_COMP_ID_MISSION_COMPUTER; TODO: fix this mavlink enum
+    static const int system_id = 1;
+    static const int component_id = 193; // MAV_COMP_ID_MISSION_COMPUTER; TODO: fix this mavlink enum
 
+    int write_message(mavlink_message_t message);
+
+    Serial_Port *serial_port;
 };
 
 #endif //mavlinkInterface_hpp

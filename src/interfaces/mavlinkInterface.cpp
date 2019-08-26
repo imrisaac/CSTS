@@ -19,6 +19,12 @@ uint64_t get_time_usec()
     return _time_stamp.tv_sec * 1000000 + _time_stamp.tv_usec;
 }
 
+void MavlinkInterface::init(Serial_Port *serial_port_){
+
+    serial_port = serial_port_;
+
+}
+
 void MavlinkInterface::processMessage(mavlink_message_t message){
 
     // Store message sysid and compid.
@@ -134,7 +140,7 @@ void MavlinkInterface::send_scaled_pressure(int temperature){
     mavlink_scaled_pressure_t scaled_pressure;
     mavlink_message_t message;
 
-    scaled_pressure.temperature = temperaturel;
+    scaled_pressure.temperature = temperature;
 
     mavlink_msg_scaled_pressure_encode(
         system_id,
@@ -143,5 +149,18 @@ void MavlinkInterface::send_scaled_pressure(int temperature){
         &scaled_pressure
     );
 
-} 
+    // do the write
+    int len = write_message(message);
 
+    // check the write
+    if (len <= 0)
+        fprintf(stderr, "WARNING: could not send SCALED_PRESSURE \n");
+}
+
+int MavlinkInterface::write_message(mavlink_message_t message){
+    // do the write
+    int len = serial_port->write_message(message);
+
+    // Done!
+    return len;
+}

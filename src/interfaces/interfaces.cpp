@@ -59,6 +59,7 @@ void Interfaces::run(){
             mavlinkInterface.processMessage(message);
         }
 
+        // give time to write to port
         usleep(100);
         
     }

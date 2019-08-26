@@ -53,11 +53,11 @@ public:
 
     void getZoom(int *focalLength);
 
+    MavlinkInterface mavlinkInterface;
+
 private:
 
     Serial_Port serial_port;
-
-    MavlinkInterface mavlinkInterface;
     
     InterfaceParams params_;
 

@@ -260,6 +260,8 @@ int main(int argc, char **argv){
         system.run();
     });
 
+    interfaces.mavlinkInterface.send_scaled_pressure(10);
+
     cout << "starting main loop" << endl;
 
     // TODO: i have two things called frame count fix this
