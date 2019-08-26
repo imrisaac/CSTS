@@ -21,7 +21,7 @@ This methond involves a state estimator that is used to stabilize the realtime v
     1. run at 1/2 framerate
     2. Higher latency calculations are allowed but framerate must maintain.
     3. i.e. 66.66ms calculation max
-    4. incorperate imu data from the autopilot
+    4. incorporate imu data from the autopilot
 
 another method is to apply the same warp to 2 fsequential frames
 
