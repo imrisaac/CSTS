@@ -166,18 +166,34 @@ int Serial_Port::read_message(mavlink_message_t &message)
 	return msgReceived;
 }
 
+int Serial_Port::write_message(const mavlink_message_t &message){
+
+	writeQueue.push(message);
+
+}
+
 /**
  * write to serial
  */
-int Serial_Port::write_message(const mavlink_message_t &message)
-{
+int Serial_Port::write_message(){
+
 	char buf[300];
+
+	mavlink_message_t message = writeQueue.front();
 
 	// Translate message to buffer
 	unsigned len = mavlink_msg_to_send_buffer((uint8_t*)buf, &message);
 
 	// Write buffer to serial port, locks port while writing
 	int bytesWritten = _write_port(buf,len);
+
+	if (bytesWritten <= 0){
+		std::cout << "message write failed" << std::endl;
+	}
+
+	// TODO: check if message was actually written.
+	// TODO: compare message size to byte written.
+	writeQueue.pop();
 
 	return bytesWritten;
 }

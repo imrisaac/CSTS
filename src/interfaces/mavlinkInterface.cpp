@@ -152,9 +152,6 @@ void MavlinkInterface::send_scaled_pressure(int temperature){
     // do the write
     int len = write_message(message);
 
-    // check the write
-    if (len <= 0)
-        fprintf(stderr, "WARNING: could not send SCALED_PRESSURE \n");
 }
 
 int MavlinkInterface::write_message(mavlink_message_t message){

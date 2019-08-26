@@ -59,6 +59,7 @@
 #include <signal.h>
 #include <time.h> 	// Used for ... timestamps, shocker
 #include <iostream>
+#include <queue>
 
 // TODO: please fix this ugly include
 #include "../../include/mavlink/v2.0/ardupilotmega/mavlink.h"
@@ -106,6 +107,10 @@ public:
 	int  status;
 
 	int read_message(mavlink_message_t &message);
+
+	int write_message_buffered(const mavlink_message_t &message);
+
+	// deprecated, soon to be private
 	int write_message(const mavlink_message_t &message);
 
 	void open_serial();
@@ -122,6 +127,9 @@ private:
 	mavlink_status_t lastStatus;
 	pthread_mutex_t  lock;
 
+	std::queue<mavlink_message_t> writeQueue;
+
+	int write_message();
 	int  _open_port(const char* port);
 	bool _setup_port(int baud, int data_bits, int stop_bits, bool parity, bool hardware_control);
 	int  _read_port(uint8_t &cp);

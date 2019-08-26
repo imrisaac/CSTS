@@ -83,7 +83,7 @@ void Writer::run(){
 
         }
 
-        // dont go crazy TODO: something other than this
+        // dont go crazy TODO: something other than this, like a timer set to about the input framerate, or double check the writer latency it was saying up to 100,s but that seems crazy
         usleep(100);
         
     }

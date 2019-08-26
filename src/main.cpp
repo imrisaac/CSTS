@@ -266,9 +266,6 @@ int main(int argc, char **argv){
 
     cout << "starting main loop" << endl;
 
-    // TODO: i have two things called frame count fix this
-    long frameCounter = 0;
-
     long captureFrameCounter = 0;
 
     int freetime = 0;
