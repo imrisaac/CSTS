@@ -36,13 +36,13 @@
 #include "opencv2/tracking.hpp"
 
 // in repo
-#include "interfaces/interfaces.hpp"
+#include "system/interfaces.hpp"
+#include "system/system.hpp"
 #include "capture/capture.hpp"
 #include "capture/patternGenerator.hpp"
 #include "sceneTrack.hpp"
 #include "stabilizer.hpp"
 #include "writer.hpp"
-#include "system.hpp"
 #include "common.h"
 #include "capture/captureCommon.hpp"
 #include "resolutions.h"

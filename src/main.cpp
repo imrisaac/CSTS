@@ -213,7 +213,7 @@ int main(int argc, char **argv){
     // stabilizer.initilize();
     // sceneTrack.initilize();
 
-    usleep(100000);
+    usleep(100);
     
     // read first EO frame and report its size
     capEO.read(frameEO);
@@ -226,10 +226,15 @@ int main(int argc, char **argv){
     udpWriter = *writer.init(cropped);
 
     // TODO: combine interfaces and system threads
-    
-    // interfaces thread
+
+    // system thread
+    std::thread systemThread([&]() {
+        system.run();
+    });
+
+    // interfaces thread, deprecated integrated int system thread
     std::thread interfacesThread([&](){
-        interfaces.run();
+       // interfaces.run();
     });
 
     // capture thread, deprecated
@@ -256,13 +261,6 @@ int main(int argc, char **argv){
     std::thread writerThread([&](){
 		writer.run();
     });
-
-    // system thread runs at 1 hz
-    std::thread systemThread([&]() {
-        system.run();
-    });
-
-    interfaces.mavlinkInterface.send_scaled_pressure(10);
 
     cout << "starting main loop" << endl;
 

@@ -38,15 +38,15 @@ if(MAC_BUILD)
                   src/main.cpp  
                   src/capture/capture.cpp
                   src/capture/patternGenerator.cpp
-                  src/interfaces/interfaces.cpp 
-                  src/interfaces/serial_port.cpp
-                  src/interfaces/mavlinkInterface.cpp
+                  src/system/interfaces.cpp 
+                  src/system/serial_port.cpp
+                  src/system/mavlinkInterface.cpp
                   src/sceneTrack.cpp
                   src/stabilizer.cpp
                   src/thread.cpp
                   src/writer.cpp
                   src/objectTrack.cpp
-                  src/system.cpp
+                  src/system/system.cpp
                   )
 
   target_link_libraries(vision_core4 ${OpenCV_LIBS} ${CMAKE_THREAD_LIBS_INIT})
@@ -87,15 +87,15 @@ if(JETSON_BUILD)
                   src/main.cpp  
                   src/capture/capture.cpp
                   src/capture/patternGenerator.cpp
-                  src/interfaces/interfaces.cpp
-                  src/interfaces/mavlinkInterface.cpp
-                  src/interfaces/serial_port.cpp
+                  src/system/interfaces.cpp
+                  src/system/mavlinkInterface.cpp
+                  src/system/serial_port.cpp
                   src/sceneTrack.cpp
                   src/stabilizer.cpp
                   src/thread.cpp
                   src/writer.cpp
                   src/objectTrack.cpp
-                  src/system.cpp
+                  src/system/system.cpp
                   )
 
   target_link_libraries(vision_core4 ${OpenCV_LIBS} ${CMAKE_THREAD_LIBS_INIT} ${catkin_LIBRARIES})
@@ -131,15 +131,15 @@ if(Ubuntu_VM_BUILD)
                   src/main.cpp  
                   src/capture/capture.cpp
                   src/capture/patternGenerator.cpp 
-                  src/interfaces.cpp
-                  src/interfaces/serial_port.cpp
-                  src/interfaces/mavlinkInterface.cpp
+                  src/system/interfaces.cpp
+                  src/system/serial_port.cpp
+                  src/system/mavlinkInterface.cpp
                   src/sceneTrack.cpp
                   src/stabilizer.cpp
                   src/thread.cpp
                   src/writer.cpp
                   src/objectTrack.cpp
-                  src/system.cpp
+                  src/system/system.cpp
                   )
 
   target_link_libraries(vision_core4 ${OpenCV_LIBS} ${CMAKE_THREAD_LIBS_INIT})
