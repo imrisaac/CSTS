@@ -178,6 +178,10 @@ int Serial_Port::write_message(const mavlink_message_t &message){
 int Serial_Port::write_message_queue(){
 
 	char buf[300];
+    
+    if (writeQueue.empty()){
+        return 0;
+    }
 
 	// TODO: loop through several messages in scheduled time or until read buffer reaches certain point
 	mavlink_message_t message = writeQueue.front();

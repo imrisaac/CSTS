@@ -54,7 +54,7 @@ void System::run(){
         }
 
         // write any queued messages
-       // serial_port.write_message_queue();
+        serial_port.write_message_queue();
 
         // dont go crazy
         usleep(100);
