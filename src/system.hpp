@@ -51,6 +51,8 @@ public:
     int getInstantTXRate(){return instantTXRate;};
     
     int getThermalZoneAvg(){return thermal_zone_avg;};
+    
+    int getAR1820Temp(){return instantAR1820Temp;};
 
 private:
 
@@ -63,12 +65,16 @@ private:
     bool maxISPClock(bool state);
     
     void readThermalZones();
+    
+    void readAR1820Temp();
 
     bool cmdProcessorAvailable;
     
     int instantTXRate;
     
     int thermal_zone_avg;
+    
+    int instantAR1820Temp;
     
 
 };

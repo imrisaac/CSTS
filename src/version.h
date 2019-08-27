@@ -1,6 +1,6 @@
 #ifndef VERSION_H
 
-#define THISBUILD "CSTSv0.1.1.25"
+#define THISBUILD "v0.1.1.25"
 
 #define FIRMWARE_RELEASE_VER 0
 #define FIRMWARE_MAJOR_VER 1

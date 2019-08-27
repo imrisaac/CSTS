@@ -346,9 +346,9 @@ bool Serial_Port::_setup_port(int baud, int data_bits, int stop_bits, bool parit
 	config.c_cflag &= ~(CSIZE | PARENB);
 	config.c_cflag |= CS8;
 
-	// One input byte is enough to return from read()
+	// No input byte is enough to return from read()
 	// Inter-character timer off
-	config.c_cc[VMIN]  = 1;
+	config.c_cc[VMIN]  = 0;
 	config.c_cc[VTIME] = 0; // was 0
 
 	// Get the current options for the port

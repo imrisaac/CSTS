@@ -36,6 +36,7 @@ void System::run(){
         
         readTxBitrate(0);
         readThermalZones();
+        readAR1820Temp();
         
         // 1hz loop rate
         usleep(1000 * 1000);
@@ -150,14 +151,6 @@ bool System::maxISPClock(bool state){
     return true;
 }
 
-/*
-    because of course this is here
- */
-bool System::helloWorld(){
-
-    return true;
-}
-
 int System::readTxBitrate(int interface){
     
     ifstream eth0tx;
@@ -188,18 +181,21 @@ void System::readThermalZones(){
     
     char readBuf[16];
     
+    // BCPU Quad Cortex A57 2.0GHz
     thermalZone.open("/sys/devices/virtual/thermal/thermal_zone0/temp");
     thermalZone >> readBuf;
     thermalZone.close();
     
     tempSum += atof(readBuf);
     
+    // MCPU Dual Denver 2 2.0GHz
     thermalZone.open("/sys/devices/virtual/thermal/thermal_zone1/temp");
     thermalZone >> readBuf;
     thermalZone.close();
     
     tempSum += atof(readBuf);
     
+    // GPU
     thermalZone.open("/sys/devices/virtual/thermal/thermal_zone2/temp");
     thermalZone >> readBuf;
     thermalZone.close();
@@ -210,7 +206,23 @@ void System::readThermalZones(){
     
     thermal_zone_avg = tempSum/3000;
     
+}
+
+/**
+    Read AR1820HS sensor temperature
+ */
+void System::readAR1820Temp(){
     
+    ifstream camTemp;
     
+    int temperature = 0;
+    
+    camTemp.open("/proc/ar1820hs/2-0037/tempsens");
+    camTemp >> temperature;
+    camTemp.close();
+    
+    instantAR1820Temp = ( temperature -331.92 ) / 1.2261;
+    
+
 }
     

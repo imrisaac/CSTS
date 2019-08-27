@@ -54,7 +54,7 @@ void MavlinkInterface::processMessage(mavlink_message_t message){
 
         case MAVLINK_MSG_ID_AV_PAYLOAD_CONTROL:{
             
-            cout << "recieved payload control" << endl;
+           // cout << "recieved payload control" << endl;
             
             mavlink_av_payload_control_t packet;
 
@@ -66,13 +66,15 @@ void MavlinkInterface::processMessage(mavlink_message_t message){
 
         case MAVLINK_MSG_ID_GPS_RAW_INT:{
 
-            cout << "recieved gps raw int" << endl;
+           // cout << "recieved gps raw int" << endl;
             break;
         }
 
         case MAVLINK_MSG_ID_SYSTEM_TIME:{
+            
 
-            cout << "recieved system time message" << endl;
+           // cout << "recieved system time message" << endl;
+            
         }
 
     } // message id switch case
@@ -107,6 +109,27 @@ void MavlinkInterface::send_heartbeat(uint8_t type, uint8_t base_mode, uint32_t 
 		fprintf(stderr,"WARNING: could not send HEARTBEAT \n");
 * 
 * */
+}
+
+/*
+    Send scaled pressure
+    used for sending Tegra cpu tempeature
+ */
+void MavlinkInterface::send_scaled_pressure(int temperature, int pressure){
+    
+    mavlink_scaled_pressure_t scaled_pressure;
+    mavlink_message_t message;
+
+    scaled_pressure.temperature = temperature;
+
+    int msg_size = mavlink_msg_scaled_pressure_encode(
+        system_id,
+        component_id,
+        &message,
+        &scaled_pressure
+    );
+    
+    //serial_port->write_message(message);
 }
 
 
