@@ -8,6 +8,8 @@ option(MAC_BUILD "Build for OSX" ON)
 option(JETSON_BUILD "Build for the Nvidia Jetson TX1, TX2, or Nano" OFF)
 option(UBUNTU_VM_BUiLD "Build for Ubuntu VM" OFF)
 
+#TODO: add git version tracking
+
 # ================ MAC Build ===================
 if(MAC_BUILD)
 
@@ -33,7 +35,6 @@ if(MAC_BUILD)
                       ${PROJECT_SOURCE_DIR}/src 
                       )
 
-
   add_executable(CSTS
                   src/main.cpp  
                   src/capture/capture.cpp
@@ -47,6 +48,7 @@ if(MAC_BUILD)
                   src/writer.cpp
                   src/objectTrack.cpp
                   src/system.cpp
+                  src/ip_utils/ping.cpp
                   )
 
   target_link_libraries(CSTS ${OpenCV_LIBS} ${CMAKE_THREAD_LIBS_INIT})
@@ -62,7 +64,7 @@ if(JETSON_BUILD)
  # add_compile_definitions(WITH_ROS)
  # add_compile_definitions(JETSON)
  # add_compile_definitions(WITH_CUDA)
-
+ 
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
   find_package(OpenCV 3.4.1 REQUIRED)
@@ -140,6 +142,7 @@ if(Ubuntu_VM_BUILD)
                   src/writer.cpp
                   src/objectTrack.cpp
                   src/system.cpp
+                  src/ip_utils/ping.cpp
                   )
 
   target_link_libraries(CSTS ${OpenCV_LIBS} ${CMAKE_THREAD_LIBS_INIT})
