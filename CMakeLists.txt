@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 
-project(vision_core4)
+project(CSTS)
 
 set(default_build_type "Release")
 
@@ -34,7 +34,7 @@ if(MAC_BUILD)
                       )
 
 
-  add_executable(vision_core4
+  add_executable(CSTS
                   src/main.cpp  
                   src/capture/capture.cpp
                   src/capture/patternGenerator.cpp
@@ -49,7 +49,7 @@ if(MAC_BUILD)
                   src/system.cpp
                   )
 
-  target_link_libraries(vision_core4 ${OpenCV_LIBS} ${CMAKE_THREAD_LIBS_INIT})
+  target_link_libraries(CSTS ${OpenCV_LIBS} ${CMAKE_THREAD_LIBS_INIT})
   
 endif()
 
@@ -83,7 +83,7 @@ if(JETSON_BUILD)
                       )
 
 
-  add_executable(vision_core4
+  add_executable(CSTS
                   src/main.cpp  
                   src/capture/capture.cpp
                   src/capture/patternGenerator.cpp
@@ -98,7 +98,7 @@ if(JETSON_BUILD)
                   src/system.cpp
                   )
 
-  target_link_libraries(vision_core4 ${OpenCV_LIBS} ${CMAKE_THREAD_LIBS_INIT} ${catkin_LIBRARIES})
+  target_link_libraries(CSTS ${OpenCV_LIBS} ${CMAKE_THREAD_LIBS_INIT} ${catkin_LIBRARIES})
   
  # target_link_libraries(vision_core4 ${catkin_LIBRARIES})
 
@@ -127,7 +127,7 @@ if(Ubuntu_VM_BUILD)
 
   include_directories(${OpenCV_INCLUDE_DIRS} ${PROJECT_SOURCE_DIR})
 
-  add_executable(vision_core4
+  add_executable(CSTS
                   src/main.cpp  
                   src/capture/capture.cpp
                   src/capture/patternGenerator.cpp 
@@ -142,7 +142,7 @@ if(Ubuntu_VM_BUILD)
                   src/system.cpp
                   )
 
-  target_link_libraries(vision_core4 ${OpenCV_LIBS} ${CMAKE_THREAD_LIBS_INIT})
+  target_link_libraries(CSTS ${OpenCV_LIBS} ${CMAKE_THREAD_LIBS_INIT})
   
 endif()
 

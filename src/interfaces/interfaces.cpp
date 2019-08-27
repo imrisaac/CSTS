@@ -58,8 +58,8 @@ void Interfaces::run(){
         if (success){
             mavlinkInterface.processMessage(message);
         }
-
-        usleep(100);
+        
+        usleep(200);
         
     }
 
