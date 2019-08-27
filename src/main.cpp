@@ -85,8 +85,6 @@ int main(int argc, char **argv){
     serialNumFile >> serialNum;
     
     serialNumFile.close();
-    
-    cout << "Booting on " << serialNum << endl;
 
     // TODO: put this crap in a dumb helper
     while (1) {
@@ -105,7 +103,7 @@ int main(int argc, char **argv){
         };
         
         // valid cmd line options
-        c = getopt_long(argc, argv, "i:p:b:",
+        c = getopt_long(argc, argv, "i:p:b:v",
                         long_options, &option_index);
         if (c == -1)
             break;
@@ -144,8 +142,10 @@ int main(int argc, char **argv){
                 printf("option c with value '%s'\n", optarg);
                 break;
                 
-            case 'd':
-                printf("option d with value '%s'\n", optarg);
+            case 'v':
+                cout << "System:  " << serialNum << endl;
+                cout << "Version: "  << THISBUILD << " " << COMPILE_DATE << " " << COMPILE_TIME << endl;
+                exit(0);
                 break;
                 
             case '?':
@@ -162,6 +162,9 @@ int main(int argc, char **argv){
             printf("%s ", argv[optind++]);
         printf("\n");
     }
+    
+    cout << "System:  " << serialNum << endl;
+    cout << "Version: "  << THISBUILD << " " << COMPILE_DATE << " " << COMPILE_TIME << endl;
     
 #ifdef WITH_ROS
     // Initilize ros
@@ -356,7 +359,7 @@ int main(int argc, char **argv){
                     }
                     
                     cv::resize(frameEO, frameEO, cv::Size(0, 0), cropFactor, cropFactor);
-                    putText(frameEO, (serialNum + " " + THISFIRMWARE), cvPoint(25, 25), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
+                    putText(frameEO, (serialNum + " " + THISBUILD), cvPoint(25, 25), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
                     putText(frameEO, (mbstr), cvPoint(25, 40), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
                     putText(frameEO, (std::to_string(system.getInstantTXRate()) + "Kbits/sec"), cvPoint(25, 55), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
                     
@@ -426,7 +429,7 @@ int main(int argc, char **argv){
                     cv::copyMakeBorder(frameIR, frameIR, 0, 0, 192, 192, BORDER_CONSTANT);
                 }
 
-                    putText(frameIR, (serialNum + " " + THISFIRMWARE), cvPoint(25, 25), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
+                    putText(frameIR, (serialNum + " " + THISBUILD), cvPoint(25, 25), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
                     putText(frameIR, (mbstr), cvPoint(25, 40), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
                     putText(frameIR, (std::to_string(system.getInstantTXRate()) + "Kbits/sec"), cvPoint(25, 55), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
 

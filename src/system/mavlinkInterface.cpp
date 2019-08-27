@@ -60,6 +60,8 @@ void MavlinkInterface::processMessage(mavlink_message_t message){
 
         case MAVLINK_MSG_ID_AV_PAYLOAD_CONTROL:{
             
+            cout << "recieved payload control" << endl;
+            
             mavlink_av_payload_control_t packet;
 
             mavlink_msg_av_payload_control_decode(&message, &packet);
