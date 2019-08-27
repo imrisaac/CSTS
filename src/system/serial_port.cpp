@@ -238,8 +238,6 @@ void Serial_Port::open_serial()
 
 	status = true;
 
-	printf("\n");
-
 	return;
 
 }

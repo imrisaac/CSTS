@@ -41,6 +41,8 @@ void System::run(){
 
     mavlink_message_t message;
 
+    cout << "running system thread" << endl;
+
     while( false == stopRequested() ){
         
         readTxBitrate(0);
@@ -52,7 +54,7 @@ void System::run(){
         }
 
         // write any queued messages
-        serial_port.write_message_queue();
+       // serial_port.write_message_queue();
 
         // dont go crazy
         usleep(100);
