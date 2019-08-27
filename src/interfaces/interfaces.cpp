@@ -59,8 +59,6 @@ void Interfaces::run(){
             mavlinkInterface.processMessage(message);
         }
         
-        usleep(200);
-        
     }
 
     cout << "stopping serial port" << endl;
