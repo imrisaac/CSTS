@@ -3,12 +3,13 @@
 ## 0.1.2.0 / 25 Aug 2019
 
 - Added temp monitiring of BCPU, MCPU and GPU
-    - these are averaged and reported in video overlay
-    - Vales are from on-die temp sensors near each cpu cluster and near the gpu
+    - these are averaged and reported in video overlay and over mavlink
+    - Values are from on-die temp sensors near each cpu cluster and near the gpu
 - Fix bug causing serial read to block thread close
 - Moved ISP and VI clock up into system init.
 - Restore ISP ans VI clocks to Auto on exit
-- Added payload status ACK, current disabled. awaiting DSAM changes.
+- Added payload status ACK, currently disabled. awaiting DSAM changes.
+- Major refactor of interfaces and system thread
 
 ## 0.1.1.2 / 23 Aug 2019
 
