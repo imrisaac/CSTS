@@ -20,6 +20,7 @@
 // in repo
 #include "../../include/mavlink/v2.0/ardupilotmega/mavlink.h" // TODO: fix ugly include
 #include "serial_port.h"
+#include "../common.h" // ugg
 
 using namespace std;
 
@@ -114,11 +115,14 @@ public:
     // TODO: make private
     Mavlink_Messages current_messages;
     
-    void send_heartbeat(uint8_t type, uint8_t base_mode, uint32_t custom_mode, uint8_t system_status);
-    
+    // Mavlink message senders
+    void send_heartbeat(uint8_t type, uint8_t base_mode, uint32_t custom_mode, uint8_t system_status);   
     void send_payload_status();
-
     void send_scaled_pressure(int temperature);
+
+    // current message getters
+    void getZoom(int *focalLength);
+    void getDesiredOutputMode(enum OutputMode *outputMode);
 
 private:
 

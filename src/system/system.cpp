@@ -25,30 +25,48 @@ void System::init(){
     maxISPClock(true);
     
     readThermalZones();
-    
+
+    cout << "init serial port defaults" << endl;
+    serial_port.initialize_defaults();
+
+    // open serial port
+    cout << "opening serial port" << endl;
+    serial_port.start();
+
     return;
 
 }
 
 void System::run(){
 
+    mavlink_message_t message;
+
     while( false == stopRequested() ){
         
         readTxBitrate(0);
         readThermalZones();
         
-        // 1hz loop rate
-        usleep(1000 * 1000);
+        // read a message and process if sucessfuly read
+        if (serial_port.read_message(message)){
+            mavlinkInterface.processMessage(message);
+        }
 
+        // write any queued messages
+        serial_port.write_message_queue();
+
+        // dont go crazy
+        usleep(100);
     }
     
     std::cout << "restoring VI and ISP clocks" << endl;
     maxVIClock(false);
     maxISPClock(false);
-    
+
+    cout << "stopping serial port" << endl;
+    serial_port.stop();
+
     std::cout << "system loop stopped" << endl;
 
- 
 }
 
 /**

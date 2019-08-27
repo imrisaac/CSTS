@@ -18,6 +18,9 @@
 
 // in repo
 #include "thread.hpp"
+#include "serial_port.h"
+#include "mavlinkInterface.hpp"
+#include "../common.h" // ugg
 
 #ifdef JETSON
 #include <linux/i2c-dev.h>
@@ -52,6 +55,8 @@ public:
     
     int getThermalZoneAvg(){return thermal_zone_avg;};
 
+    MavlinkInterface mavlinkInterface;
+
 private:
 
     string exec(const char *cmd);
@@ -69,7 +74,8 @@ private:
     int instantTXRate;
     
     int thermal_zone_avg;
-    
+
+    Serial_Port serial_port;
 
 };
 

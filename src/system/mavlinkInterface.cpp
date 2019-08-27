@@ -161,3 +161,53 @@ int MavlinkInterface::write_message(mavlink_message_t message){
     // Done!
     return len;
 }
+
+void MavlinkInterface::getZoom(int *focalLength)
+{
+
+    if (0 == current_messages.payload_control.zoom_index)
+    {
+
+        // this is a focal length in mm, arbitrary for now but will be real i the future
+        *focalLength = 44;
+    }
+    else if (1 == current_messages.payload_control.zoom_index)
+    {
+
+        *focalLength = 55;
+    }
+    else if (2 == current_messages.payload_control.zoom_index)
+    {
+
+        *focalLength = 66;
+    }
+    else if (3 == current_messages.payload_control.zoom_index)
+    {
+
+        *focalLength = 77;
+    }
+    else
+    {
+        // do nothing
+    }
+
+    return;
+}
+
+void MavlinkInterface::getDesiredOutputMode(enum OutputMode *outputMode)
+{
+
+    if (EO_COLOR_CAMERA == current_messages.payload_control.control_type && CONNECTED == (current_messages.payload_control.control_flags & CONNECTED))
+    {
+
+        *outputMode = simpleEO;
+    }
+    else if (IR_CAMERA == current_messages.payload_control.control_type && CONNECTED == (current_messages.payload_control.control_flags & CONNECTED))
+    {
+
+        *outputMode = simpleIR;
+    }
+
+    //
+    return;
+}

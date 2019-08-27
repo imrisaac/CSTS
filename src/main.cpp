@@ -173,7 +173,6 @@ int main(int argc, char **argv){
     int key;
 #endif
 
-    Interfaces interfaces;
     Capture captureEO;
     Capture captureIR;
     PatternGenerator patternGenerator;
@@ -195,7 +194,6 @@ int main(int argc, char **argv){
     // TODO: move this
     // Default to EO camera
 
-    interfaces.initilize();
     usleep(100000);
     
     cv::VideoCapture capEO;
@@ -230,11 +228,6 @@ int main(int argc, char **argv){
     // system thread
     std::thread systemThread([&]() {
         system.run();
-    });
-
-    // interfaces thread, deprecated integrated int system thread
-    std::thread interfacesThread([&](){
-       // interfaces.run();
     });
 
     // capture thread, deprecated
@@ -307,7 +300,7 @@ int main(int argc, char **argv){
         std::strftime(mbstr, sizeof(mbstr), "%T", std::gmtime(&t));
 
         // get out desired output mode
-        interfaces.getDesiredOutputMode(&outputMode);
+        system.mavlinkInterface.getDesiredOutputMode(&outputMode);
         
         switch(outputMode){
             case simpleEO:
@@ -330,7 +323,7 @@ int main(int argc, char **argv){
                     std::cout << (((float)t1)/CLOCKS_PER_SEC)*1000 << std::endl;
 */
                     
-                    interfaces.getZoom(&focalLength);
+                    system.mavlinkInterface.getZoom(&focalLength);
                     
                     // Apply crop
                     switch(focalLength){
@@ -399,7 +392,7 @@ int main(int argc, char **argv){
 
                 capIR.read(frameIR);
                 
-                interfaces.getZoom(&focalLength);
+                system.mavlinkInterface.getZoom(&focalLength);
                 
                 // Apply crop
                 switch(focalLength){
@@ -498,7 +491,6 @@ int main(int argc, char **argv){
     stabilizer.stop();
     captureEO.stop();
     captureIR.stop();
-    interfaces.stop();
     writer.stop();
     system.stop();
 
@@ -509,7 +501,6 @@ int main(int argc, char **argv){
     captureEOThread.join();
     captureIRThread.join();
     sceneTrackThread.join();
-    interfacesThread.join();
     stabilizerThread.join();
     systemThread.join();
     
