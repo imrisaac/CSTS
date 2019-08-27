@@ -103,7 +103,7 @@ int main(int argc, char **argv){
         };
         
         // valid cmd line options
-        c = getopt_long(argc, argv, "i:p:b:v",
+        c = getopt_long(argc, argv, "i:p:b:tv",
                         long_options, &option_index);
         if (c == -1)
             break;
@@ -138,8 +138,11 @@ int main(int argc, char **argv){
                 printf("option b\n");
                 break;
                 
-            case 'c':
-                printf("option c with value '%s'\n", optarg);
+            case 't':
+                printf("option t with value '%s'\n", optarg);
+                cout << "testing a chunk of code" << endl;
+                cout << "exiting" << endl;
+                exit(0);
                 break;
                 
             case 'v':

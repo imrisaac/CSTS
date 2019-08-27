@@ -68,7 +68,6 @@ void Writer::run(){
 
             // cv::putText(outFrame, std::to_string(telemetry_.currentFps), fpsTextOrigin, cv::FONT_HERSHEY_SIMPLEX, 2, cv::Scalar::all(255), 3, 8);
 
-
             outFrame = frames.front();
             if (outFrame.data != NULL){
 
