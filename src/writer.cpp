@@ -55,6 +55,7 @@ cv::VideoWriter *Writer::init(const cv::Mat &start_frame)
 
  */
 void Writer::run(){
+    
     std::cout << "writer start" << std::endl;
 	
 	// you cannot call imshow from another thread?
