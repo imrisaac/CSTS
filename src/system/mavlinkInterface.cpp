@@ -142,24 +142,15 @@ void MavlinkInterface::send_scaled_pressure(int temperature){
 
     scaled_pressure.temperature = temperature;
 
-    mavlink_msg_scaled_pressure_encode(
+    int msg_size = mavlink_msg_scaled_pressure_encode(
         system_id,
         component_id,
         &message,
         &scaled_pressure
     );
+    
+    serial_port->write_message(message);
 
-    // do the write
-    int len = write_message(message);
-
-}
-
-int MavlinkInterface::write_message(mavlink_message_t message){
-    // do the write
-    int len = serial_port->write_message(message);
-
-    // Done!
-    return len;
 }
 
 void MavlinkInterface::getZoom(int *focalLength)

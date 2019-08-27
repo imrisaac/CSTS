@@ -166,39 +166,52 @@ int Serial_Port::read_message(mavlink_message_t &message)
 	return msgReceived;
 }
 
-int Serial_Port::write_message(const mavlink_message_t &message){
-
-	writeQueue.push(message);
-
-}
-
 /**
  * write to serial
  */
-int Serial_Port::write_message_queue(){
+int Serial_Port::write_message(mavlink_message_t message){
 
 	char buf[300];
-    
-    if (writeQueue.empty()){
-        return 0;
-    }
-
-	// TODO: loop through several messages in scheduled time or until read buffer reaches certain point
-	mavlink_message_t message = writeQueue.front();
 
 	// Translate message to buffer
 	unsigned len = mavlink_msg_to_send_buffer((uint8_t*)buf, &message);
+   
+   
+   /* 
+    // debugging reports
+	if(debug){
+		// Report info
+		printf("%d\n",(int)time(NULL));
+		printf("Writing message to serial with ID #%d (sys:%d|comp:%d):\n",  message.msgid, message.sysid, message.compid);
+
+		fprintf(stderr,"Sending serial data: ");
+		unsigned int i;
+		uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
+
+		// check message is write length
+		unsigned int messageLength = mavlink_msg_to_send_buffer(buffer, &message);
+
+		// message length error
+		if (messageLength > MAVLINK_MAX_PACKET_LEN)
+		{
+			fprintf(stderr, "\nFATAL ERROR: MESSAGE LENGTH IS LARGER THAN BUFFER SIZE\n");
+		}
+
+		// print out the buffer
+		else
+		{
+			for (i=0; i<messageLength; i++)
+			{
+				unsigned char v=buffer[i];
+				fprintf(stderr,"%02x ", v);
+			}
+			fprintf(stderr,"\n");
+		}
+	}
+    */
 
 	// Write buffer to serial port, locks port while writing
 	int bytesWritten = _write_port(buf,len);
-
-	if (bytesWritten <= 0){
-		std::cout << "message write failed" << std::endl;
-	}
-
-	// TODO: check if message was actually written.
-	// TODO: compare message size to byte written.
-	writeQueue.pop();
 
 	return bytesWritten;
 }
@@ -365,9 +378,9 @@ bool Serial_Port::_setup_port(int baud, int data_bits, int stop_bits, bool parit
 	config.c_cflag &= ~(CSIZE | PARENB);
 	config.c_cflag |= CS8;
 
-	// One input byte is enough to return from read()
+	// No input bytets is enough to return from read()
 	// Inter-character timer off
-	config.c_cc[VMIN]  = 0;
+	config.c_cc[VMIN]  = 1;
 	config.c_cc[VTIME] = 10; // was 0
 
 	// Get the current options for the port
@@ -486,7 +499,10 @@ int Serial_Port::_write_port(char *buf, unsigned len)
 
 	// Unlock
 	pthread_mutex_unlock(&lock);
-
+    
+    if (bytesWritten <= 0){
+		std::cout << "message write failed" << std::endl;
+	}
 
 	return bytesWritten;
 }

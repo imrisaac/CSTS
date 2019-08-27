@@ -45,19 +45,18 @@ void System::run(){
 
     while( false == stopRequested() ){
         
-        readTxBitrate(0);
-        readThermalZones();
+       // readTxBitrate(0);
+       // readThermalZones();
         
         // read a message and process if sucessfuly read
         if (serial_port.read_message(message)){
             mavlinkInterface.processMessage(message);
         }
-
-        // write any queued messages
-        serial_port.write_message_queue();
+        
+        mavlinkInterface.send_scaled_pressure(6666);
 
         // dont go crazy
-        usleep(100);
+        usleep(100000); // temporary 1ms delay
     }
     
     std::cout << "restoring VI and ISP clocks" << endl;

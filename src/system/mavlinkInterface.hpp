@@ -110,8 +110,6 @@ public:
 
     void processMessage(mavlink_message_t message);
 
-    void write_messages();
-
     // TODO: make private
     Mavlink_Messages current_messages;
     
@@ -127,10 +125,8 @@ public:
 private:
 
     // this is our sys_id and component id
-    static const int system_id = 1;
-    static const int component_id = 193; // MAV_COMP_ID_MISSION_COMPUTER; TODO: fix this mavlink enum
-
-    int write_message(mavlink_message_t message);
+    static const int system_id = 1;      // maby fixs this too??
+    static const int component_id = 192; // MAV_COMP_ID_MISSION_COMPUTER; TODO: fix this mavlink enum
 
     Serial_Port *serial_port;
 };

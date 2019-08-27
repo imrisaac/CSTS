@@ -8,22 +8,6 @@
 //  Copyright © 2019 Isaac Reed. All rights reserved.
 //
 
-#include "interfaces.hpp"
-
-// default parameters
-InterfaceParams::InterfaceParams(){
-    
-    serial_baud = 115200;
-
-#ifdef MAC
-    uart_name = (char *)"/dev/tty.usbmodem01";
-#else
-    uart_name = (char *)"/dev/ttyTHS1";
-#endif
-
-}
-
-
 
 
 
