@@ -16,12 +16,32 @@
 #include <sstream>      // weird string conversion thing
 #include <stdlib.h>     // for atof
 
+// TODO: do not need all of these
+#include <cstddef>
+#include <sys/ioctl.h>
+#include <cstdlib>
+#include <cstdio>
+#include <fcntl.h>
+#include <unistd.h>
+#include <errno.h>
+#include <stdint.h>
+
+#include <linux/i2c-dev.h>  // for I2C comm
+#include <linux/i2c.h>
+
 // in repo
 #include "thread.hpp"
 
-#ifdef JETSON
-#include <linux/i2c-dev.h>
-#endif
+#define EO_SERDES_BUS "/dev/i2c-2"
+#define IR_SERDES_BUS "/dev/i2c-2"
+
+#define EO_SERDES_ADDR 0x30
+#define IR_SERDES_ADDR 0x2c
+
+struct SystemParams{
+
+    SystemParams();
+};
 
 enum KernelModules{
     AR1820HS,
@@ -56,6 +76,8 @@ public:
 
 private:
 
+    SystemParams params_;
+
     string exec(const char *cmd);
 
     int readTxBitrate(int interface);
@@ -63,6 +85,10 @@ private:
     bool maxVIClock(bool state);
 
     bool maxISPClock(bool state);
+    
+    bool EOSerdesInit();
+    
+    bool IRSerdesInit();
     
     void readThermalZones();
     

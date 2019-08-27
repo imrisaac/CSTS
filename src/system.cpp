@@ -8,6 +8,11 @@
 
 #include "system.hpp"
 
+// default parameters
+SystemParams::SystemParams(){
+    
+
+}
 
 void System::init(){
 
@@ -225,4 +230,29 @@ void System::readAR1820Temp(){
     
 
 }
+
+/**
+    Serializer initilize 
+*/
+bool System::EOSerdesInit(){
     
+    int fd = open(EO_SERDES_BUS, O_RDWR);
+    
+    if ( fd < 0 ){
+        cout << "i2c file open fail, try running as sudo" << endl;
+        cout << errno << endl;
+        return false;
+    }
+    
+    if (ioctl(fd, I2C_RDWR, EO_SERDES_ADDR) < 0){
+        cout << "could not open device: " << EO_SERDES_ADDR << " on bus: " << EO_SERDES_BUS << endl;
+        cout << errno << endl;
+        return false;
+    } 
+}
+
+/**
+    Deserializer initilize 
+*/    
+bool System::IRSerdesInit(){
+}
