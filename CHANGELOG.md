@@ -14,7 +14,9 @@
 - Changes to gstreamer EO capture pipeline
     - nvarguscamerasrc maxperf=true wbmode=1 ! video/x-raw(memory:NVMM), width=1920, height=1080, format=NV12, framerate=30/1 ! nvvidconv flip-method=3 ! video/x-raw, format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)BGR ! appsink wait-on-eos=false drop=true max-buffers=60 -e -vvv
 - Changes to gstreamer IR capture pipeline
-    -
+    - v4l2src device=/dev/video0 ! video/x-raw, format=(string)UYVY, width=(int)640, height=(int)512, framerate=(fraction)60/1 ! videoconvert ! video/x-raw, width=(int)640, height=(int)512, format=(string)BGR, framerate=(fraction)60/1 ! videoflip method=clockwise ! appsink wait-on-eos=false drop=true max-buffers=60 -e -vvv
+- Changes to udp writer pipeline 
+    - appsrc min-latency=0 do-timestamp=true is-live=true ! videoconvert ! omxh264enc bitrate=1200000 control_rate=2 low-latency=true EnableTwopassCBR=true ! mpegtsmux alignment=7 ! udpsink host=192.168.0.255 port=49410 sync=false async=false 
 - Moved ISP and VI clock up into system init
 - Gstreamer bug fix that occasionally blocked clean program exit
 - Added compile date and time in boot log

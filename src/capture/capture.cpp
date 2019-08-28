@@ -46,52 +46,40 @@ cv::VideoCapture *Capture::initilize(CamIndex index){
 
 #ifdef JETSON
 
-    if( Pattern != index){
-        // open gstreamer pipeline
-        if (AR1820 == index){
-            cap.open("nvarguscamerasrc maxperf=true wbmode=1 ! video/x-raw(memory:NVMM), width=1920, height=1080, format=NV12, framerate=30/1 ! nvvidconv flip-method=3 ! video/x-raw, format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)BGR ! appsink wait-on-eos=false drop=true max-buffers=60 -e -vvv");
-        }else{
+    // open gstreamer pipeline    
+    bool success = cap.open(getCameraPipeline(index));     
         
-        if ( !cap.open(getCameraPipeline(index), cv::CAP_GSTREAMER) ){
+    if ( !success ){
 
-            // TODO: retry then fall back to error screen generator
-            cout << "gstreamer capture failed to initilized, using videotestsrc" << endl;
+        // TODO: retry then fall back to error screen generator
+        cout << "gstreamer capture failed to initilized, using videotestsrc" << endl;
+        
+        // On faiure create test sources with matching resolutions for the failed camera
+        switch(index){
             
+            case DevKitTx2: 
+            case DevKitTx1: 
+            case DevKitNano:
+                break;
 
-            
-            switch(index){
+            case AR1820:
+                cap.open(getCameraPipeline(VideoTestSrcAr1820), cv::CAP_GSTREAMER);
+                break;
+
+            case Boson:
+                cap.open(getCameraPipeline(VideoTestSrcBoson), cv::CAP_GSTREAMER);
+                break;
+
+            default:
+                break;
                 
-                case DevKitTx2: 
-                case DevKitTx1: 
-                case DevKitNano:
-                    break;
-
-                case AR1820:
-                    cap.open(getCameraPipeline(VideoTestSrcAr1820), cv::CAP_GSTREAMER);
-                    break;
-
-                case Boson:
-                    cap.open(getCameraPipeline(VideoTestSrcBoson), cv::CAP_GSTREAMER);
-                    break;
-
-                default:
-                    break;
-                    
-            }
-
         }
+
     }
-        
-        cout << "gstreamer capture initilized" << endl;
 
-    }else{
-
-        newFrame = imread(params_.pattern0Dir, IMREAD_COLOR);
-
-
-        cout << "test pattern initilized" << endl;
-    }
     
+    cout << "gstreamer capture initilized" << endl;
+
     
 #endif
     
@@ -260,14 +248,15 @@ std::string Capture::getCameraPipeline(CamIndex camera)
         break;
 
     case AR1820:
+    
         pipeline = "nvarguscamerasrc maxperf=true wbmode=1 ! video/x-raw(memory:NVMM), width=(int)" + std::to_string(params_.captureWidth) + ", height=(int)" +
                    std::to_string(params_.captureHeight) + ", format=(string)NV12, framerate=(fraction)" + std::to_string(params_.captureFPS) +
-                   "/1 ! nvvidconv flip-method=" + std::to_string(params_.gstFlip) + " ! video/x-raw, format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)BGR ! appsink";
+                   "/1 ! nvvidconv flip-method=" + std::to_string(params_.gstFlip) + " ! video/x-raw, format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)BGR ! appsink wait-on-eos=false drop=true max-buffers=60 emit-signals=true -e -vvv";
         break;
 
     case Boson:
 
-        pipeline = "v4l2src device=/dev/video0 ! video/x-raw, format=(string)UYVY, width=(int)640, height=(int)512, framerate=(fraction)60/1 ! videoconvert ! video/x-raw, width=(int)640, height=(int)512, format=(string)BGR, framerate=(fraction)60/1 ! videoflip method=clockwise ! appsink ";
+        pipeline = "v4l2src device=/dev/video0 ! video/x-raw, format=(string)UYVY, width=(int)640, height=(int)512, framerate=(fraction)60/1 ! videoconvert ! video/x-raw, width=(int)640, height=(int)512, format=(string)BGR, framerate=(fraction)60/1 ! videoflip method=clockwise ! appsink wait-on-eos=false drop=true max-buffers=60 -e -vvv";
         break;
 
     case Pattern:
