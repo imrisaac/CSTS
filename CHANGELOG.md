@@ -3,10 +3,24 @@
 ## 0.1.2.0 / 24 Aug 2019
 
 - Added temp monitiring of BCPU, MCPU and GPU
-    - these are averaged and reported in video overlay
-    - Vales are from on-die temp sensors near each cpu cluster and near the gpu
+    - Polled at 1Hz
+    - BCPU, MCPU, and GPU temps averaged and reported in video overlay as "Teg:"
+    - Values are from on-die temp sensors near each cpu cluster and near the gpu
+- Added temp monitoring of AR1820 sensor
+    - Polled at 1Hz
+    - Instaneous value is reported in overlay AD "AR:"
 - Fix bug causing serial read to block thread close
-- Moved ISP and VI clock up into system init.
+- Tweaks to capture pipeline initilization
+- Changes to gstreamer EO capture pipeline
+    - nvarguscamerasrc maxperf=true wbmode=1 ! video/x-raw(memory:NVMM), width=1920, height=1080, format=NV12, framerate=30/1 ! nvvidconv flip-method=3 ! video/x-raw, format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)BGR ! appsink wait-on-eos=false drop=true max-buffers=60 -e -vvv
+- Changes to gstreamer IR capture pipeline
+    -
+- Moved ISP and VI clock up into system init
+- Gstreamer bug fix that occasionally blocked clean program exit
+- Added compile date and time in boot log
+- Added parsing for Mavlink SYSTEM_TIME message from autopilot
+    - For setting system clock to gps time
+    - really wish we had an RTC batt for the tegra
 
 ## 0.1.1.2 / 23 Aug 2019
 

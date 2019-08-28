@@ -248,7 +248,11 @@ bool System::EOSerdesInit(){
         cout << "could not open device: " << EO_SERDES_ADDR << " on bus: " << EO_SERDES_BUS << endl;
         cout << errno << endl;
         return false;
-    } 
+    }
+    
+    //i2c_smbus_write_byte(fd, 0x20);
+    
+    //close(EO_SERDES_BUS); 
 }
 
 /**

@@ -48,6 +48,10 @@ cv::VideoCapture *Capture::initilize(CamIndex index){
 
     if( Pattern != index){
         // open gstreamer pipeline
+        if (AR1820 == index){
+            cap.open("nvarguscamerasrc maxperf=true wbmode=1 ! video/x-raw(memory:NVMM), width=1920, height=1080, format=NV12, framerate=30/1 ! nvvidconv flip-method=3 ! video/x-raw, format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)BGR ! appsink wait-on-eos=false drop=true max-buffers=60 -e -vvv");
+        }else{
+        
         if ( !cap.open(getCameraPipeline(index), cv::CAP_GSTREAMER) ){
 
             // TODO: retry then fall back to error screen generator
@@ -76,6 +80,7 @@ cv::VideoCapture *Capture::initilize(CamIndex index){
             }
 
         }
+    }
         
         cout << "gstreamer capture initilized" << endl;
 
@@ -86,6 +91,7 @@ cv::VideoCapture *Capture::initilize(CamIndex index){
 
         cout << "test pattern initilized" << endl;
     }
+    
     
 #endif
     
