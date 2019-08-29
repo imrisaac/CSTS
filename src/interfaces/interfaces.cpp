@@ -74,15 +74,14 @@ void Interfaces::run(){
 
 void Interfaces::getDesiredOutputMode(enum OutputMode *outputMode){
 
-    if (EO_COLOR_CAMERA == mavlinkInterface.current_messages.payload_control.control_type && CONNECTED == (mavlinkInterface.current_messages.payload_control.control_flags & CONNECTED))
-    {
+    if (EO_COLOR_CAMERA == mavlinkInterface.current_messages.payload_control.control_type && CONNECTED == (mavlinkInterface.current_messages.payload_control.control_flags & CONNECTED)){
 
         *outputMode = simpleEO;
-    }
-    else if (IR_CAMERA == mavlinkInterface.current_messages.payload_control.control_type && CONNECTED == (mavlinkInterface.current_messages.payload_control.control_flags & CONNECTED))
-    {
+        
+    }else if (IR_CAMERA == mavlinkInterface.current_messages.payload_control.control_type && CONNECTED == (mavlinkInterface.current_messages.payload_control.control_flags & CONNECTED)){
 
         *outputMode = simpleIR;
+        
     }
     
     // 

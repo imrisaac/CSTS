@@ -54,12 +54,23 @@ void MavlinkInterface::processMessage(mavlink_message_t message){
 
         case MAVLINK_MSG_ID_AV_PAYLOAD_CONTROL:{
             
-           // cout << "recieved payload control" << endl;
+            cout << "recieved payload control" << endl;
             
             mavlink_av_payload_control_t packet;
 
             mavlink_msg_av_payload_control_decode(&message, &packet);
             current_messages.payload_control = packet;
+            
+            
+                if (IR_LASER == packet.control_type && 0 == (packet.control_flags & POWER_ON)){
+                    cout << "power off requested" << endl;
+                    cout << "later biatch" << endl;
+                    
+                    // this is the shittiest thing i have ever done
+                    exit(1);
+                }
+
+
 
             break;
         }

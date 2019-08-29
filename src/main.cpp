@@ -311,14 +311,12 @@ int main(int argc, char **argv){
         std::strftime(mbstr, sizeof(mbstr), "%T", std::gmtime(&t));
 
         // get out desired output mode
-      //  interfaces.getDesiredOutputMode(&outputMode);
-        
-        capEO >> frameEO;
+        interfaces.getDesiredOutputMode(&outputMode);
         
         switch(outputMode){
             case simpleEO:
             
-                //capEO.read(frameEO);
+                capEO.read(frameEO);
                 
                
                 if (frameEO.data != NULL){
@@ -369,6 +367,7 @@ int main(int argc, char **argv){
                             break;
                     }
                     
+                    // Move this somewhere already 
                     cv::resize(frameEO, frameEO, cv::Size(0, 0), cropFactor, cropFactor);
                     putText(frameEO, (serialNum + " " + THISBUILD), cvPoint(25, 25), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
                     putText(frameEO, (mbstr), cvPoint(25, 40), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
@@ -377,7 +376,7 @@ int main(int argc, char **argv){
                     putText(frameEO, ("Teg: " + std::to_string(system.getThermalZoneAvg()) + "c"), cvPoint(25, 70), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
                     putText(frameEO, ("AR:  " + std::to_string(system.getAR1820Temp()) + "c"), cvPoint(25, 85), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
 
-                   // writer.write(frameEO);
+                  //  writer.write(frameEO);
                     
                     udpWriter << frameEO; 
                     
@@ -406,9 +405,10 @@ int main(int argc, char **argv){
 
             case simpleIR:
 
-                //capIR.read(frameIR);
+                // What i am not 100% sure about is what gstreamer does when i am not consuming frames, no memory leak though.
+                capIR.read(frameIR);
                 
-                capIR >> frameIR;
+                //capIR >> frameIR;
                 
                 interfaces.getZoom(&focalLength);
                 
@@ -443,10 +443,15 @@ int main(int argc, char **argv){
                 if(44 == focalLength){
                     cv::copyMakeBorder(frameIR, frameIR, 0, 0, 192, 192, BORDER_CONSTANT);
                 }
-
+                    
+                    // Move this somewhere
                     putText(frameIR, (serialNum + " " + THISBUILD), cvPoint(25, 25), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
                     putText(frameIR, (mbstr), cvPoint(25, 40), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
                     putText(frameIR, (std::to_string(system.getInstantTXRate()) + "Kbits/sec"), cvPoint(25, 55), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
+
+                    putText(frameIR, ("Teg: " + std::to_string(system.getThermalZoneAvg()) + "c"), cvPoint(25, 70), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
+                    putText(frameIR, ("AR:  " + std::to_string(system.getAR1820Temp()) + "c"), cvPoint(25, 85), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
+
 
                 if (NULL != frameIR.data){
 
