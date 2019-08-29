@@ -314,11 +314,14 @@ int main(int argc, char **argv){
         interfaces.getDesiredOutputMode(&outputMode);
         
         switch(outputMode){
+            
             case simpleEO:
             
-                capEO.read(frameEO);
+                //capEO.read(frameEO);
                 
-               
+                capEO >> frameEO;
+                
+                usleep(20000);
                 if (frameEO.data != NULL){
                     
 
