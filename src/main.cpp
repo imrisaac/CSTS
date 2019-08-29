@@ -216,7 +216,7 @@ int main(int argc, char **argv){
     // stabilizer.initilize();
     // sceneTrack.initilize();
 
-    usleep(100000);
+    usleep(10000);
     
     // read first EO frame and report its size
     capEO.read(frameEO);
@@ -255,7 +255,7 @@ int main(int argc, char **argv){
     
     // writer thread
     std::thread writerThread([&](){
-		writer.run();
+		//writer.run();
     });
 
     // system thread runs at 1 hz
@@ -311,13 +311,16 @@ int main(int argc, char **argv){
         std::strftime(mbstr, sizeof(mbstr), "%T", std::gmtime(&t));
 
         // get out desired output mode
-        interfaces.getDesiredOutputMode(&outputMode);
+      //  interfaces.getDesiredOutputMode(&outputMode);
+        
+        capEO >> frameEO;
         
         switch(outputMode){
             case simpleEO:
             
-                capEO.read(frameEO);
+                //capEO.read(frameEO);
                 
+               
                 if (frameEO.data != NULL){
                     
 
@@ -374,7 +377,9 @@ int main(int argc, char **argv){
                     putText(frameEO, ("Teg: " + std::to_string(system.getThermalZoneAvg()) + "c"), cvPoint(25, 70), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
                     putText(frameEO, ("AR:  " + std::to_string(system.getAR1820Temp()) + "c"), cvPoint(25, 85), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
 
-                    writer.write(frameEO); 
+                   // writer.write(frameEO);
+                    
+                    udpWriter << frameEO; 
                     
 
 #ifdef HAVE_DISPLAY
@@ -401,7 +406,9 @@ int main(int argc, char **argv){
 
             case simpleIR:
 
-                capIR.read(frameIR);
+                //capIR.read(frameIR);
+                
+                capIR >> frameIR;
                 
                 interfaces.getZoom(&focalLength);
                 
@@ -443,8 +450,8 @@ int main(int argc, char **argv){
 
                 if (NULL != frameIR.data){
 
-                    writer.write(frameIR);
-                    //udpWriter << frameIR;
+                    //writer.write(frameIR);
+                    udpWriter << frameIR;
 
 #ifdef HAVE_DISPLAY
                     imshow("Vision Core", frameIR);

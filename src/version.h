@@ -1,11 +1,11 @@
 #ifndef VERSION_H
 
-#define THISBUILD "v0.1.1.39"
+#define THISBUILD "v0.1.1.78"
 
 #define FIRMWARE_RELEASE_VER 0
 #define FIRMWARE_MAJOR_VER 1
 #define FIRMWARE_MINOR_VER 1
-#define FIRMWARE_BUILD_NO 39
+#define FIRMWARE_BUILD_NO 78
 
 #define COMPILE_DATE __DATE__
 

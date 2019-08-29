@@ -8,7 +8,7 @@
     - Values are from on-die temp sensors near each cpu cluster and near the gpu
 - Added temp monitoring of AR1820 sensor
     - Polled at 1Hz
-    - Instaneous value is reported in overlay AD "AR:"
+    - Instaneous value is reported in overlay as "AR:"
 - Fix bug causing serial read to block thread close
 - Tweaks to capture pipeline initilization
 - Changes to gstreamer EO capture pipeline
