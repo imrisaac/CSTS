@@ -171,7 +171,7 @@ bool Writer::openSink(Sinker sink, cv::Mat start_frame)
       //  gstSink = "appsrc ! timeoverlay halign=left valign=bottom ! video/x-raw, format=(string)BGR ! videoconvert ! video/x-raw, format=(string)I420 ! " + params_.encoder + " bitrate=" + to_string(params_.udp_bitrate * 1000) + " ! mpegtsmux alignment=7 ! udpsink host=" + params_.udp_ip + " port=" + params_.udp_port + " "; // 500ms
         // ! queue laeaky=GST_QUEUE_LEAK_DOWNSTREAM max-size-buffers=10 !
 
-        gstSink = "appsrc ! videoconvert ! " + params_.encoder + " bitrate=" + to_string(params_.udp_bitrate) + " control_rate=2 insert-vui=true ! mpegtsmux alignment=7 ! udpsink host=" + params_.udp_ip + " port=" + params_.udp_port + " sync=false async=false"; // 300ms
+        gstSink = "appsrc ! videoconvert ! " + params_.encoder + " bitrate=" + to_string(params_.udp_bitrate) + " control_rate=2 ! mpegtsmux alignment=7 ! udpsink host=" + params_.udp_ip + " port=" + params_.udp_port + " sync=false async=false"; // 300ms
         
         cout << "GST writer sink: " + gstSink + "\n";
         
