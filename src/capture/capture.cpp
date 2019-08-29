@@ -75,8 +75,12 @@ cv::VideoCapture *Capture::initilize(CamIndex index){
                 
         }
 
+    }else{
+        
+        // This will fail
+        //cap.set(CAP_PROP_FPS, 30);
+        
     }
-
     
     cout << "gstreamer capture initilized" << endl;
 

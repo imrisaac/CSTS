@@ -1,6 +1,10 @@
 # VCSTS(Video Capture Stabilization and Streaming) Change Log
 
-## 0.1.2.0 / 24 Aug 2019
+## 0.1.2.1 / 29 Aug 2019
+
+- Fixed mavlink program exit 
+
+## 0.1.2.0 / 29 Aug 2019
 
 - Added temp monitiring of BCPU, MCPU and GPU
     - Polled at 1Hz
