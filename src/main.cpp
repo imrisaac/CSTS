@@ -320,8 +320,9 @@ int main(int argc, char **argv){
                 //capEO.read(frameEO);
                 
                 capEO >> frameEO;
-                
+                // stupid hack for our hyperactive EO camera
                 usleep(20000);
+                
                 if (frameEO.data != NULL){
                     
 
@@ -450,7 +451,7 @@ int main(int argc, char **argv){
                     // Move this somewhere
                     putText(frameIR, (serialNum + " " + THISBUILD), cvPoint(25, 25), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
                     putText(frameIR, (mbstr), cvPoint(25, 40), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
-                    putText(frameIR, (std::to_string(system.getInstantTXRate()) + "Kbits/sec"), cvPoint(25, 55), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
+                    putText(frameIR, (std::to_string(system.getInstantTXRate()) + "Mbits/sec"), cvPoint(25, 55), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
 
                     putText(frameIR, ("Teg: " + std::to_string(system.getThermalZoneAvg()) + "c"), cvPoint(25, 70), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
                     putText(frameIR, ("AR:  " + std::to_string(system.getAR1820Temp()) + "c"), cvPoint(25, 85), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(255, 255, 255), 1, cv::LineTypes::LINE_AA);
@@ -472,7 +473,7 @@ int main(int argc, char **argv){
 #endif
 
                 }else{
-                    // TODO: streamer error screen instead
+                    // TODO: streame error screen instead
                     cout << "no image data" << endl;
                 }
 

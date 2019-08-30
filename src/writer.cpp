@@ -127,14 +127,6 @@ bool Writer::openSink(Sinker sink, cv::Mat start_frame)
 {
     string gstSink;
 
-    // ostringstream _width;
-    // ostringstream _height;
-    // ostringstream _fps;
-
-    // _width << width;
-    // _height << height;
-    // _fps << fps;
-
     switch (sink){
         
     case gstMacUDP:

@@ -18,5 +18,6 @@ void SceneTrack::run(){
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
         
     }
+    
     std::cout << "scenetrack loop stopped" << std::endl;
 }

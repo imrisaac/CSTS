@@ -1,5 +1,10 @@
 # VCSTS(Video Capture Stabilization and Streaming) Change Log
 
+## 0.1.2.13 / 29 Aug 2019
+
+- Hacked in a fix for incorrect input framerate
+- increased bitrate to 1.8
+
 ## 0.1.2.1 / 29 Aug 2019
 
 - Fixed mavlink program exit 
