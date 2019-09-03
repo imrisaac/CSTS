@@ -51,9 +51,9 @@ cv::VideoWriter *Writer::init(const cv::Mat &start_frame)
     contains the writer loop
     writes frames to an output stream
     the output stream may be gstreamer, video file, or both.
-
  */
 void Writer::run(){
+
     std::cout << "writer start" << std::endl;
 	
 	// you cannot call imshow from another thread?

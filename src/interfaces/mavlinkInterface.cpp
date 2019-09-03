@@ -30,6 +30,8 @@ MavlinkInterface::MavlinkInterface(){
  */
 MavlinkInterface::MavlinkInterface(Serial_Port *_serial_port){
 
+    serial_port = _serial_port;
+
 }
 
 void MavlinkInterface::processMessage(mavlink_message_t message){

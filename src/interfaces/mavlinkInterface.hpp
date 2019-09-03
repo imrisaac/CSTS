@@ -126,6 +126,8 @@ private:
     
     int component_id = 293;  // TODO: fix enum in mavlink lib build
 
+    Serial_Port *serial_port;
+
 };
 
 #endif //mavlinkInterface_hpp
