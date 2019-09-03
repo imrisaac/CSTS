@@ -102,7 +102,10 @@ struct Mavlink_Messages
 class MavlinkInterface
 {
 public:
-    void init();
+
+    MavlinkInterface();
+
+    MavlinkInterface(Serial_Port *_serial_port);
 
     void processMessage(mavlink_message_t message);
 
@@ -121,7 +124,7 @@ private:
 
     int system_id = 1;
     
-    int component_id = 293;  // TODO: temporary fix enum
+    int component_id = 293;  // TODO: fix enum in mavlink lib build
 
 };
 

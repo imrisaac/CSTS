@@ -47,6 +47,7 @@
  *
  */
 
+//TODO: refactor with camel case
 
 #include "serial_port.h"
 

@@ -18,6 +18,20 @@ uint64_t get_time_usec()
     return _time_stamp.tv_sec * 1000000 + _time_stamp.tv_usec;
 }
 
+/**
+    Default constructor
+ */
+MavlinkInterface::MavlinkInterface(){
+
+}
+
+/**
+    Constructor
+ */
+MavlinkInterface::MavlinkInterface(Serial_Port *_serial_port){
+
+}
+
 void MavlinkInterface::processMessage(mavlink_message_t message){
 
     // Store message sysid and compid.

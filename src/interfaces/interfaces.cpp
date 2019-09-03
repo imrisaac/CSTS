@@ -22,15 +22,19 @@ InterfaceParams::InterfaceParams(){
 
 }
 
+/**
+    Default constructor
+ */
 Interfaces::Interfaces(){
 
+    init();
 
 }
 
 /**
- * Initilizer for interfaces thread
+    Initilizer for interfaces thread
  */
-void Interfaces::initilize(){
+void Interfaces::init(){
 
     cout << "initilizing interfaces" << endl;
     
@@ -47,7 +51,7 @@ void Interfaces::initilize(){
 }
 
 /**
- *   Runner for the interfaces thread
+    Runner for the interfaces thread
  */
 void Interfaces::run(){
 
@@ -79,15 +83,16 @@ void Interfaces::run(){
 
 }
 
+/**
+    Getter for output outputMode
+ */
 void Interfaces::getDesiredOutputMode(enum OutputMode *outputMode){
 
-    if (EO_COLOR_CAMERA == mavlinkInterface.current_messages.payload_control.control_type && CONNECTED == (mavlinkInterface.current_messages.payload_control.control_flags & CONNECTED))
-    {
+    if (EO_COLOR_CAMERA == mavlinkInterface.current_messages.payload_control.control_type && CONNECTED == (mavlinkInterface.current_messages.payload_control.control_flags & CONNECTED)){
 
         *outputMode = simpleEO;
-    }
-    else if (IR_CAMERA == mavlinkInterface.current_messages.payload_control.control_type && CONNECTED == (mavlinkInterface.current_messages.payload_control.control_flags & CONNECTED))
-    {
+
+    }else if (IR_CAMERA == mavlinkInterface.current_messages.payload_control.control_type && CONNECTED == (mavlinkInterface.current_messages.payload_control.control_flags & CONNECTED)){
 
         *outputMode = simpleIR;
     }
@@ -96,28 +101,42 @@ void Interfaces::getDesiredOutputMode(enum OutputMode *outputMode){
     return;
 }
 
+/**
+    Zoom level getter
+ */
 void Interfaces::getZoom(int *focalLength){
-    
-    if ( 0 == mavlinkInterface.current_messages.payload_control.zoom_index ){
-        
-        // this is a focal length in mm, arbitrary for now but will be real i the future
-        *focalLength = 44;
-        
-    }else if ( 1 == mavlinkInterface.current_messages.payload_control.zoom_index ){
-        
-        *focalLength = 55;
-        
-    }else if ( 2 == mavlinkInterface.current_messages.payload_control.zoom_index ){
-        
-        *focalLength = 66;
-        
-    }else if ( 3 == mavlinkInterface.current_messages.payload_control.zoom_index ){
-        
-        *focalLength = 77;
-        
-    }else{
-        // do nothing 
+
+    if (focalLength == mavlinkInterface.current_messages.payload_control.zoom_index){
+        // no change return immediatly
+        return;
     }
+
+        // TODO: replace arbitrary zoom level index with focal length
+        if (0 == mavlinkInterface.current_messages.payload_control.zoom_index)
+        {
+
+            // this is a focal length in mm, arbitrary for now but will be real i the future
+            *focalLength = 44;
+        }
+        else if (1 == mavlinkInterface.current_messages.payload_control.zoom_index)
+        {
+
+            *focalLength = 55;
+        }
+        else if (2 == mavlinkInterface.current_messages.payload_control.zoom_index)
+        {
+
+            *focalLength = 66;
+        }
+        else if (3 == mavlinkInterface.current_messages.payload_control.zoom_index)
+        {
+
+            *focalLength = 77;
+        }
+        else
+        {
+            // do nothing
+        }
     
     return;
     

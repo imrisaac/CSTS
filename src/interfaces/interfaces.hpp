@@ -34,21 +34,14 @@ struct InterfaceParams
     InterfaceParams();
 };
 
-/*
- Capture thread
- inherits from Threader class
- 
- responsible for captureing new frames from vide feed and doing minimal pre-preocessing
+/**
+    Interfaces thread responsible for all c2 
  */
 class Interfaces: public Threader
 {
 public:
 
-    // Default constructor
     void Interfaces();
-
-    // Deprecated
-    void initilize();
 
     void run();
 
@@ -57,6 +50,8 @@ public:
     void getZoom(int *focalLength);
 
 private:
+
+    void init();
 
     Serial_Port serial_port;
 

@@ -197,7 +197,6 @@ int main(int argc, char **argv){
     // TODO: move this
     // Default to EO camera
 
-    interfaces.initilize();
     usleep(100000);
     
     cv::VideoCapture capEO;
