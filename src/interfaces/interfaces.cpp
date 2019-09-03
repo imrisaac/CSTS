@@ -23,6 +23,9 @@ InterfaceParams::InterfaceParams(){
 
 }
 
+/**
+ * Initilizer for interfaces thread
+ */
 void Interfaces::initilize(){
 
     cout << "initilizing interfaces" << endl;
@@ -39,11 +42,11 @@ void Interfaces::initilize(){
     cout << "interfaces initilized" << endl;
 }
 
-/*
-    Runner for the c2 thread
-    contains the c2 loop
+/**
+ *   Runner for the interfaces thread
  */
 void Interfaces::run(){
+
     cout << "interface loop start" << endl;
 
     bool success = false;
@@ -88,7 +91,6 @@ void Interfaces::getDesiredOutputMode(enum OutputMode *outputMode){
     // 
     return;
 }
-
 
 void Interfaces::getZoom(int *focalLength){
     

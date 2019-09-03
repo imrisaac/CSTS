@@ -22,8 +22,7 @@ uint64_t get_time_usec()
 void MavlinkInterface::processMessage(mavlink_message_t message){
 
     // Store message sysid and compid.
-    // Note this doesn't handle multiple message sources
-    // need multiple structs for multiple sources, programatically ideally
+    // This doesn't handle multiple message sources
     current_messages.sysid = message.sysid;
     current_messages.compid = message.compid;
 

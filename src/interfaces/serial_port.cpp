@@ -190,7 +190,6 @@ int Serial_Port::write_message(const mavlink_message_t &message)
 void Serial_Port::open_serial()
 {
 
-
 	printf("OPEN PORT\n");
 
 	fd = _open_port(uart_name);
