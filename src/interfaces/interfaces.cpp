@@ -5,7 +5,6 @@
 //  contains command and control interfaces
 //
 //  Created by Isaac Reed on 7/23/19.
-//  Copyright © 2019 Isaac Reed. All rights reserved.
 //
 
 #include "interfaces.hpp"
@@ -20,6 +19,11 @@ InterfaceParams::InterfaceParams(){
 #else
     uart_name = (char *)"/dev/ttyTHS1";
 #endif
+
+}
+
+Interfaces::Interfaces(){
+
 
 }
 
